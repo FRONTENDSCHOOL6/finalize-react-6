@@ -1,0 +1,9 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components.css';
+@import 'tailwindcss/utilities';
+
+@layer base {
+  html {
+    font-family: SUIT Variable, sans-serif;
+  }
+}
