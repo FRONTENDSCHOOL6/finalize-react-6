@@ -4,6 +4,8 @@
 
 @layer base {
   html {
-    font-family: SUIT Variable, sans-serif;
+    font-family:
+      SUIT Variable,
+      sans-serif;
   }
 }

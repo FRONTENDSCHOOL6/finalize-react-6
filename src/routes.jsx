@@ -1,9 +1,10 @@
-import { Route } from "react-router-dom";
-import { createRoutesFromElements } from "react-router-dom";
-import { createHashRouter } from "react-router-dom";
-import RootLayout from "./layout/RootLayout";
-import Home from "./pages/Home";
-
+import {
+  Route,
+  createHashRouter,
+  createRoutesFromElements,
+} from 'react-router-dom';
+import RootLayout from './layout/RootLayout';
+import Home from './pages/Home';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -11,6 +12,6 @@ const router = createHashRouter(
       <Route index element={<Home />} />
     </Route>
   )
-)
+);
 
 export default router;
