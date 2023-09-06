@@ -27,9 +27,9 @@ export default function Join() {
           </div>
           <Button>가입하기</Button>
         </form>
-        <p>
+        <p className="mt-3">
           이미 회원이신가요?&nbsp;
-          <LinkItem href="/" className="font-extrabold text-blue">로그인 하기</LinkItem>
+          <LinkItem link="/login" className="font-extrabold text-blue">로그인 하기</LinkItem>
         </p>
       </div>
     </>

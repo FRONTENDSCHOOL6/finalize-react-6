@@ -15,22 +15,22 @@ export default function Login() {
       {/* 마크업 */}
       <div className="flex flex-col items-center justify-center my-20">
         <Logo />
-        <form className="flex flex-col gap-3 mb-4">
+        <form className="flex flex-col gap-3">
           <InputField id="id" type="text" placeholder="아이디" />
           <InputField id="password" type="password" placeholder="비밀번호" />
           <Button>로그인</Button>
           <a href="/">
-            <Button txtColor="black" bgColor="kakaoYellow">카카오로 로그인</Button>
+            <Button txtColor="black" bgColor="KakaoYellow">카카오로 로그인</Button>
           </a>
         </form>
-        <div className="m-9">
-          <LinkItem href="/">아이디 찾기</LinkItem>
+        <div className="m-8">
+          <LinkItem link="/findid">아이디 찾기</LinkItem>
           &nbsp;|&nbsp;
-          <LinkItem href="/">비밀번호 찾기</LinkItem>
+          <LinkItem link="/findpw">비밀번호 찾기</LinkItem>
         </div>
         <p>
           아직 회원이 아니신가요?&nbsp;
-          <LinkItem href="/" className="font-extrabold text-blue">회원가입 하기</LinkItem>
+          <LinkItem link="/join" className="font-extrabold text-blue">회원가입 하기</LinkItem>
         </p>
       </div>
     </>

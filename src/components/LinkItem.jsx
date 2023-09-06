@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-export default function LinkItem({ children, href, className }) {
+export default function LinkItem({ children, link, className }) {
   return (
-    <Link href={href} className={className ? className : ''}>{children}</Link>
+    <Link to={link} className={className ? className : ''}>{children}</Link>
   )
 }
