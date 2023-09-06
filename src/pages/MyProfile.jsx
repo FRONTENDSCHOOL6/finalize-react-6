@@ -1,17 +1,15 @@
 import MainContent from '@/components/MainContent';
 import ProfileComment from '@/components/ProfileComment';
+import TitleButton from '@/components/TitleButton';
 import { NavLink } from 'react-router-dom';
 
 export default function MyProfile() {
   return (
     <>
       <section className="mx-10">
-        <div className="flex justify-between mb-2">
-          <h2 className="text-lg font-bold">나의 제주</h2>
-          <button type="button">더보기</button>
-        </div>
-        <hr className="" />
-        <div className="flex grow gap-5 my-10">
+        <TitleButton title="나의 제주" link="#" />
+        <hr />
+        <ul className="flex grow gap-5 my-10 w-11/12 mx-auto">
           <MainContent
             src="/jejuImage1.jpg"
             alt="메밀꽃밭"
@@ -23,16 +21,13 @@ export default function MyProfile() {
             alt="한라봉 과수원"
             title="제주는 한라봉이면 충분하다고 할 수 있지 않을까?"
           />
-        </div>
+        </ul>
       </section>
 
       <section className="mx-10 mb-12">
-        <div className="flex justify-between mb-2">
-          <h2 className="text-lg font-bold">나의 제주의 별</h2>
-          <button type="button">더보기</button>
-        </div>
-        <hr className="mb-5" />
-        <ul className="w-11/12 mx-auto">
+        <TitleButton title="나의 제주의 별" link="#" />
+        <hr />
+        <ul className="w-11/12 mx-auto my-10">
           <NavLink to="/content">
             <ProfileComment
               src="/jejuImage1.jpg"
