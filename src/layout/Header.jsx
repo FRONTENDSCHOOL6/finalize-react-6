@@ -1,3 +1,5 @@
+import NavigationCenter from '@/components/header/NavigationCenter';
+import NavigationSide from '@/components/header/NavigationSide';
 import { NavLink } from 'react-router-dom';
 
 export default function Header() {
@@ -9,47 +11,30 @@ export default function Header() {
         </NavLink>
         <span className="sr-only">Jeju All in One</span>
       </h1>
-      <ul className="flex flex-row items-center gap-8 text-[#717D96]">
+      <ul className="flex flex-row items-center gap-8 text-gray-600">
         <NavLink to="content">
-          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-            🍊 우리 제주
-          </li>
+          <NavigationCenter menu="🍊 우리 제주" />
         </NavLink>
         <NavLink to="content">
-          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-            🏝️ 나만의 제주
-          </li>
+          <NavigationCenter menu="🏝️ 나만의 제주" />
         </NavLink>
         <NavLink to="weather">
-          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-            🌦️ 제주 날씨
-          </li>
+          <NavigationCenter menu="🌦️ 제주 날씨" />
         </NavLink>
         <NavLink to="traffic">
-          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-            🚙 제주 교통
-          </li>
+          <NavigationCenter menu="🚙 제주 교통" />
         </NavLink>
       </ul>
       <ul className="flex flex-row items-center gap-5">
-        {/* 로그인 하면 로그아웃, 내 프로필로 변경하기 */}
         <NavLink to="login">
-          <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
-            로그인
-          </li>
+          <NavigationSide menu="로그인" />
         </NavLink>
-        <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
-          로그아웃
-        </li>
+        <NavigationSide menu="로그아웃" />
         <NavLink to="join">
-          <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
-            회원가입
-          </li>
+          <NavigationSide menu="회원가입" />
         </NavLink>
         <NavLink to="profile">
-          <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
-            프로필
-          </li>
+          <NavigationSide menu="프로필" />
         </NavLink>
       </ul>
     </header>

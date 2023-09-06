@@ -1,4 +1,8 @@
+import SelectLocation from '@/components/weather/SelectLocation';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import GetWeather from '@/components/weather/GetWeather';
+import GetTemperature from '@/components/weather/GetTemperature';
 
 export default function WeatherInfo() {
   //# 단기예보조회
@@ -90,61 +94,16 @@ export default function WeatherInfo() {
 
   return (
     <div className="px-8 my-10">
-      <h2 className="w-[640px] h-[64px] bg-blue flex justify-center items-center mx-auto text-3xl text-lightsand my-10">
+      <Helmet>
+        <title>Jeju All in One - 제주 날씨</title>
+      </Helmet>
+      <h2 className="text-darkblue font-semibold text-4xl text-center my-10">
         제주 날씨
       </h2>
       <div className="flex flex-col justify-center items-center gap-10">
-        <div className="h-[50px] leading-[50px]">
-          <span className="w-[100px] inline-flex text-2xl">지역</span>
-          <select name="location" className="mx-3">
-            <option value="">- 선택 -</option>
-            <option value="제주시">제주시</option>
-            <option value="서귀포시">서귀포시</option>
-          </select>
-          <select>
-            <option>- 선택 -</option>
-            <option>OO동</option>
-            <option>OO동</option>
-          </select>
-        </div>
-        <p className="text-5xl">기온 25&deg;C</p>
-        <img
-          src="/public/weather/clear.svg"
-          alt="맑음"
-          className="w-[100px] h-[100px]"
-        />
-        <div>
-          <span className="text-xl px-10">강수확률 0%</span>
-          <span className="text-xl px-10">풍속 3ml/s</span>
-        </div>
-
-        <table className="border-2 w-6/12 text-center text-xl h-[150px]">
-          <tr className="border-2">
-            <td className="border-2"></td>
-            <td className="border-2">오늘</td>
-            <td className="border-2">내일</td>
-            <td className="border-2">모레</td>
-            <td className="border-2">글피</td>
-          </tr>
-          <tr className="border-2">
-            <td className="border-2">
-              최<span className="text-red-600">고</span> 기온
-            </td>
-            <td className="border-2">30&deg;C</td>
-            <td className="border-2">29&deg;C</td>
-            <td className="border-2">28&deg;C</td>
-            <td className="border-2">27&deg;C</td>
-          </tr>
-          <tr className="border-2">
-            <td className="border-2">
-              최<span className="text-sky-600">저</span> 기온
-            </td>
-            <td className="border-2">20&deg;C</td>
-            <td className="border-2">21&deg;C</td>
-            <td className="border-2">22&deg;C</td>
-            <td className="border-2">23&deg;C</td>
-          </tr>
-        </table>
+        <SelectLocation />
+        <GetWeather />
+        <GetTemperature />
       </div>
     </div>
   );

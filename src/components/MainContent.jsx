@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function MainContent({ src, alt, title }) {
   return (
-    <article className="w-1/3 border-2 border-slate-300 border-solid rounded">
+    <li className="w-1/3 border-2 border-slate-300 border-solid rounded">
       <NavLink to="/content">
         <figure>
           <img src={src} alt={alt} />
@@ -11,6 +11,6 @@ export default function MainContent({ src, alt, title }) {
           </figcaption>
         </figure>
       </NavLink>
-    </article>
+    </li>
   );
 }

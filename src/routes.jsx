@@ -18,17 +18,19 @@ const WeathertInfo = lazy(() => import('./pages/WeatherInfo'));
 
 const router = createHashRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />} >
+    <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="join" element={<Join />} />
       <Route path="profile" element={<MyProfile />} />
       <Route path="traffic" element={<TrafficInfo />} />
       <Route path="weather" element={<WeathertInfo />} />
-      <Route path="content" element={<Contents />} />
-      <Route path="content/create" element={<ContentCreate />} />
-      <Route path="content/edit" element={<ContentEdit />} />
-      <Route path="content/detail" element={<ContentDetail />} />
+      <Route path="content">
+        <Route index element={<Contents />} />
+        <Route path="create" element={<ContentCreate />} />
+        <Route path="edit" element={<ContentEdit />} />
+        <Route path="detail" element={<ContentDetail />} />
+      </Route>
     </Route>
   )
 );
