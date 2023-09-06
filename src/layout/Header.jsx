@@ -1,35 +1,57 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <header className="w-full h-[150px] flex flex-row items-center px-8 justify-between border-b-[3px] mb-10">
+    <header className="h-24 flex flex-row items-center px-8 justify-between">
       <h1>
-        <img src="/logo.png" alt="로고" className="w-[100px] h-[100px]" />
-        <span className="sr-only">Jeju All in one</span>
+        <NavLink to="/">
+          <img src="/logo.png" alt="로고" />
+        </NavLink>
+        <span className="sr-only">Jeju All in One</span>
       </h1>
-      <ul className="flex flex-row items-center gap-10 text-[#717D96]">
-        <li className="w-[150px] h-[50px] text-xl text-center leading-[50px] hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-          <Link href="/">🍊 우리 제주</Link>
-        </li>
-        <li className="w-[150px] h-[50px] text-xl text-center leading-[50px] hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-          <Link href="/">🏝️ 나만의 제주</Link>
-        </li>
-        <li className="w-[150px] h-[50px] text-xl text-center leading-[50px] hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-          <Link href="/">🌦️ 제주 날씨</Link>
-        </li>
-        <li className="w-[150px] h-[50px] text-xl text-center leading-[50px] hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
-          <Link href="/">🚙 제주 교통</Link>
-        </li>
+      <ul className="flex flex-row items-center gap-8 text-[#717D96]">
+        <NavLink to="content">
+          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
+            🍊 우리 제주
+          </li>
+        </NavLink>
+        <NavLink to="content">
+          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
+            🏝️ 나만의 제주
+          </li>
+        </NavLink>
+        <NavLink to="weather">
+          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
+            🌦️ 제주 날씨
+          </li>
+        </NavLink>
+        <NavLink to="traffic">
+          <li className="text-base text-center leading-8 hover:border-b-[3px] hover:text-darkblue  hover:border-darkblue">
+            🚙 제주 교통
+          </li>
+        </NavLink>
       </ul>
-      <div className="flex flex-row items-center gap-5">
+      <ul className="flex flex-row items-center gap-5">
         {/* 로그인 하면 로그아웃, 내 프로필로 변경하기 */}
-        <button className="w-[100px] h-[100px] text-xl text-center leading-[100px] text-[#717D96] hover:text-darkblue">
-          로그인
-        </button>
-        <button className="w-[100px] h-[100px] text-xl text-center leading-[100px] text-[#717D96] hover:text-darkblue">
-          회원가입
-        </button>
-      </div>
+        <NavLink to="login">
+          <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
+            로그인
+          </li>
+        </NavLink>
+        <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
+          로그아웃
+        </li>
+        <NavLink to="join">
+          <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
+            회원가입
+          </li>
+        </NavLink>
+        <NavLink to="profile">
+          <li className="text-base text-center font-semibold leading-8 text-darkblue hover:border-b-[3px] hover:border-darkblue">
+            프로필
+          </li>
+        </NavLink>
+      </ul>
     </header>
   );
 }
