@@ -8,7 +8,7 @@ export default function ContentItem({ content }) {
           <img
             className="object-cover w-full h-full "
             src="/jejuImage1.jpg"
-            alt=""
+            alt="alt변수로"
           />
         </figure>
         <figcaption className="text-white/[.93] flex flex-col text-end absolute bottom-5 right-7">

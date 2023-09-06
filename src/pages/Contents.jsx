@@ -13,7 +13,7 @@ export default function Contents() {
 
       <section className="text-center mt-20">
         <h2 className="text-darkblue font-semibold text-4xl">나만의 제주</h2>
-        <p className="mt-4">소중한 당신의 경험을 공유해 주세요.</p>
+        <p className="mt-4">소중한 당신의 추억을 사람들에게 공유해 주세요 :) </p>
 
         <button className="my-20 inline-flex rounded-full bg-lightsand gap-2 px-6 py-3 border-2 border-blue">
           <p className="text-blue font-extrabold text-lg">추억을 공유하기</p>
