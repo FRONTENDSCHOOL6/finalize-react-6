@@ -3,7 +3,7 @@ import { colourOptions } from './data/data';
 import Select from 'react-select';
 
 const colorStyles = {
-  control: (styles) => ({ ...styles, backgroundColor: 'white' }),
+  control: (styles) => ({ ...styles, padding: '4px 0', backgroundColor: 'white' }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     const color = chroma(data.color);
     return {
