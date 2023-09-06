@@ -1,24 +1,40 @@
+import InputField from "@/components/InputField";
+import Logo from "@/components/Logo";
+import Button from "@/components/Button";
+import LinkItem from "@/components/content/LinkItem";
+import { Helmet } from "react-helmet-async";
+
 export default function Login() {
   return (
-    <div className="flex flex-col items-center justify-center my-20">
-      <div className="flex flex-col items-center justify-center m-8">
-        <img src="/public/logo.png" alt="logo" className="w-36 mb-3" />
-        <h1 className="text-darkblue font-bold text-xl">당신의 제주를<br />우리의 제주로</h1>
+    <>
+      {/* 헤드 이름 */}
+      <Helmet>
+        <title>Jeju All in One - 로그인 </title>
+      </Helmet>
+
+      {/* 마크업 */}
+      <div className="flex flex-col items-center justify-center my-20">
+        <Logo />
+        <form className="flex flex-col gap-3 mb-4">
+          <InputField id="id" type="text" placeholder="아이디" />
+          <InputField id="password" type="password" placeholder="비밀번호" />
+          <Button>로그인</Button>
+          <a href="/">
+            <Button txtColor="black" bgColor="KakaoYellow">카카오로 로그인</Button>
+          </a>
+        </form>
+        <div className="m-9">
+          <LinkItem href="/">아이디 찾기</LinkItem>
+          &nbsp;|&nbsp;
+          <LinkItem href="/">비밀번호 찾기</LinkItem>
+        </div>
+        <p>
+          아직 회원이 아니신가요?&nbsp;
+          <LinkItem href="/" className="font-extrabold text-blue">회원가입 하기</LinkItem>
+        </p>
       </div>
-      <form className="flex flex-col gap-3 mb-4">
-        <input type="text" id="id" name="id" placeholder="아이디" className="w-[400px] px-5 py-3 border border-sand rounded-lg" />
-        <label htmlFor="id" className="sr-only">아이디</label>
-        <input type="password" id="password" name="password" placeholder="비밀번호" className="w-[400px] px-5 py-3 border border-sand rounded-lg mb-2" />
-        <label htmlFor="password" className="sr-only">비밀번호</label>
-        <button type="submit" className="w-[400px] h-[50px] font-semibold text-white bg-blue rounded-md">로그인</button>
-        <a href="/" className="w-[400px] h-[50px] font-semibold bg-KakaoYellow rounded-md flex items-center justify-center">카카오로 로그인</a>
-      </form>
-      <div className="m-9">
-        <a href="/">아이디 찾기</a> 
-        &nbsp;|&nbsp;
-        <a href="/">비밀번호 찾기</a>
-      </div>
-      <p>아직 회원이 아니신가요? <a href="/" className="font-extrabold text-blue">회원가입 하기</a></p>
-    </div>
+    </>
   )
 }
+
+
