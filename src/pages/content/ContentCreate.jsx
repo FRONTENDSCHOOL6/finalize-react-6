@@ -24,9 +24,6 @@ export default function ContentCreate() {
 
   return (
     <>
-      {/* <div className="flex items-center justify-center bg-blue mx-[30%] h-12 mt-10 rounded-md">
-        <h2 className="text-white text-3xl">내 추억 등록하기</h2>
-      </div> */}
       <ContentTitle title="내 추억 등록하기" />
 
       <form
@@ -35,9 +32,9 @@ export default function ContentCreate() {
         onSubmit={handleCreate}
         className="flex flex-col gap-2 items-center"
       >
-        <div className="flex gap-10 mx-auto px-10 max-w-5xl my-24">
+        <div className="flex gap-10 mx-auto px-10 max-w-7xl my-32">
           {/* upload file */}
-          <div className="relative w-[700px]">
+          <div className="relative w-[800px]">
             <label htmlFor="photo" className="sr-only">
               사진 등록
             </label>
@@ -78,7 +75,7 @@ export default function ContentCreate() {
                 id="title"
                 name="title"
                 placeholder="제목을 입력해주세요"
-                className="w-full py-2 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
                 required
               />
             </div>
@@ -105,7 +102,7 @@ export default function ContentCreate() {
                 id="location"
                 name="location"
                 placeholder="위치 검색"
-                className="w-full py-2 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
                 required
               />
               <button className="bg-lightblue p-2 rounded-md absolute right-2 top-[50%] -translate-y-[50%] hover:bg-blue">
@@ -116,7 +113,7 @@ export default function ContentCreate() {
             <TagSelect />
             <button
               type="submit"
-              className="text-white font-bold bg-lightblue px-4 py-2 rounded-md hover:bg-blue"
+              className="text-white font-bold bg-lightblue px-4 py-3 rounded-md hover:bg-blue"
             >
               추억 등록
             </button>
