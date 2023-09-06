@@ -1,7 +1,7 @@
 import InputField from "@/components/InputField";
 import Logo from "@/components/Logo";
 import Button from "@/components/Button";
-import LinkItem from "@/components/content/LinkItem";
+import LinkItem from "@/components/LinkItem";
 import { Helmet } from "react-helmet-async";
 
 export default function Login() {
@@ -20,7 +20,7 @@ export default function Login() {
           <InputField id="password" type="password" placeholder="비밀번호" />
           <Button>로그인</Button>
           <a href="/">
-            <Button txtColor="black" bgColor="KakaoYellow">카카오로 로그인</Button>
+            <Button txtColor="black" bgColor="kakaoYellow">카카오로 로그인</Button>
           </a>
         </form>
         <div className="m-9">
