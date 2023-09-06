@@ -8,7 +8,7 @@ export default function Home() {
         <MainSlide src="/mainSlide1.jpg" alt="제주도 바다" />
       </section>
 
-      <section className="flex grow w-full gap-5 my-10">
+      <section className="flex grow gap-5 my-10 mx-10">
         <MainContent src="/jejuImage1.jpg" alt="메밀꽃밭" title="제주 메밀꽃" />
         <MainContent src="/jejuImage4.jpg" alt="돌담" title="제주 돌담" />
         <MainContent
