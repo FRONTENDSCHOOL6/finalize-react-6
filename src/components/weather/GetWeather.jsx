@@ -9,7 +9,7 @@ export default function GetWeather() {
       />
       <div>
         <span className="text-xl px-10">강수확률 0%</span>
-        <span className="text-xl px-10">풍속 3ml/s</span>
+        <span className="text-xl px-10">풍속 3m/s</span>
       </div>
     </>
   );

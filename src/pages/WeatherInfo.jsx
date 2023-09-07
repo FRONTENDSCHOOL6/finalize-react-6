@@ -6,91 +6,62 @@ import GetTemperature from '@/components/weather/GetTemperature';
 
 export default function WeatherInfo() {
   //# 단기예보조회
-  // const baseTimes = [
-  //   '0200',
-  //   '0500',
-  //   '0800',
-  //   '1100',
-  //   '1400',
-  //   '1700',
-  //   '2000',
-  //   '2300',
-  // ];
-  // const baseTimes = ['1100'];
-  // const baseUrl =
-  //   'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst'; /*URL*/
-  // const serviceKey =
-  //   '4vq6kWslvJHgm6Z3JNfZ797PVPnMRYzMInRfcfx9volp2z1Dxf9qMU49eqXJ590RXLgYbOTjSQ1aC0easyCbUw%3D%3D'; // 여기에 서비스 키를 삽입하세요
+  const baseUrl =
+    'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst';
+  const serviceKey =
+    '4vq6kWslvJHgm6Z3JNfZ797PVPnMRYzMInRfcfx9volp2z1Dxf9qMU49eqXJ590RXLgYbOTjSQ1aC0easyCbUw%3D%3D';
+  const today = new Date();
+  // 날짜
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const baseDate = `${year}${month}${day}`;
+  // 시간
+  const hour = today.getHours();
+  const baseTimes = [
+    '0200',
+    '0500',
+    '0800',
+    '1100',
+    '1400',
+    '1700',
+    '2000',
+    '2300',
+  ];
+  let baseTime = '';
+  for (let i = 0; i < baseTimes.length; i++) {
+    if (hour < parseInt(baseTimes[i].slice(0, 2))) {
+      baseTime = baseTimes[i - 1];
+      break;
+    }
+  }
+  if (!baseTime) {
+    baseTime = '2300';
+  }
 
-  // async function fetchWeatherData(baseTimes) {
-  //   const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=30&dataType=JSON&base_date=20230906&base_time=${baseTimes}&nx=52&ny=38`;
+  async function fetchWeatherData() {
+    const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=30&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=52&ny=38`;
+    console.log(url);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Weather Data:', data);
+      console.log('기온:', data.response.body.items.item[0].fcstValue);
+      console.log('풍속:', data.response.body.items.item[4].fcstValue);
+      console.log('하늘상태:', data.response.body.items.item[5].fcstValue);
+      console.log('강수형태:', data.response.body.items.item[6].fcstValue);
+      console.log('강수확률:', data.response.body.items.item[7].fcstValue);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
-  //   try {
-  //     const response = await fetch(url);
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-  //     const data = await response.json();
-  //     console.log('Weather Data:', data);
-  //     // 여기에서 데이터를 가지고 원하는 처리를 수행하세요.
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   // 컴포넌트가 마운트될 때 또는 baseTimes 배열이 업데이트될 때마다 데이터 가져오기를 수행합니다.
-  //   baseTimes.forEach((baseTimes) => {
-  //     fetchWeatherData(baseTimes);
-  //   });
-  // }, []);
-
-  // let xhr = new XMLHttpRequest();
-  // let url =
-  //   'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst'; /*URL*/
-  // let queryParams =
-  //   '?' +
-  //   encodeURIComponent('serviceKey') +
-  //   '=' +
-  //   '4vq6kWslvJHgm6Z3JNfZ797PVPnMRYzMInRfcfx9volp2z1Dxf9qMU49eqXJ590RXLgYbOTjSQ1aC0easyCbUw%3D%3D'; /*Service Key*/
-  // queryParams +=
-  //   '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /**/
-  // queryParams +=
-  //   '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /**/
-  // queryParams +=
-  //   '&' +
-  //   encodeURIComponent('dataType') +
-  //   '=' +
-  //   encodeURIComponent('JSON'); /**/
-  // queryParams +=
-  //   '&' +
-  //   encodeURIComponent('base_date') +
-  //   '=' +
-  //   encodeURIComponent('20230906'); /**/
-  // queryParams +=
-  //   '&' +
-  //   encodeURIComponent('base_time') +
-  //   '=' +
-  //   encodeURIComponent('0500'); /**/
-  // queryParams +=
-  //   '&' + encodeURIComponent('nx') + '=' + encodeURIComponent('52'); /**/
-  // queryParams +=
-  //   '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('38'); /**/
-  // xhr.open('GET', url + queryParams);
-  // xhr.onreadystatechange = function () {
-  //   if (this.readyState == 4) {
-  //     console.log(
-  //       'Status: ' +
-  //         this.status +
-  //         'nHeaders: ' +
-  //         JSON.stringify(this.getAllResponseHeaders()) +
-  //         'nBody: ' +
-  //         this.responseText
-  //     );
-  //   }
-  // };
-
-  // xhr.send('');
+  useEffect(() => {
+    fetchWeatherData();
+  }, []);
 
   return (
     <div className="px-8 my-10">

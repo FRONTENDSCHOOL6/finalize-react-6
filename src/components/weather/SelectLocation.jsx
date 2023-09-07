@@ -1,7 +1,7 @@
 export default function SelectLocation() {
   return (
     <div className="h-[50px] leading-[50px]">
-      <span className="w-[100px] inline-flex text-2xl">지역</span>
+      <span className="w-[100px] inline-flex text-xl">지역</span>
       <select name="location" className="mx-3">
         <option value="">- 선택 -</option>
         <option value="제주시">제주시</option>
