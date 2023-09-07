@@ -1,11 +1,16 @@
 import MainContent from '@/components/MainContent';
 import ProfileComment from '@/components/ProfileComment';
 import TitleButton from '@/components/TitleButton';
+import { Helmet } from 'react-helmet-async';
 import { NavLink } from 'react-router-dom';
 
 export default function MyProfile() {
   return (
     <>
+      <Helmet>
+        <title>Jeju All in One - 내 프로필</title>
+      </Helmet>
+
       <section className="mx-10">
         <TitleButton title="나의 제주" link="#" />
         <hr />
