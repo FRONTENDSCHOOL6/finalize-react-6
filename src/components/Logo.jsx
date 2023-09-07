@@ -6,3 +6,12 @@ export default function Logo() {
     </div>
   )
 }
+
+export const SubLogo = () => {
+  return (
+    <div className="flex gap-3 items-center justify-center m-8">
+      <img src="/public/logo.png" alt="logo" className="w-32 mb-2" />
+      <p className="text-darkblue font-bold text-lg">당신의 제주를<br />우리의 제주로</p>
+    </div>
+  )
+}
