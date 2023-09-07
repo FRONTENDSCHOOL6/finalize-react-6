@@ -1,4 +1,9 @@
+import PropTypes from 'prop-types';
+
 export default function OnedayWeather({ data, category, text }) {
+  if (!data.response) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       {data?.response?.body?.items.item
@@ -44,3 +49,9 @@ export default function OnedayWeather({ data, category, text }) {
     </>
   );
 }
+
+OnedayWeather.propTypes = {
+  data: PropTypes.object.isRequired,
+  category: PropTypes.string.isRequired,
+  text: PropTypes.string,
+};

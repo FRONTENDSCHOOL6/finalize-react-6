@@ -1,7 +1,11 @@
 import ImgSky from './ImgSky';
 import WeatherTable from './WeatherTable';
+import PropTypes from 'prop-types';
 
 export default function GetWeather({ data }) {
+  if (!data.response) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <p className="text-5xl">
@@ -23,3 +27,7 @@ export default function GetWeather({ data }) {
     </>
   );
 }
+
+GetWeather.propTypes = {
+  data: PropTypes.object.isRequired,
+};

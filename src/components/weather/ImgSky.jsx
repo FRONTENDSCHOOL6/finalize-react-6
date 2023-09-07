@@ -1,4 +1,9 @@
+import PropTypes from 'prop-types';
+
 export default function ImgSky({ data }) {
+  if (!data.response) {
+    return <div>Loading...</div>;
+  }
   // 하늘 상태
   const sky = data?.response?.body?.items?.item[5]?.fcstValue;
   let skySrc = '';
@@ -58,3 +63,7 @@ export default function ImgSky({ data }) {
     </div>
   );
 }
+
+ImgSky.propTypes = {
+  data: PropTypes.object.isRequired,
+};

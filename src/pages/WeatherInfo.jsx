@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import GetWeather from '@/components/weather/GetWeather';
 
 export default function WeatherInfo() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
 
   useEffect(() => {

@@ -1,6 +1,10 @@
 import OnedayWeather from './OnedayWeather';
+import PropTypes from 'prop-types';
 
 export default function WeatherTable({ data }) {
+  if (!data.response) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <table className="border-2 w-2/3 text-center text-xl">
@@ -61,3 +65,7 @@ export default function WeatherTable({ data }) {
     </>
   );
 }
+
+WeatherTable.propTypes = {
+  data: PropTypes.object.isRequired,
+};

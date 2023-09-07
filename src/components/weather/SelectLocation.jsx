@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import data from '@/data.json';
+import PropTypes from 'prop-types';
 
 export default function SelectLocation({ onCoordinatesChange }) {
   const [city, setCity] = useState('');
@@ -46,3 +47,7 @@ export default function SelectLocation({ onCoordinatesChange }) {
     </div>
   );
 }
+
+SelectLocation.propTypes = {
+  onCoordinatesChange: PropTypes.func,
+};
