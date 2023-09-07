@@ -1,36 +1,68 @@
 import PageHead from '@/components/PageHead';
 import CommentItem from '@/components/content/CommentItem';
-import ContentTitle from '@/components/content/ContentTitle';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import pb from '@/api/pocketbase';
+import { useRef } from 'react';
+import { useState } from 'react';
+import { getPbImageURL } from '@/utils';
 
 export default function ContentDetail() {
+  const { id } = useParams();
+  const contentRef = useRef(null);
+  const [title, setTitle] = useState();
+  const [content, setContent] = useState();
+  const [photo, setPhoto] = useState();
+  const [tag, setTag] = useState();
+
+  useEffect(() => {
+    async function getProduct() {
+      try {
+        const product = await pb.collection('content').getOne(id);
+        const { title, content, tag, commentId } = product;
+        setPhoto(getPbImageURL(product, 'photo'));
+        setContent(content);
+        setTag(tag);
+        setTitle(title);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getProduct();
+  }, [id, setContent]);
+
   return (
     <>
       <PageHead title="Jeju All in One - 나만의 제주" />
-      
-      <ContentTitle title="박지영님의 추억" />
-      <section className="shadow-content my-20 px-32 py-20 gap-10 flex flex-col justify-center text-center items-center mx-[15%] min-h-full rounded-md">
-        <h2 className="sr-only">콘텐츠 상세 페이지</h2>
+
+      {/* <ContentTitle title="박지영님의 추억" /> */}
+      <section className="shadow-content mt-5 mb-20 px-32 py-20 gap-5 flex flex-col items-center mx-[15%] min-h-full rounded-md">
+        {/* <h2 className="text-xl font-bold text-darkblue">{title}</h2> */}
 
         {/* 사진 */}
-        <div className="min-w-[400px] ">
-          <img
-            src="./jejuImage2.jpg"
-            alt="alt 변수"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        {/* 위치 */}
-        <div className="w-full py-2 px-4 rounded-md border border-lightsand">
-          위치 들어갈 위치
-        </div>
-        {/* 태그 */}
-        <div className="w-full py-2 px-4 rounded-md border border-lightsand">
-          태그 들어갈 위치
+        <article className="min-w-[400px] ">
+          <img src={photo} alt={title} className="w-full h-full object-cover" />
+        </article>
+        <div className="flex gap-5 w-4/5">
+          {/* 위치 */}
+          <article className="w-full py-2 px-4 rounded-md border text-center border-gray-500">
+            위치
+          </article>
+          {/* 태그 */}
+          <article className="w-full py-2 px-4 rounded-md border text-center border-gray-500">
+            {tag}
+          </article>
         </div>
         {/* 내용 */}
-        <div className="w-full py-2 px-4 rounded-md border border-lightsand">
-          내용 들어갈 위치
-        </div>
+        {/* <article>{title}</article> */}
+        <article
+          ref={contentRef}
+          className="w-full py-2 px-4 rounded-md border border-gray-500"
+        >
+          <p className="pb-2 font-bold">{title}</p>
+          {content}
+        </article>
       </section>
 
       <hr className="hr h-2 border-2 my-10" />
