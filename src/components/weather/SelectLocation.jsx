@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import data from '@/data.json';
 
-export default function SelectLocation() {
+export default function SelectLocation({ onCoordinatesChange }) {
   const [city, setCity] = useState('');
   const [sublocation, setSublocation] = useState('');
   const [coordinates, setCoordinates] = useState({ x: null, y: null });
@@ -20,6 +20,7 @@ export default function SelectLocation() {
 
     if (locationData) {
       setCoordinates({ x: locationData.x, y: locationData.y });
+      onCoordinatesChange({ x: locationData.x, y: locationData.y }); // 상위 컴포넌트로 좌표 전달
     }
   };
 
@@ -44,12 +45,6 @@ export default function SelectLocation() {
           </option>
         ))}
       </select>
-
-      {coordinates.x && coordinates.y && (
-        <p>
-          선택된 지역의 좌표는 ({coordinates.x}, {coordinates.y})입니다.
-        </p>
-      )}
     </div>
   );
 }
