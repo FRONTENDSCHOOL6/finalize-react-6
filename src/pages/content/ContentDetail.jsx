@@ -1,9 +1,12 @@
+import PageHead from '@/components/PageHead';
 import CommentItem from '@/components/content/CommentItem';
 import ContentTitle from '@/components/content/ContentTitle';
 
 export default function ContentDetail() {
   return (
     <>
+      <PageHead title="Jeju All in One - 나만의 제주" />
+      
       <ContentTitle title="박지영님의 추억" />
       <section className="shadow-content my-20 px-32 py-20 gap-10 flex flex-col justify-center text-center items-center mx-[15%] min-h-full rounded-md">
         <h2 className="sr-only">콘텐츠 상세 페이지</h2>
@@ -57,7 +60,7 @@ export default function ContentDetail() {
         </div>
 
         {/* 댓글 달리는 영역 */}
-        <div className='w-full flex flex-col py-10 px-[15%]'>
+        <div className="w-full flex flex-col py-10 px-[15%]">
           <CommentItem />
         </div>
       </section>

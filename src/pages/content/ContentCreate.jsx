@@ -1,5 +1,6 @@
 import photo from '@/assets/image.svg';
 import right from '@/assets/right_white.svg';
+import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
 import TagSelect from '@/components/content/TagSelect';
 import { useRef, useState } from 'react';
@@ -24,6 +25,8 @@ export default function ContentCreate() {
 
   return (
     <>
+      <PageHead title="Jeju All in One - 나만의 제주" />
+
       <ContentTitle title="내 추억 등록하기" />
 
       <form

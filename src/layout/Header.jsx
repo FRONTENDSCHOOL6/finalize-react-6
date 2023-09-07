@@ -1,10 +1,26 @@
 import NavigationCenter from '@/components/header/NavigationCenter';
 import NavigationSide from '@/components/header/NavigationSide';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 export default function Header() {
+  const { pathname } = useLocation();
+  const [mainHeader, setMainHeader] = useState('');
+
+  useEffect(
+    () =>
+      pathname === '/'
+        ? setMainHeader('fixed w-full bg-white/50 z-10')
+        : setMainHeader(''),
+    [pathname]
+  );
+
   return (
-    <header className="h-24 flex flex-row items-center px-8 justify-between">
+    <header
+      className={`h-24 flex flex-row items-center px-8 justify-between min-w-[870px] ${mainHeader}`}
+    >
       <h1>
         <NavLink to="/">
           <img src="/logo.png" alt="로고" />
