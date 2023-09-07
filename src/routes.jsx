@@ -33,7 +33,7 @@ const router = createHashRouter(
         <Route index element={<Contents />} />
         <Route path="create" element={<ContentCreate />} />
         <Route path="edit" element={<ContentEdit />} />
-        <Route path="detail" element={<ContentDetail />} />
+        <Route path=":id" element={<ContentDetail />} />
       </Route>
     </Route>
   )
