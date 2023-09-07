@@ -2,6 +2,7 @@ import pb from '@/api/pocketbase';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import LinkItem from '@/components/LinkItem';
+import LoginPageContent from '@/components/LoginPageContent';
 import Logo from '@/components/Logo';
 import KakaoLogin from '@/components/login/KakaoLogin';
 import debounce from '@/utils/debounce';
@@ -65,7 +66,7 @@ export default function Login() {
       </Helmet>
 
       {/* 마크업 */}
-      <div className="flex flex-col items-center justify-center my-20">
+      <LoginPageContent>
         <Logo />
         <form className="flex flex-col gap-3" onSubmit={handleLogin}>
           <InputField
@@ -105,7 +106,7 @@ export default function Login() {
             회원가입 하기
           </LinkItem>
         </p>
-      </div>
+      </LoginPageContent>
     </>
   );
 }
