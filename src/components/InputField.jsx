@@ -1,9 +1,27 @@
-export default function InputField({ id, type, placeholder, srOnly='ture' }) {
+import { oneOf, string } from 'prop-types';
+import { useId } from 'react';
+
+export default function InputField({
+  name = null,
+  type = 'text',
+  placeholder,
+  ...restProps
+}) {
+  const id = useId();
 
   return (
     <>
-      <input type={type} id={id} name={id} placeholder={placeholder} className="w-[400px] px-5 py-3 border border-sand rounded-lg" />
-      <label htmlFor={id} className='sr-only'>{placeholder}</label>
+      <label htmlFor={id} className="sr-only">
+        {placeholder}
+      </label>
+      <input
+        type={type}
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        className="w-[400px] px-5 py-3 border border-sand rounded-lg"
+        {...restProps}
+      />
     </>
   );
 }
@@ -11,8 +29,27 @@ export default function InputField({ id, type, placeholder, srOnly='ture' }) {
 export function CheckField({ id, name, placeholder, className }) {
   return (
     <div className={className ? className : ''}>
-      <input type="checkbox" id={id} name={name} placeholder={placeholder} className="mr-2"  />
+      <input
+        type="checkbox"
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        className="mr-2"
+      />
       <label htmlFor={id}>{placeholder}</label>
     </div>
-  )
+  );
 }
+
+InputField.propTypes = {
+  type: oneOf(['text', 'password']),
+  name: string.isRequired,
+  placeholder: string.isRequired,
+};
+
+CheckField.propTypes = {
+  name: string.isRequired,
+  id: string.isRequired,
+  placeholder: string.isRequired,
+  className: string.isRequired,
+};
