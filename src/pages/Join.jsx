@@ -6,6 +6,8 @@ import Logo from '@/components/Logo';
 import PageHead from '@/components/PageHead';
 
 export default function Join() {
+  
+
   return (
     <>
       {/* 헤드 이름 */}
@@ -30,18 +32,27 @@ export default function Join() {
               placeholder="전체 약관 동의"
               className="w-[400px] px-5 py-4 bg-gray-200 rounded-md"
             />
-            <CheckField
-              id="checkUse"
-              name="checkUse"
-              placeholder="이용약관 동의"
-              className="pt-1 px-3"
-            />
-            <CheckField
-              id="checkPrivacy"
-              name="checkPrivacy"
-              placeholder="개인정보 수집 및 이용 동의"
-              className="px-3"
-            />
+            <div className="flex justify-between items-center px-3">
+              <CheckField
+                id="checkUse"
+                name="checkUse"
+                placeholder="이용약관 동의"
+                className="pt-1"
+              />
+              <button type="button" className="text-sm">
+                약관 보기 &#62;
+              </button>
+            </div>
+            <div className="flex justify-between items-center px-3">
+              <CheckField
+                id="checkPrivacy"
+                name="checkPrivacy"
+                placeholder="개인정보 수집 및 이용 동의"
+              />
+              <button type="button" className="text-sm">
+                약관 보기 &#62;
+              </button>
+            </div>
           </div>
           <Button>가입하기</Button>
         </form>
