@@ -1,6 +1,6 @@
 export default function GetTemperature() {
   return (
-    <table className="border-2 w-6/12 text-center text-xl">
+    <table className="border-2 w-1/2 text-center text-xl">
       <thead className="border-2">
         <tr>
           <th className="border-2 h-[50px]"></th>
