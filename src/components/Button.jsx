@@ -1,12 +1,9 @@
 export default function Button({
-  children,
-  onClick,
-  txtColor = 'white',
-  bgColor = 'bg-blue',
+  type, children, txtColor="white", bgColor="blue"
 }) {
   return (
     <button
-      // onClick={onClick}
+    type={type}
       className={`w-[400px] h-[50px] font-semibold text-${txtColor} ${bgColor} rounded-md`}
     >
       {children}
