@@ -4,7 +4,7 @@ import data from '@/data.json';
 export default function SelectLocation({ onCoordinatesChange }) {
   const [city, setCity] = useState('');
   const [sublocation, setSublocation] = useState('');
-  const [coordinates, setCoordinates] = useState({ x: null, y: null });
+  const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
 
   const handleCityChange = (e) => {
     setCity(e.target.value);
@@ -25,20 +25,18 @@ export default function SelectLocation({ onCoordinatesChange }) {
   };
 
   return (
-    <div className="h-[50px] leading-[50px]">
-      <span className="w-[100px] inline-flex text-xl">지역</span>
+    <div className="flex flex-row gap-x-10">
+      <p className="text-xl text-center">지역을 선택해주세요</p>
       <select name="city" className="mx-3" onChange={handleCityChange}>
-        <option value="">- 선택 -</option>
+        <option value="">- 1차 선택 -</option>
         {Object.keys(data).map((cityName) => (
           <option key={cityName} value={cityName}>
             {cityName}
           </option>
         ))}
       </select>
-
       <select name="sublocation" onChange={handleSublocationChange}>
-        <option value="">- 선택 -</option>
-
+        <option value="">- 2차 선택 -</option>
         {(data[city] || []).map((loc) => (
           <option key={loc.name} value={loc.name}>
             {loc.name}
