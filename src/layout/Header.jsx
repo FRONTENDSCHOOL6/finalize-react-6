@@ -31,7 +31,7 @@ export default function Header() {
         <NavLink to="content">
           <NavigationCenter menu="🍊 우리 제주" />
         </NavLink>
-        <NavLink to="content">
+        <NavLink to="content/create">
           <NavigationCenter menu="🏝️ 나만의 제주" />
         </NavLink>
         <NavLink to="weather">
