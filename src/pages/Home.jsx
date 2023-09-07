@@ -1,11 +1,16 @@
 import MainContent from '@/components/MainContent';
 import MainSlide from '@/components/MainSlide';
 import TitleButton from '@/components/TitleButton';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
     <>
+      <Helmet>
+        <title>Jeju - All in One</title>
+      </Helmet>
+
       <section>
         <h2 className="sr-only">제주도 소개 슬라이드</h2>
         <MainSlide src="/mainSlide1.jpg" alt="제주도 바다" />
