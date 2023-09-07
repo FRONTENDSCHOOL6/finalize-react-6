@@ -1,16 +1,49 @@
-export default function SelectLocation() {
+import { useState } from 'react';
+import data from '@/data.json';
+
+export default function SelectLocation({ onCoordinatesChange }) {
+  const [city, setCity] = useState('');
+  const [sublocation, setSublocation] = useState('');
+  const [coordinates, setCoordinates] = useState({ x: null, y: null });
+
+  const handleCityChange = (e) => {
+    setCity(e.target.value);
+    setSublocation(''); // city가 변경되면 sublocation 초기화
+    setCoordinates({ x: null, y: null }); // 좌표도 초기화
+  };
+
+  const handleSublocationChange = (e) => {
+    setSublocation(e.target.value);
+
+    // 해당 sublocation의 좌표 찾기
+    const locationData = data[city].find((loc) => loc.name === e.target.value);
+
+    if (locationData) {
+      setCoordinates({ x: locationData.x, y: locationData.y });
+      onCoordinatesChange({ x: locationData.x, y: locationData.y }); // 상위 컴포넌트로 좌표 전달
+    }
+  };
+
   return (
     <div className="h-[50px] leading-[50px]">
-      <span className="w-[100px] inline-flex text-2xl">지역</span>
-      <select name="location" className="mx-3">
+      <span className="w-[100px] inline-flex text-xl">지역</span>
+      <select name="city" className="mx-3" onChange={handleCityChange}>
         <option value="">- 선택 -</option>
-        <option value="제주시">제주시</option>
-        <option value="서귀포시">서귀포시</option>
+        {Object.keys(data).map((cityName) => (
+          <option key={cityName} value={cityName}>
+            {cityName}
+          </option>
+        ))}
       </select>
-      <select>
-        <option>- 선택 -</option>
-        <option>OO동</option>
-        <option>OO동</option>
+
+      <select name="sublocation" onChange={handleSublocationChange}>
+        <option value="">- 선택 -</option>
+
+        {(data[city] || []).map((loc) => (
+          <option key={loc.name} value={loc.name}>
+            {loc.name}
+          </option>
+        ))}
       </select>
     </div>
   );
