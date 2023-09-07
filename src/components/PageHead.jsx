@@ -1,3 +1,4 @@
+import { string } from "prop-types";
 import { Helmet } from "react-helmet-async";
 
 export default function PageHead({ title }) {
@@ -6,4 +7,8 @@ export default function PageHead({ title }) {
       <title>{title}</title>
     </Helmet>
   )
+}
+
+PageHead.PropTypes = {
+  title: string.isRequired
 }
