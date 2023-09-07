@@ -5,7 +5,7 @@ import GetWeather from '@/components/weather/GetWeather';
 
 export default function WeatherInfo() {
   const [data, setData] = useState([]);
-  const [coordinates, setCoordinates] = useState({ x: null, y: null });
+  const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
 
   useEffect(() => {
     if (!coordinates.x || !coordinates.y) return; // 만약 좌표가 없다면 API 호출을 중지
@@ -32,26 +32,33 @@ export default function WeatherInfo() {
       '2000',
       '2300',
     ];
-    let baseTime = '';
-    for (let i = 0; i < baseTimes.length; i++) {
-      if (hour < parseInt(baseTimes[i].slice(0, 2))) {
-        baseTime = baseTimes[i - 1];
-        break;
-      }
-    }
-    if (!baseTime) {
-      baseTime = '2300';
-    }
+    // let baseTime = '';
+    // for (let i = 0; i < baseTimes.length; i++) {
+    //   if (hour < parseInt(baseTimes[i].slice(0, 2))) {
+    //     baseTime = i !== 0 ? baseTimes[i - 1] : '2300'; // 첫 번째 요소일 경우 '2300'
+    //     break;
+    //   }
+    // }
+    // if (!baseTime) {
+    //   baseTime = '2300';
+    // }
+
+    const index = baseTimes.findIndex(
+      (time) => hour < parseInt(time.slice(0, 2))
+    );
+    let baseTime = index !== -1 ? baseTimes[index - 1] : '2300';
 
     async function fetchWeatherData() {
-      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=15&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
+      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=100&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
       try {
         const response = await fetch(url);
+        console.log(url);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         setData(data);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
