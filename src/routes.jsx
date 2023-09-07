@@ -12,6 +12,8 @@ const ContentEdit = lazy(() => import('./pages/content/ContentEdit'));
 const ContentDetail = lazy(() => import('./pages/content/ContentDetail'));
 const Join = lazy(() => import('./pages/Join'));
 const Login = lazy(() => import('./pages/Login'));
+const FindId = lazy(() => import('./pages/finduser/FindId'));
+const FindPw = lazy(() => import('./pages/finduser/FindPw'));
 const MyProfile = lazy(() => import('./pages/MyProfile'));
 const TrafficInfo = lazy(() => import('./pages/TrafficInfo'));
 const WeathertInfo = lazy(() => import('./pages/WeatherInfo'));
@@ -22,6 +24,8 @@ const router = createHashRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="join" element={<Join />} />
+      <Route path="findid" element={<FindId />} />
+      <Route path="findpw" element={<FindPw />} />
       <Route path="profile" element={<MyProfile />} />
       <Route path="traffic" element={<TrafficInfo />} />
       <Route path="weather" element={<WeathertInfo />} />
