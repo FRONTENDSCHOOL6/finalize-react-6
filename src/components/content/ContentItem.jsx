@@ -4,10 +4,10 @@ export default function ContentItem({ content }) {
   return (
     <Link to={`/content/${content}`}>
       <div className="relative">
-        <figure className="sm:w-full brightness-[0.85] relative">
+        <figure className="imageContainer brightness-[0.85] overflow-hidden">
           <img
-            className="object-cover w-full h-full "
-            src="/jejuImage1.jpg"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover w-full h-full"
+            src='./jejuImage1.jpg'
             alt="alt변수로"
           />
         </figure>

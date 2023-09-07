@@ -18,3 +18,26 @@ hr {
   padding-bottom: 4px;
   background-size: auto 4px;
 }
+
+.contentContainer {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  width: clamp(320px, 90vw, 920px);
+  /* margin-inline: auto; */
+  gap: 0.25rem;
+}
+
+@media (min-width: 62.5em /* 100px */) {
+  .contentContainer {
+    grid-template-columns: repeat(3, 1fr);
+    width: clamp(400px, 90vw, 1200px);
+    margin-inline: auto;
+  }
+}
+
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  height: 0 !important;
+  padding-bottom: 100%;
+}
