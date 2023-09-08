@@ -18,7 +18,7 @@ export default function WeatherTable({ data }) {
               })
               .slice(0, 8) // 8칸(24시간)만 랜더링
               .map((item) => {
-                const hour = item.fcstTime.slice(0, 2);
+                const hour = parseInt(item.fcstTime.slice(0, 2), 10);
                 const time = `${hour}시`;
                 return (
                   <th
