@@ -4,10 +4,11 @@ import InputField from '@/components/InputField';
 import LinkItem from '@/components/LinkItem';
 import LoginPageContent from '@/components/LoginPageContent';
 import Logo from '@/components/Logo';
+import PageHead from '@/components/PageHead';
 import KakaoLogin from '@/components/login/KakaoLogin';
+import { useAuthStore } from '@/store/useAuthStore';
 import debounce from '@/utils/debounce';
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Login() {
@@ -19,7 +20,10 @@ export default function Login() {
     password: '',
   });
 
-  const [isLogin, setIsLogin] = useState(null);
+  // empty, success, fail
+  const [isLogin, setIsLogin] = useState('empty');
+
+  const setUser = useAuthStore(state => state.setUser);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,21 +35,28 @@ export default function Login() {
         .collection('user')
         .authWithPassword(userId, password);
 
-      setIsLogin(true);
-      // 자동으로 localstorage에 저장
-      // const { nickname, email } = response.record;
-      // const userToken = response.token;
+      setIsLogin('success');
 
-      // sessionStorage.setItem('userToken', userToken);
+      const { nickname, email, username } = response.record;
+      const userToken = response.token;
+
+      setUser({
+        userId: username,
+        username: nickname,
+        email: email,
+        token: userToken
+      })
 
       if (!state) {
         navigate('/');
       } else {
         const { wishLocationPath } = state;
-        navigate(wishLocationPath === '/login' ? '/' : wishLocationPath, { replace: true });
+        navigate(wishLocationPath === '/login' ? '/' : wishLocationPath, {
+          replace: true,
+        });
       }
     } catch (error) {
-      setIsLogin(false);
+      setIsLogin('fail');
       console.log('로그인 실패\n', error);
     }
   };
@@ -60,10 +71,7 @@ export default function Login() {
 
   return (
     <>
-      {/* 헤드 이름 */}
-      <Helmet>
-        <title>Jeju All in One - 로그인 </title>
-      </Helmet>
+      <PageHead title="Jeju All in One - 로그인" />
 
       {/* 마크업 */}
       <LoginPageContent>
@@ -84,15 +92,15 @@ export default function Login() {
             onChange={handleInput}
           />
 
-          {isLogin === false ? (
+          {isLogin === 'fail' && (
             <div className="text-center text-red-600 my-2">
               아이디 혹은 비밀번호를 잘못 입력했습니다.
             </div>
-          ) : (
-            ''
           )}
 
-          <Button type="submit" txtColor="white" bgColor="bg-blue">로그인</Button>
+          <Button type="submit" txtColor="white" bgColor="bg-blue">
+            로그인
+          </Button>
           <KakaoLogin />
         </form>
         <div className="m-8">

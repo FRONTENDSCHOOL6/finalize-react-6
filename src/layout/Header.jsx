@@ -1,13 +1,15 @@
 import NavigationCenter from '@/components/header/NavigationCenter';
 import NavigationSide from '@/components/header/NavigationSide';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const { pathname } = useLocation();
   const [mainHeader, setMainHeader] = useState('');
+
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
   useEffect(
     () =>
@@ -42,16 +44,23 @@ export default function Header() {
         </NavLink>
       </ul>
       <ul className="flex flex-row items-center gap-5">
-        <NavLink to="login">
-          <NavigationSide menu="로그인" />
-        </NavLink>
-        <NavigationSide menu="로그아웃" />
-        <NavLink to="join">
-          <NavigationSide menu="회원가입" />
-        </NavLink>
-        <NavLink to="profile">
-          <NavigationSide menu="프로필" />
-        </NavLink>
+        {user && user.token ? (
+          <>
+            <NavLink to="profile">
+              <NavigationSide menu="프로필" />
+            </NavLink>
+            <NavigationSide menu="로그아웃" onClick={logout} />
+          </>
+        ) : (
+          <>
+            <NavLink to="login">
+              <NavigationSide menu="로그인" />
+            </NavLink>
+            <NavLink to="join">
+              <NavigationSide menu="회원가입" />
+            </NavLink>
+          </>
+        )}
       </ul>
     </header>
   );
