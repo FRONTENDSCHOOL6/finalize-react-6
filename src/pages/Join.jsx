@@ -17,7 +17,6 @@ export default function Join() {
       <LoginPageContent>
         <Logo />
         <form action="" className="flex flex-col gap-3 mb-5">
-          <InputField id="email" type="text" placeholder="이메일" />
           <InputField id="id" type="text" placeholder="아이디" />
           <InputField id="password" type="text" placeholder="비밀번호" />
           <InputField
@@ -25,6 +24,8 @@ export default function Join() {
             type="text"
             placeholder="비밀번호 확인"
           />
+          <InputField id="nickname" type="text" placeholder="닉네임" />
+          <InputField id="email" type="text" placeholder="이메일" />
           <div className="flex flex-col gap-2 my-3">
             <CheckField
               id="checkAll"
