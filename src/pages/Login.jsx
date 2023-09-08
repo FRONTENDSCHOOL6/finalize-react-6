@@ -6,9 +6,9 @@ import LoginPageContent from '@/components/LoginPageContent';
 import Logo from '@/components/Logo';
 import PageHead from '@/components/PageHead';
 import KakaoLogin from '@/components/login/KakaoLogin';
+import { useAuthStore } from '@/store/useAuthStore';
 import debounce from '@/utils/debounce';
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Login() {
@@ -23,6 +23,8 @@ export default function Login() {
   // empty, success, fail
   const [isLogin, setIsLogin] = useState('empty');
 
+  const setUser = useAuthStore(state => state.setUser);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -34,11 +36,16 @@ export default function Login() {
         .authWithPassword(userId, password);
 
       setIsLogin('success');
-      // 자동으로 localstorage에 저장
-      // const { nickname, email } = response.record;
-      // const userToken = response.token;
 
-      // sessionStorage.setItem('userToken', userToken);
+      const { nickname, email, username } = response.record;
+      const userToken = response.token;
+
+      setUser({
+        userId: username,
+        username: nickname,
+        email: email,
+        token: userToken
+      })
 
       if (!state) {
         navigate('/');
