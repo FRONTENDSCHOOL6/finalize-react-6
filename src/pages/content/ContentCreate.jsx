@@ -1,12 +1,23 @@
+import pb from '@/api/pocketbase';
 import photo from '@/assets/image.svg';
 import right from '@/assets/right_white.svg';
 import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
 import TagSelect from '@/components/content/TagSelect';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function ContentCreate() {
-  const [fileImages, setFileImages] = useState([]);
+  const navigate = useNavigate();
+
+  const [fileImages, setFileImages] = useState(null);
+
+  const formRef = useRef(null);
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
+  const locationRef = useRef(null);
+  const tagRef = useRef(null);
+  const photoRef = useRef(null);
 
   const handleFileUpload = (e) => {
     const { files } = e.target;
@@ -17,17 +28,38 @@ export default function ContentCreate() {
     setFileImages(fileImages);
   };
 
-  const formRef = useRef(null);
-
   const handleCreate = async (e) => {
     e.preventDefault();
+
+    const titleValue = titleRef.current.value;
+    const contentValue = contentRef.current.value;
+    const locationValue = locationRef.current.value;
+    const photoValue = photoRef.current.files;
+
+    console.log(titleValue, contentValue, locationValue, photoValue[0]);
+    const formData = new FormData();
+
+    formData.append('title', titleValue);
+    formData.append('content', contentValue);
+    formData.append('location', locationValue);
+    if (photoValue) {
+      formData.append('photo', photoValue[0]);
+    }
+    console.log(formData);
+
+    try {
+      await pb.collection('content').create(formData);
+      navigate('/content');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <>
       <PageHead title="Jeju All in One - 나만의 제주" />
 
-      <ContentTitle title="내 추억 등록하기" />
+      <ContentTitle title="제주, 나의 ⭐" />
 
       <form
         encType="multipart/form-data"
@@ -35,7 +67,7 @@ export default function ContentCreate() {
         onSubmit={handleCreate}
         className="flex flex-col gap-2 items-center"
       >
-        <div className="flex gap-10 mx-auto px-10 max-w-7xl my-32">
+        <div className="flex gap-10 mx-auto px-10 max-w-7xl mt-10 mb-32 min-w-[1000px]">
           {/* upload file */}
           <div className="relative w-[800px]">
             <label htmlFor="photo" className="sr-only">
@@ -46,22 +78,25 @@ export default function ContentCreate() {
               accept="*.jpg,*.png,*.jpeg,*.webp,*.avif"
               name="photo"
               id="photo"
+              ref={photoRef}
               onChange={handleFileUpload}
-              className="absolute z-10 w-full h-full opacity-0 cursor-pointer"
+              className="absolute w-full h-full opacity-0 cursor-pointer"
             />
-            <img
-              src={photo}
-              alt="photo"
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-            />
+            {!fileImages && (
+              <img
+                src={photo}
+                alt="photo"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+              />
+            )}
             <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100">
-              {fileImages.map((file) => {
+              {fileImages?.map((file) => {
                 return (
                   <img
                     key={file.label}
                     src={file.image}
                     alt={file.label}
-                    className="z-20 w-full max-h-[350px]"
+                    className="w-full max-h-[350px] my-auto"
                   />
                 );
               })}
@@ -78,6 +113,7 @@ export default function ContentCreate() {
                 id="title"
                 name="title"
                 placeholder="제목을 입력해주세요"
+                ref={titleRef}
                 className="w-full py-3 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
                 required
               />
@@ -91,6 +127,7 @@ export default function ContentCreate() {
                 id="content"
                 name="content"
                 placeholder="내용을 입력해주세요"
+                ref={contentRef}
                 className="w-full py-3 px-4 min-h-[100px] border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
                 required
               />
@@ -105,6 +142,7 @@ export default function ContentCreate() {
                 id="location"
                 name="location"
                 placeholder="위치 검색"
+                ref={locationRef}
                 className="w-full py-3 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
                 required
               />

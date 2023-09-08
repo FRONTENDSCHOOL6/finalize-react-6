@@ -1,11 +1,15 @@
 import more from '@/assets/more.svg';
 
-export default function CommentItem() {
+export default function CommentItem({
+  writer = '작성자',
+  comment = '댓글입니다',
+}) {
   return (
     <>
       <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4">
-        <div className="text-darkblue font-semibold">작성자</div>
-        <p className="grow text-start">댓글입니다.</p>
+        <span>⭐</span>
+        <div className="text-darkblue font-semibold">{writer}</div>
+        <p className="grow text-start">{comment}</p>
         <button className="">
           <img src={more} alt="more" />
         </button>
