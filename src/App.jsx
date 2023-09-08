@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Suspense } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ function App() {
           <ReactQueryDevtools />
         </QueryClientProvider>
       </HelmetProvider>
+      <Toaster />
     </>
   );
 }

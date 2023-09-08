@@ -4,6 +4,7 @@ import {
   createHashRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
+import ProtectRoute from './components/ProtectRoute';
 const RootLayout = lazy(() => import('./layout/RootLayout'));
 const Home = lazy(() => import('./pages/Home'));
 const Contents = lazy(() => import('./pages/Contents'));
@@ -30,8 +31,22 @@ const router = createHashRouter(
       <Route path="traffic" element={<TrafficInfo />} />
       <Route path="weather" element={<WeathertInfo />} />
       <Route path="content">
-        <Route index element={<Contents />} />
-        <Route path="create" element={<ContentCreate />} />
+        <Route
+          index
+          element={
+            <ProtectRoute>
+              <Contents />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="create"
+          element={
+            <ProtectRoute>
+              <ContentCreate />
+            </ProtectRoute>
+          }
+        />
         <Route path="edit" element={<ContentEdit />} />
         <Route path=":id" element={<ContentDetail />} />
       </Route>
