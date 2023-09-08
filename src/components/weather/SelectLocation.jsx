@@ -2,7 +2,10 @@ import { useState } from 'react';
 import data from '@/data.json';
 import PropTypes from 'prop-types';
 
-export default function SelectLocation({ onCoordinatesChange }) {
+export default function SelectLocation({
+  onCoordinatesChange,
+  onSublocationChange,
+}) {
   const [city, setCity] = useState('');
   const [sublocation, setSublocation] = useState('');
   const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
@@ -15,6 +18,7 @@ export default function SelectLocation({ onCoordinatesChange }) {
 
   const handleSublocationChange = (e) => {
     setSublocation(e.target.value);
+    onSublocationChange(e.target.value);
 
     // 해당 sublocation의 좌표 찾기
     const locationData = data[city].find((loc) => loc.name === e.target.value);
@@ -50,4 +54,5 @@ export default function SelectLocation({ onCoordinatesChange }) {
 
 SelectLocation.propTypes = {
   onCoordinatesChange: PropTypes.func,
+  onSublocationChange: PropTypes.func,
 };

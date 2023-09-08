@@ -2,10 +2,13 @@ import SelectLocation from '@/components/weather/SelectLocation';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import GetWeather from '@/components/weather/GetWeather';
+import WeatherTable2 from '@/components/weather/WeatherTable2';
 
 export default function WeatherInfo() {
   const [data, setData] = useState({});
   const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
+  const [sublocation, setSublocation] = useState('');
+  const [baseDate, setBaseDate] = useState(''); // baseDate 상태 추가
 
   useEffect(() => {
     const baseUrl =
@@ -53,7 +56,7 @@ export default function WeatherInfo() {
     }
 
     async function fetchWeatherData() {
-      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=300&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
+      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=1500&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
       try {
         const response = await fetch(url);
         // console.log(url);
@@ -62,6 +65,9 @@ export default function WeatherInfo() {
         }
         const data = await response.json();
         setData(data);
+        setBaseDate(baseDate); // baseDate 상태 업데이트
+
+        // setData({ ...data, baseDate });
         // console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -78,10 +84,16 @@ export default function WeatherInfo() {
       </Helmet>
       <h2 className="text-darkblue font-semibold text-4xl text-center my-10">
         제주 날씨
+        {sublocation && `(${sublocation})`}
       </h2>
       <div className="flex flex-col justify-center items-center gap-10">
-        <SelectLocation onCoordinatesChange={setCoordinates} />
+        <SelectLocation
+          onCoordinatesChange={setCoordinates}
+          onSublocationChange={setSublocation}
+        />
         <GetWeather data={data} />
+        {/* <WeatherTable2 data={data} baseDate={baseDate}/> */}
+        <WeatherTable2 coordinates={coordinates} baseDate={baseDate} />
       </div>
     </div>
   );
