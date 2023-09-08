@@ -1,44 +1,51 @@
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getPbImageURL } from '@/utils';
 import PageHead from '@/components/PageHead';
 import CommentItem from '@/components/content/CommentItem';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import pb from '@/api/pocketbase';
-import { useRef } from 'react';
-import { useState } from 'react';
-import { getPbImageURL } from '@/utils';
 
 export default function ContentDetail() {
   const { id } = useParams();
-  const contentRef = useRef(null);
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [photo, setPhoto] = useState();
   const [tag, setTag] = useState();
+  const [comment, setComment] = useState([]);
 
   useEffect(() => {
     async function getProduct() {
       try {
-        const product = await pb.collection('content').getOne(id);
-        const { title, content, tag, commentId } = product;
+        const product = await pb
+          .collection('content')
+          .getOne(
+            id,
+            { expand: 'commentId,commentId.userId' },
+            { requestKey: 'string' }
+          );
+
+        const { title, content, tag, expand } = product;
         setPhoto(getPbImageURL(product, 'photo'));
         setContent(content);
         setTag(tag);
         setTitle(title);
+        setComment(expand.commentId);
+
+        pb.autoCancellation(false);
       } catch (error) {
         console.error(error);
       }
     }
 
     getProduct();
-  }, [id, setContent]);
+  }, []);
 
   return (
     <>
       <PageHead title="Jeju All in One - 나만의 제주" />
 
-      {/* <ContentTitle title="박지영님의 추억" /> */}
-      <section className="shadow-content mt-5 mb-20 px-32 py-20 gap-5 flex flex-col items-center mx-[15%] min-h-full rounded-md">
-        {/* <h2 className="text-xl font-bold text-darkblue">{title}</h2> */}
+      <section className="shadow-content mt-5 mb-20 px-20 py-20 gap-5 flex flex-col items-center mx-[15%] min-h-full rounded-md">
+        <h2 className="sr-only">{title}</h2>
 
         {/* 사진 */}
         <article className="min-w-[400px] ">
@@ -56,19 +63,16 @@ export default function ContentDetail() {
         </div>
         {/* 내용 */}
         {/* <article>{title}</article> */}
-        <article
-          ref={contentRef}
-          className="w-full py-2 px-4 rounded-md border border-gray-500"
-        >
+        <article className="w-full py-2 px-4 rounded-md border border-gray-500">
           <p className="pb-2 font-bold">{title}</p>
           {content}
         </article>
       </section>
 
-      <hr className="hr h-2 border-2 my-10" />
+      <hr className="hr h-2 border-2" />
 
       {/* comment */}
-      <section className="my-10 py-20 flex flex-col justify-center text-center items-center mx-auto min-h-full max-w-[1200px]">
+      <section className="mb-10 py-20 flex flex-col justify-center text-center items-center mx-auto min-h-full max-w-[1200px]">
         {/* 댓글 등록 */}
         <div className="w-full flex flex-row gap-4 justify-between items-center px-[15%]">
           <div className="grow w-full">
@@ -93,7 +97,16 @@ export default function ContentDetail() {
 
         {/* 댓글 달리는 영역 */}
         <div className="w-full flex flex-col py-10 px-[15%]">
-          <CommentItem />
+          {/* <CommentItem /> */}
+          {comment?.map((item) => {
+            return (
+              <CommentItem
+                key={item.id}
+                writer={item.expand.userId.nickname}
+                comment={item.comment}
+              />
+            );
+          })}
         </div>
       </section>
     </>
