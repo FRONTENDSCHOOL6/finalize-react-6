@@ -30,7 +30,7 @@ export default function OnedayWeather({ data, category, text }) {
             } else if (result === 1) {
               displayValue = '비';
             } else if (result === 2) {
-              displayValue = '비와 눈';
+              displayValue = '비 또는 눈';
             } else if (result === 3) {
               displayValue = '눈';
             } else if (result === 4) {

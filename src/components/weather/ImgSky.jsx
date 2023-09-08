@@ -36,8 +36,8 @@ export default function ImgSky({ data }) {
     rainText = '비';
   } else if (rain === 2) {
     rainSrc = '/weather/snow.svg';
-    rainAlt = '비와 눈';
-    rainText = '비와 눈';
+    rainAlt = '비 또는 눈';
+    rainText = '비 또는 눈';
   } else if (rain === 3) {
     rainSrc = '/weather/snow.svg';
     rainAlt = '눈';
