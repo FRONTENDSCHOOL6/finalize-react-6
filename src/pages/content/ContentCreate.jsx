@@ -3,20 +3,23 @@ import photo from '@/assets/image.svg';
 import right from '@/assets/right_white.svg';
 import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
-import TagSelect from '@/components/content/TagSelect';
+import { colorStyles } from '@/components/content/TagSelect';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { colourOptions } from '@/components/content/data/data';
+import Select from 'react-select';
+import Map from '@/components/Map';
 
 export default function ContentCreate() {
   const navigate = useNavigate();
 
   const [fileImages, setFileImages] = useState(null);
+  const [tag, setTag] = useState();
+  const [location, setLocation] = useState();
 
   const formRef = useRef(null);
   const titleRef = useRef(null);
   const contentRef = useRef(null);
-  const locationRef = useRef(null);
-  const tagRef = useRef(null);
   const photoRef = useRef(null);
 
   const handleFileUpload = (e) => {
@@ -33,19 +36,20 @@ export default function ContentCreate() {
 
     const titleValue = titleRef.current.value;
     const contentValue = contentRef.current.value;
-    const locationValue = locationRef.current.value;
+    // const locationValue = locationRef.current.value;
+    // const tagValue = tagRef.current.value;
     const photoValue = photoRef.current.files;
 
-    console.log(titleValue, contentValue, locationValue, photoValue[0]);
+    console.log(location);
     const formData = new FormData();
 
     formData.append('title', titleValue);
     formData.append('content', contentValue);
-    formData.append('location', locationValue);
+    formData.append('location', location);
+    formData.append('tag', tag);
     if (photoValue) {
       formData.append('photo', photoValue[0]);
     }
-    console.log(formData);
 
     try {
       await pb.collection('content').create(formData);
@@ -53,6 +57,11 @@ export default function ContentCreate() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleTypeSelect = (e) => {
+    setTag(e.value);
+    console.log(e, e.value, tag);
   };
 
   return (
@@ -133,7 +142,7 @@ export default function ContentCreate() {
               />
             </div>
             {/* input 버튼 클릭이나 클릭이 이루어지면 위치 검색 모달 띄우기 */}
-            <div className="w-full relative">
+            {/* <div className="w-full relative">
               <label htmlFor="location" className="sr-only">
                 위치 검색
               </label>
@@ -146,12 +155,28 @@ export default function ContentCreate() {
                 className="w-full py-3 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
                 required
               />
-              <button className="bg-lightblue p-2 rounded-md absolute right-2 top-[50%] -translate-y-[50%] hover:bg-blue">
+              <button
+                type="button"
+                className="bg-lightblue p-2 rounded-md absolute right-2 top-[50%] -translate-y-[50%] hover:bg-blue"
+              >
                 <img src={right} alt="search" />
               </button>
-            </div>
+            </div> */}
+            <Map location={location} setLocation={setLocation} />
 
-            <TagSelect />
+            {/* <TagSelect /> */}
+            <Select
+              closeMenuOnSelect={false}
+              // isMulti
+              // defaultValue={[colourOptions[0]]}
+              options={colourOptions}
+              styles={colorStyles}
+              // ref={tagRef}
+              onChange={handleTypeSelect}
+              value={colourOptions.filter(function (option) {
+                return option.value === tag;
+              })}
+            />
             <button
               type="submit"
               className="text-white font-bold bg-lightblue px-4 py-3 rounded-md hover:bg-blue"
