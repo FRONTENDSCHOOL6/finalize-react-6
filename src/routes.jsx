@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import {
   Route,
-  createHashRouter,
+  createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import ProtectRoute from './components/ProtectRoute';
@@ -19,7 +19,7 @@ const MyProfile = lazy(() => import('./pages/MyProfile'));
 const TrafficInfo = lazy(() => import('./pages/TrafficInfo'));
 const WeathertInfo = lazy(() => import('./pages/WeatherInfo'));
 
-const router = createHashRouter(
+const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
@@ -51,7 +51,7 @@ const router = createHashRouter(
         <Route path=":id" element={<ContentDetail />} />
       </Route>
     </Route>
-  )
+  ), {basename: `/`}
 );
 
 export default router;
