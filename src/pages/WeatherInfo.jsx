@@ -4,12 +4,10 @@ import { Helmet } from 'react-helmet-async';
 import GetWeather from '@/components/weather/GetWeather';
 
 export default function WeatherInfo() {
-  const [data, setData] = useState([]);
-  const [coordinates, setCoordinates] = useState({ x: null, y: null });
+  const [data, setData] = useState({});
+  const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
 
   useEffect(() => {
-    if (!coordinates.x || !coordinates.y) return; // 만약 좌표가 없다면 API 호출을 중지
-
     const baseUrl =
       'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst';
     const serviceKey = import.meta.env.VITE_WEATHER_API_KEY;
@@ -19,7 +17,7 @@ export default function WeatherInfo() {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
-    const baseDate = `${year}${month}${day}`;
+    let baseDate = `${year}${month}${day}`;
     // 시간
     const hour = today.getHours();
     const baseTimes = [
@@ -32,26 +30,39 @@ export default function WeatherInfo() {
       '2000',
       '2300',
     ];
-    let baseTime = '';
-    for (let i = 0; i < baseTimes.length; i++) {
-      if (hour < parseInt(baseTimes[i].slice(0, 2))) {
-        baseTime = baseTimes[i - 1];
-        break;
-      }
-    }
-    if (!baseTime) {
+
+    let baseTime;
+
+    if (hour < 2) {
+      // 자정 이전인 경우 전날의 시간으로 설정
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const prevDayYear = yesterday.getFullYear();
+      const prevDayMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
+      const prevDayDate = String(yesterday.getDate()).padStart(2, '0');
+
+      baseDate = `${prevDayYear}${prevDayMonth}${prevDayDate}`;
+
       baseTime = '2300';
+    } else {
+      // 현재 시간 기준으로 가장 가까운 시간 찾기
+      const index = baseTimes.findIndex(
+        (time) => hour < parseInt(time.slice(0, 2))
+      );
+      baseTime = index !== -1 ? baseTimes[index - 1] : '2300';
     }
 
     async function fetchWeatherData() {
-      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=15&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
+      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=300&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
       try {
         const response = await fetch(url);
+        // console.log(url);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         setData(data);
+        // console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
