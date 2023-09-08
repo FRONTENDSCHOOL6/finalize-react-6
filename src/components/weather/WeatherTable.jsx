@@ -58,7 +58,7 @@ export default function WeatherTable({ data }) {
           </tr>
         </tbody>
       </table>
-      <span className="w-2/3 text-right">
+      <span className="w-2/3 text-right mt-[-30px]">
         풍속: 4미만(약함), 4이상 9미만(약간 강함), 9이상 14미만(강함),
         14이상(매우강함)
       </span>

@@ -6,6 +6,7 @@ import GetWeather from '@/components/weather/GetWeather';
 export default function WeatherInfo() {
   const [data, setData] = useState({});
   const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
+  const [sublocation, setSublocation] = useState('');
 
   useEffect(() => {
     const baseUrl =
@@ -53,10 +54,10 @@ export default function WeatherInfo() {
     }
 
     async function fetchWeatherData() {
-      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=300&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
+      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=773&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
       try {
         const response = await fetch(url);
-        // console.log(url);
+        console.log(url);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -78,9 +79,13 @@ export default function WeatherInfo() {
       </Helmet>
       <h2 className="text-darkblue font-semibold text-4xl text-center my-10">
         제주 날씨
+        {sublocation && `(${sublocation})`}
       </h2>
       <div className="flex flex-col justify-center items-center gap-10">
-        <SelectLocation onCoordinatesChange={setCoordinates} />
+        <SelectLocation
+          onCoordinatesChange={setCoordinates}
+          onSublocationChange={setSublocation}
+        />
         <GetWeather data={data} />
       </div>
     </div>
