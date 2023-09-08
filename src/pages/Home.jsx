@@ -13,7 +13,7 @@ export default function Home() {
 
       <section>
         <h2 className="sr-only">제주도 소개 슬라이드</h2>
-        <MainSlide src="/mainSlide1.jpg" alt="제주도 바다" />
+        <MainSlide />
       </section>
 
       <section className="m-10">
