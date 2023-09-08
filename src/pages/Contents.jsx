@@ -20,7 +20,6 @@ export default function Contents() {
     fetchContents
   );
 
-  console.log(data);
   if (isLoading) {
     return <div className="grid place-content-center h-full">로딩 중</div>;
   }

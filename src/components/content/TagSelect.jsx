@@ -1,9 +1,11 @@
 import chroma from 'chroma-js';
-import { colourOptions } from './data/data';
-import Select from 'react-select';
 
-const colorStyles = {
-  control: (styles) => ({ ...styles, padding: '4px 0', backgroundColor: 'white' }),
+export const colorStyles = {
+  control: (styles) => ({
+    ...styles,
+    padding: '4px 0',
+    backgroundColor: 'white',
+  }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     const color = chroma(data.color);
     return {
@@ -54,15 +56,3 @@ const colorStyles = {
     },
   }),
 };
-
-export default function TagSelect() {
-  return (
-    <Select
-      closeMenuOnSelect={false}
-      isMulti
-      defaultValue={[colourOptions[0]]}
-      options={colourOptions}
-      styles={colorStyles}
-    />
-  );
-}
