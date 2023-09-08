@@ -10,14 +10,14 @@ import { create } from 'zustand';
 // 상태를 수정할 수 있는 action을 같은 스토어 내에서 정의
 
 const userInitState = {
-  username: '',
-  userId: '',
-  token: '',
-  email: '',
+  username: null,
+  userId: null,
+  token: null,
+  email: null,
 };
 
 export const useAuthStore = create((set) => ({
-  user: null,
+  user: userInitState,
 
   setUser: (user) => {
     set({ user: user });
