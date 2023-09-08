@@ -29,9 +29,7 @@ export default function ContentDetail() {
         setContent(content);
         setTag(tag);
         setTitle(title);
-        setComment(expand.commentId);
-
-        pb.autoCancellation(false);
+        if (expand.commentId) setComment(expand.commentId);
       } catch (error) {
         console.error(error);
       }
