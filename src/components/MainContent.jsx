@@ -13,11 +13,28 @@ export default function MainContent({ src, alt, title }) {
     async function getContentList() {
       try {
         setStatus('loading');
-        const contentList = await pb.collection('content').getList(1, 3);
-        console.log('contentList:', contentList);
-        setData(contentList);
+        const contentList = await pb.collection('content').getFullList({
+          expand: 'comment',
+        });
+
+        // 댓글이 있는 항목만 선택
+        const commentList = contentList.filter(
+          (item) => item.commentId.length > 0
+        );
+
+        // 댓글 수에 따라 내림차순으로 정렬
+        const sortedList = commentList.sort(
+          (a, b) => b.commentId.length - a.commentId.length
+        );
+
+        // 처음 9개 요소만 선택
+        const nineItems = sortedList.slice(0, 9);
+
+        console.log('nineItems:', nineItems);
+        // setData(contentList);
+        setData(nineItems);
         setStatus('success');
-        setTotalItems(contentList.totalItems); // API 응답에서 total 값 업데이트
+        // setTotalItems(contentList.totalItems); // API 응답에서 total 값 업데이트
       } catch (error) {
         setStatus('error');
       }
@@ -28,7 +45,7 @@ export default function MainContent({ src, alt, title }) {
 
   return (
     <>
-      {data?.items?.map((item) => (
+      {data?.map((item) => (
         <li
           key={item.id}
           className="w-1/3 border-2 border-slate-300 border-solid rounded"
