@@ -55,7 +55,7 @@ export default function Home() {
 
       <section className="m-10">
         <TitleButton title="우리의 제주의 별" link="content" />
-        <MainTag data={data} onTagClick={setSelectedTag} />
+        <MainTag data={data} onTagClick={setSelectedTag} setPage={setPage} />
         <ul className="flex grow gap-5">
           <MainContent page={page} data={filteredData} />
         </ul>

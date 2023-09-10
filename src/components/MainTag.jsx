@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function MainTag({ data, onTagClick }) {
+export default function MainTag({ data, onTagClick, setPage }) {
   const tags = data.map((item) => item.tag);
 
   // Count tag occurrences
@@ -26,13 +26,22 @@ export default function MainTag({ data, onTagClick }) {
             <li
               key={tag}
               className="cursor-pointer"
-              onClick={() => onTagClick(tag)}
+              onClick={() => {
+                onTagClick(tag);
+                setPage(1); // 페이지를 1로 설정
+              }}
             >
               {tag}
             </li>
           );
         })}
-        <li onClick={() => onTagClick(null)} className="cursor-pointer">
+        <li
+          onClick={() => {
+            onTagClick(null);
+            setPage(1); // 페이지를 1로 설정
+          }}
+          className="cursor-pointer"
+        >
           / All
         </li>
       </ul>
@@ -43,4 +52,5 @@ export default function MainTag({ data, onTagClick }) {
 MainTag.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   onTagClick: PropTypes.func,
+  setPage: PropTypes.func.isRequired,
 };
