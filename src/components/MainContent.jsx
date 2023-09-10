@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import pb from '@/api/pocketbase';
 import { useState, useEffect } from 'react';
 import { getPbImageURL } from '@/utils';
+import PropTypes from 'prop-types';
 
 export default function MainContent({ page }) {
   const [data, setData] = useState(null);
@@ -79,3 +80,7 @@ export default function MainContent({ page }) {
     </>
   );
 }
+
+MainContent.propTypes = {
+  page: PropTypes.number.isRequired,
+};
