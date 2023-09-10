@@ -3,11 +3,9 @@ import pb from '@/api/pocketbase';
 import { useState, useEffect } from 'react';
 import { getPbImageURL } from '@/utils';
 
-export default function MainContent({ src, alt, title }) {
+export default function MainContent({ page }) {
   const [data, setData] = useState(null);
   const [status, setStatus] = useState('pending');
-  const [page, setPage] = useState(1); // 현재 페이지 번호
-  // const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
     async function getContentList() {
@@ -38,14 +36,11 @@ export default function MainContent({ src, alt, title }) {
         const itemsPerPage = 3;
         const startIndex = (page - 1) * itemsPerPage; // 현재 페이지의 첫 번째 아이템 인덱스
         const endIndex = startIndex + itemsPerPage; // 현재 페이지의 마지막 아이템 인덱스
-
         const currentPageItems = nineItems.slice(startIndex, endIndex);
 
         console.log('currentPageItems:', currentPageItems);
-        // setData(contentList);
         setData(currentPageItems);
         setStatus('success');
-        // setTotalItems(contentList.totalItems); // API 응답에서 total 값 업데이트
       } catch (error) {
         setStatus('error');
       }
@@ -62,33 +57,20 @@ export default function MainContent({ src, alt, title }) {
           className="w-1/3 border-2 border-slate-300 border-solid rounded"
         >
           <NavLink to="/content">
-            <figure className="">
-              <img src={getPbImageURL(item, 'photo')} alt={item.tag} />
+            <figure className="relative h-64">
+              <img
+                src={getPbImageURL(item, 'photo')}
+                alt={item.tag}
+                className="absolute top-0 w-full h-4/5 object-cover"
+              />
 
-              <figcaption className="py-4 pl-4 overflow-hidden text-ellipsis whitespace-nowrap">
+              <figcaption className="absolute bottom-0 py-4 pl-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75">
                 {item.title}
               </figcaption>
             </figure>
           </NavLink>
         </li>
       ))}
-
-      {/* Pagination Controls */}
-      <button
-        onClick={() => setPage((prevPage) => prevPage - 1)}
-        disabled={page === 1}
-      >
-        Previous Page
-      </button>
-
-      <span>Page: {page}</span>
-
-      <button
-        onClick={() => setPage((prevPage) => prevPage + 1)}
-        disabled={page === 3}
-      >
-        Next Page
-      </button>
     </>
   );
 }
