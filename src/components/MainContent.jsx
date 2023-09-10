@@ -56,14 +56,13 @@ export default function MainContent({ page }) {
           key={item.id}
           className="w-1/3 border-2 border-slate-300 border-solid rounded"
         >
-          <NavLink to="/content">
+          <NavLink to={`/content/${item.id}`}>
             <figure className="relative h-64">
               <img
                 src={getPbImageURL(item, 'photo')}
                 alt={item.tag}
                 className="absolute top-0 w-full h-4/5 object-cover"
               />
-
               <figcaption className="absolute bottom-0 py-4 pl-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75">
                 {item.title}
               </figcaption>
