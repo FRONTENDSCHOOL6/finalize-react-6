@@ -63,8 +63,14 @@ export default function MainContent({ page }) {
                 alt={item.tag}
                 className="absolute top-0 w-full h-4/5 object-cover"
               />
-              <figcaption className="absolute bottom-0 py-4 pl-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75">
+              {/* <figcaption className="absolute bottom-0 py-4 pl-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75">
                 {item.title}
+              </figcaption> */}
+              <figcaption className="absolute bottom-0 py-4 px-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75 flex justify-content-between">
+                <div style={{ width: '80%' }}>{item.title}</div>
+                <span className="text-right" style={{ width: '20%' }}>
+                  ⭐️ {item.commentId.length}
+                </span>
               </figcaption>
             </figure>
           </NavLink>
