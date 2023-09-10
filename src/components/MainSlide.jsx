@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 export default function MainSlide() {
   const [slide, setSlide] = useState(0);
