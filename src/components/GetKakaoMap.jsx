@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 export default function GetKakaoMap() {
   const mapRef = useRef(null);
   const [keyword, setKeyword] = useState('');
-  const [markers, setMarkers] = useState([]); 
+  const [markers, setMarkers] = useState([]);
 
   // 카카오 맵 생성하기
   useEffect(() => {
@@ -33,17 +33,17 @@ export default function GetKakaoMap() {
   function searchPlaces() {
     if (!window.kakao || !window.kakao.maps || !mapRef.current) return;
 
-    var places = new window.kakao.maps.services.Places();
+    const places = new window.kakao.maps.services.Places();
 
     places.keywordSearch(keyword, function (result, status) {
       removeMarkers();
 
-      let tempMarkers = []; 
+      let tempMarkers = [];
 
       if (status === window.kakao.maps.services.Status.OK) {
         for (let i = 0; i < result.length; i++) {
           let markerInfo = displayMarker(result[i]);
-          tempMarkers.push(markerInfo); 
+          tempMarkers.push(markerInfo);
         }
 
         setMarkers(tempMarkers);
@@ -54,12 +54,12 @@ export default function GetKakaoMap() {
 
     // 화면에 마커 표시
     function displayMarker(place) {
-      var marker = new window.kakao.maps.Marker({
+      const marker = new window.kakao.maps.Marker({
         position: new window.kakao.maps.LatLng(place.y, place.x),
         map: mapRef.current,
       });
 
-      var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+      const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
       window.kakao.maps.event.addListener(marker, 'mouseover', function () {
         infowindow.setContent(
@@ -107,7 +107,7 @@ export default function GetKakaoMap() {
           onKeyPress={handleKeyPress}
         />
         <button
-          className="w-[70px] border-[3px] bg-blue text-white border-blue rounded-lg"
+          className="w-[70px] bg-blue text-white border-0 rounded-lg"
           onClick={searchPlaces}
         >
           검색
