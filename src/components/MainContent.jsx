@@ -1,58 +1,38 @@
 import { NavLink } from 'react-router-dom';
-import pb from '@/api/pocketbase';
-import { useState, useEffect } from 'react';
 import { getPbImageURL } from '@/utils';
 import PropTypes from 'prop-types';
 
-export default function MainContent({ page }) {
-  const [data, setData] = useState(null);
-  const [status, setStatus] = useState('pending');
+export default function MainContent({ page, data }) {
+  // console.log('data:', data);
 
-  useEffect(() => {
-    async function getContentList() {
-      try {
-        setStatus('loading');
-        const contentList = await pb.collection('content').getFullList({
-          expand: 'comment',
-        });
+  if (!data) {
+    return <div>Loading...</div>; // or return null;
+  }
 
-        // 댓글이 있는 항목만 선택
-        const commentList = contentList.filter(
-          (item) => item.commentId.length > 0
-        );
+  // 댓글이 있는 항목만 선택
+  const commentList = data?.filter((item) => item.commentId.length > 0) || [];
 
-        // 댓글 수에 따라 내림차순으로 정렬, 그리고 동일한 댓글 수의 경우 최신 순으로 정렬
-        const sortedList = commentList.sort((a, b) => {
-          if (b.commentId.length !== a.commentId.length) {
-            return b.commentId.length - a.commentId.length;
-          } else {
-            return new Date(b.created) - new Date(a.created);
-          }
-        });
-
-        // 처음 9개 요소만 선택
-        const nineItems = sortedList.slice(0, 9);
-
-        // 전체 아이템 목록에서 현재 페이지에 해당하는 부분만 추출
-        const itemsPerPage = 3;
-        const startIndex = (page - 1) * itemsPerPage; // 현재 페이지의 첫 번째 아이템 인덱스
-        const endIndex = startIndex + itemsPerPage; // 현재 페이지의 마지막 아이템 인덱스
-        const currentPageItems = nineItems.slice(startIndex, endIndex);
-
-        console.log('currentPageItems:', currentPageItems);
-        setData(currentPageItems);
-        setStatus('success');
-      } catch (error) {
-        setStatus('error');
-      }
+  // 댓글 수에 따라 내림차순으로 정렬, 그리고 동일한 댓글 수의 경우 최신 순으로 정렬
+  const sortedList = commentList.sort((a, b) => {
+    if (b.commentId.length !== a.commentId.length) {
+      return b.commentId.length - a.commentId.length;
+    } else {
+      return new Date(b.created) - new Date(a.created);
     }
+  });
 
-    getContentList();
-  }, [page]);
+  // 처음 9개 요소만 선택
+  const nineItems = sortedList.slice(0, 9);
+
+  // 전체 아이템 목록에서 현재 페이지에 해당하는 부분만 추출
+  const itemsPerPage = 3;
+  const startIndex = (page - 1) * itemsPerPage; // 현재 페이지의 첫 번째 아이템 인덱스
+  const endIndex = startIndex + itemsPerPage; // 현재 페이지의 마지막 아이템 인덱스
+  const currentPageItems = nineItems.slice(startIndex, endIndex);
 
   return (
     <>
-      {data?.map((item) => (
+      {currentPageItems?.map((item) => (
         <li
           key={item.id}
           className="w-1/3 border-2 border-slate-300 border-solid rounded"
@@ -83,4 +63,5 @@ export default function MainContent({ page }) {
 
 MainContent.propTypes = {
   page: PropTypes.number.isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

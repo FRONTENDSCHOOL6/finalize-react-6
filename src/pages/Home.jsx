@@ -1,12 +1,41 @@
+import pb from '@/api/pocketbase';
 import MainContent from '@/components/MainContent';
 import MainSlide from '@/components/MainSlide';
+import MainTag from '@/components/MainTag';
 import TitleButton from '@/components/TitleButton';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
   const [page, setPage] = useState(1);
+  const [data, setData] = useState(null);
+  const [status, setStatus] = useState('pending');
+
+  useEffect(() => {
+    async function getContentList() {
+      try {
+        setStatus('loading');
+        const contentList = await pb.collection('content').getFullList({
+          expand: 'comment',
+        });
+
+        console.log('contentList:', contentList);
+
+        setData(contentList);
+        setStatus('success');
+      } catch (error) {
+        setStatus('error');
+      }
+    }
+
+    getContentList();
+  }, [page]);
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -21,8 +50,9 @@ export default function Home() {
 
       <section className="m-10">
         <TitleButton title="우리의 제주의 별" link="content" />
+        <MainTag data={data} />
         <ul className="flex grow gap-5">
-          <MainContent page={page} />
+          <MainContent page={page} data={data} />
         </ul>
 
         {/* Pagination Controls */}
