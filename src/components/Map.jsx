@@ -1,11 +1,13 @@
-import { useState } from 'react';
 import { useEffect } from 'react';
 import '@/styles/map.css';
 
 const { kakao } = window;
 
-export default function Map({ location, setLocation }) {
-  useEffect(() => {
+export default function Map({ place, setPlace }) {
+  const { placeName, placeAddress } = place;
+  const { setPlaceName, setPlaceAddress } = setPlace;
+
+  function search() {
     // 마커를 담을 배열입니다
     var markers = [];
 
@@ -32,7 +34,7 @@ export default function Map({ location, setLocation }) {
       var keyword = document.getElementById('keyword').value;
 
       if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        alert('키워드를 입력해주세요!');
+        alert('키워드를 입력해주세요.');
         return false;
       }
 
@@ -48,7 +50,7 @@ export default function Map({ location, setLocation }) {
         displayPlaces(data);
 
         // 페이지 번호를 표출합니다
-        displayPagination(pagination);
+        // displayPagination(pagination);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert('검색 결과가 존재하지 않습니다.');
         return;
@@ -76,7 +78,8 @@ export default function Map({ location, setLocation }) {
         // 마커를 생성하고 지도에 표시합니다
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
           marker = addMarker(placePosition, i),
-          itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+          itemEl = getListItem(i, places[i]), // 검색 결과 항목 Element를 생성합니다
+          address = places[i].road_address_name;
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
@@ -85,13 +88,14 @@ export default function Map({ location, setLocation }) {
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
-        (function (marker, title) {
+        (function (marker, title, address) {
           kakao.maps.event.addListener(marker, 'mouseover', function () {
             displayInfowindow(marker, title);
           });
 
           kakao.maps.event.addListener(marker, 'click', function () {
-            setLocation(title);
+            setPlaceName(title);
+            setPlaceAddress(address);
           });
 
           kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -103,13 +107,14 @@ export default function Map({ location, setLocation }) {
           };
 
           itemEl.onclick = function () {
-            setLocation(title);
+            setPlaceName(title);
+            setPlaceAddress(address);
           };
 
           itemEl.onmouseout = function () {
             infowindow.close();
           };
-        })(marker, places[i].place_name);
+        })(marker, places[i].place_name, address);
 
         fragment.appendChild(itemEl);
       }
@@ -188,37 +193,6 @@ export default function Map({ location, setLocation }) {
       markers = [];
     }
 
-    // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
-    function displayPagination(pagination) {
-      var paginationEl = document.getElementById('pagination'),
-        fragment = document.createDocumentFragment(),
-        i;
-
-      // 기존에 추가된 페이지번호를 삭제합니다
-      while (paginationEl.hasChildNodes()) {
-        paginationEl.removeChild(paginationEl.lastChild);
-      }
-
-      for (i = 1; i <= pagination.last; i++) {
-        var el = document.createElement('a');
-        el.href = '#';
-        el.innerHTML = i;
-
-        if (i === pagination.current) {
-          el.className = 'on';
-        } else {
-          el.onclick = (function (i) {
-            return function () {
-              pagination.gotoPage(i);
-            };
-          })(i);
-        }
-
-        fragment.appendChild(el);
-      }
-      paginationEl.appendChild(fragment);
-    }
-
     // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
     // 인포윈도우에 장소명을 표시합니다
     function displayInfowindow(marker, title) {
@@ -234,14 +208,10 @@ export default function Map({ location, setLocation }) {
         el.removeChild(el.lastChild);
       }
     }
-    // var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-    // var options = {
-    //   //지도를 생성할 때 필요한 기본 옵션
-    //   center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-    //   level: 3, //지도의 레벨(확대, 축소 정도)
-    // };
+  }
 
-    // var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+  useEffect(() => {
+    search();
   });
 
   return (
@@ -250,22 +220,28 @@ export default function Map({ location, setLocation }) {
       <div id="menu_wrap" className="bg-white">
         <div className="option">
           <div>
-            <form onSubmit="searchPlaces(); return false;">
+            <form onSubmit={search} className="flex">
               <input
                 type="text"
-                defaultValue="제주도 맛집"
-                className="w-full h-full"
+                defaultValue="제주국제공항"
+                className="w-full h-full bg-slate-400/30 font-bold p-2"
                 id="keyword"
                 size="15"
               />
-              <button type="submit">검색하기</button>
+              <button
+                type="submit"
+                className="w-1/3 bg-lightblue p-2 rounded-md text-gray-200 hover:bg-blue"
+              >
+                검색
+              </button>
             </form>
           </div>
         </div>
-        <p>{location}</p>
+        <p className="p-2 pb-0 font-extrabold">장소 : {placeName}</p>
+        <p className="p-2 font-extrabold">주소 : {placeAddress}</p>
         <hr />
         <ul id="placesList"></ul>
-        <div id="pagination"></div>
+        {/* <div id="pagination"></div> */}
       </div>
     </div>
   );
