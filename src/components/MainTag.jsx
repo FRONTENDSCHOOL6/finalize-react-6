@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function MainTag({ data }) {
-  console.log('MTdata:', data);
-
+export default function MainTag({ data, onTagClick }) {
   const tags = data.map((item) => item.tag);
 
   // Count tag occurrences
@@ -14,23 +12,35 @@ export default function MainTag({ data }) {
     return counts;
   }, {});
 
-  // Convert the object to an array of [tag, count] pairs
+  // 객체를 배열로 변환[tag, count]
   const sortedTag = Object.entries(tagCounts).slice(0, 5);
-
-  // Sort the array by count in descending order
   sortedTag.sort((a, b) => b[1] - a[1]);
-
-  // Extract the tags from the sorted pairs
   const sortedTags = sortedTag.map((pair) => pair[0]);
 
-  // Join the tags into a string, separated by spaces
-  const popularTags = sortedTags.join(' ');
-
-  console.log('sortedTag:', sortedTag);
-
-  return <div>인기태그: {popularTags}</div>;
+  return (
+    <>
+      <ul className="flex flex-row justify-center items-center gap-2 pb-3">
+        인기태그 :
+        {sortedTags.map((tag) => {
+          return (
+            <li
+              key={tag}
+              className="cursor-pointer"
+              onClick={() => onTagClick(tag)}
+            >
+              {tag}
+            </li>
+          );
+        })}
+        <li onClick={() => onTagClick(null)} className="cursor-pointer">
+          / All
+        </li>
+      </ul>
+    </>
+  );
 }
 
 MainTag.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onTagClick: PropTypes.func,
 };

@@ -12,6 +12,7 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [data, setData] = useState(null);
   const [status, setStatus] = useState('pending');
+  const [selectedTag, setSelectedTag] = useState(null);
 
   useEffect(() => {
     async function getContentList() {
@@ -37,6 +38,10 @@ export default function Home() {
     return <div>Loading...</div>;
   }
 
+  const filteredData = selectedTag
+    ? data.filter((item) => item.tag === selectedTag)
+    : data;
+
   return (
     <>
       <Helmet>
@@ -50,9 +55,9 @@ export default function Home() {
 
       <section className="m-10">
         <TitleButton title="우리의 제주의 별" link="content" />
-        <MainTag data={data} />
+        <MainTag data={data} onTagClick={setSelectedTag} />
         <ul className="flex grow gap-5">
-          <MainContent page={page} data={data} />
+          <MainContent page={page} data={filteredData} />
         </ul>
 
         {/* Pagination Controls */}

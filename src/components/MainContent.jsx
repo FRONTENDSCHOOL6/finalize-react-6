@@ -3,10 +3,8 @@ import { getPbImageURL } from '@/utils';
 import PropTypes from 'prop-types';
 
 export default function MainContent({ page, data }) {
-  // console.log('data:', data);
-
   if (!data) {
-    return <div>Loading...</div>; // or return null;
+    return <div>Loading...</div>;
   }
 
   // 댓글이 있는 항목만 선택
