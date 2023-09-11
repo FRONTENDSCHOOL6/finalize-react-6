@@ -92,7 +92,7 @@ export default function GetKakaoMap() {
   }
 
   return (
-    <div className="mb-10 relative border-4 border-blue w-[75rem] h-[900px]">
+    <div className="mb-10 relative border-4 border-blue w-[80%] h-[900px]">
       <div id="mapContainer" className="w-full h-full relative">
         <div id="map" className="w-full h-full" />
       </div>
