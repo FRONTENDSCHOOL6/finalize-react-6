@@ -73,12 +73,21 @@ export default function WeatherInfo() {
   return (
     <>
       <PageHead title={'Jeju All in One - 제주 날씨'} />
-      <div className="py-2 mt-5">
-        <h2 className="text-blue font-semibold text-4xl text-center my-10">
+      <div className="py-2 mt-5 mb-10">
+        <h2 className="text-blue font-semibold text-4xl text-center">
           제주 날씨
-          {sublocation && `(${sublocation})`}
+          {/* {sublocation && `(${sublocation})`} */}
         </h2>
         <div className="flex flex-col justify-center items-center gap-10">
+          <div>
+            {!sublocation && (
+              <p className="mt-10 font-medium text-xl">제주시 용담동</p>
+            )}
+            {sublocation && (
+              <p className="mt-10 font-medium text-xl">{sublocation}</p>
+            )}
+          </div>
+          <hr className="w-full" />
           <SelectLocation
             onCoordinatesChange={setCoordinates}
             onSublocationChange={setSublocation}
