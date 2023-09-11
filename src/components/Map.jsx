@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import '@/styles/map.css';
+import { forwardRef } from 'react';
 
 const { kakao } = window;
 
-export default function Map({ place, setPlace }) {
-  const { placeName, placeAddress } = place;
-  const { setPlaceName, setPlaceAddress } = setPlace;
+export const Map = forwardRef(function Map({ place, setPlace }, ref) {
+  // const { placeName, placeAddress } = place;
+  // const { setPlaceName, setPlaceAddress } = setPlace;
+  // console.log(ref.placeAddressRef.current);
 
   function search() {
     // 마커를 담을 배열입니다
@@ -94,8 +96,11 @@ export default function Map({ place, setPlace }) {
           });
 
           kakao.maps.event.addListener(marker, 'click', function () {
-            setPlaceName(title);
-            setPlaceAddress(address);
+            ref.placeNameRef.current = title;
+            ref.placeAddressRef.current = address;
+            // console.log(ref.placeNameRef.current, ref.placeAddressRef.current);
+            // setPlaceName(title);
+            // setPlaceAddress(address);
           });
 
           kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -107,8 +112,10 @@ export default function Map({ place, setPlace }) {
           };
 
           itemEl.onclick = function () {
-            setPlaceName(title);
-            setPlaceAddress(address);
+            ref.placeNameRef.current = title;
+            ref.placeAddressRef.current = address;
+            // setPlaceName(title);
+            // setPlaceAddress(address);
           };
 
           itemEl.onmouseout = function () {
@@ -237,12 +244,16 @@ export default function Map({ place, setPlace }) {
             </form>
           </div>
         </div>
-        <p className="p-2 pb-0 font-extrabold">장소 : {placeName}</p>
-        <p className="p-2 font-extrabold">주소 : {placeAddress}</p>
+        <p className="p-2 pb-0 font-extrabold">
+          장소 : {ref.placeNameRef.current}
+        </p>
+        <p className="p-2 font-extrabold">
+          주소 : {ref.placeAddressRef.current}
+        </p>
         <hr />
         <ul id="placesList"></ul>
         {/* <div id="pagination"></div> */}
       </div>
     </div>
   );
-}
+});
