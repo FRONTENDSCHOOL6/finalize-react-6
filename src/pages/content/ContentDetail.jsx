@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getPbImageURL } from '@/utils';
 import PageHead from '@/components/PageHead';
 import CommentItem from '@/components/content/CommentItem';
@@ -34,7 +34,7 @@ export default function ContentDetail() {
         setTitle(title);
         setLocation(location);
         setAddress(address);
-        if (expand.commentId) setComment(expand.commentId);
+        if (expand) setComment(expand.commentId);
       } catch (error) {
         console.error(error);
       }
@@ -53,13 +53,7 @@ export default function ContentDetail() {
         <article className="min-w-[400px] ">
           <img src={photo} alt={title} className="w-full h-full object-cover" />
         </article>
-        {/* <div className="flex gap-5 w-4/5">
-          <article className="w-full py-2 px-4 rounded-md border text-center border-gray-500">
-            {tag}
-          </article>
-        </div> */}
         {/* 내용 */}
-        {/* <article>{title}</article> */}
         <article className="w-full py-2 px-4 rounded-md border border-gray-500">
           <p className="pb-2 font-bold flex justify-between">
             {title}
@@ -67,17 +61,17 @@ export default function ContentDetail() {
           </p>
           {content}
         </article>
-        {/* 위치 */}
-        {/* <article className="w-full py-2 px-4 rounded-md border text-center border-gray-500">
-          {location}
-        </article> */}
-        <ShowMap address={address} location={location} />
+        <Link to="/content/edit" className="ml-auto">
+          <button className="bg-blue text-white py-2 px-4 rounded-lg">
+            수정
+          </button>
+        </Link>
       </section>
 
       <hr className="hr h-2 border-2" />
 
       {/* comment */}
-      <section className="mb-10 py-20 flex flex-col justify-center text-center items-center mx-auto min-h-full max-w-[1200px]">
+      <section className="py-20 flex flex-col justify-center text-center items-center mx-auto min-h-full max-w-[1200px]">
         {/* 댓글 등록 */}
         <div className="w-full flex flex-row gap-4 justify-between items-center px-[15%]">
           <div className="grow w-full">
@@ -101,19 +95,23 @@ export default function ContentDetail() {
         </div>
 
         {/* 댓글 달리는 영역 */}
-        <div className="w-full flex flex-col py-10 px-[15%]">
-          {/* <CommentItem /> */}
-          {comment?.map((item) => {
-            return (
-              <CommentItem
-                key={item.id}
-                writer={item.expand.userId.nickname}
-                comment={item.comment}
-              />
-            );
-          })}
-        </div>
+        {comment.length !== 0 && (
+          <div className="w-full flex flex-col pt-10 px-[15%]">
+            {/* <CommentItem /> */}
+            {comment?.map((item) => {
+              return (
+                <CommentItem
+                  key={item.id}
+                  writer={item.expand.userId.nickname}
+                  comment={item.comment}
+                />
+              );
+            })}
+          </div>
+        )}
       </section>
+      <hr />
+      <ShowMap address={address} location={location} />
     </>
   );
 }
