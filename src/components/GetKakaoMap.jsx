@@ -10,8 +10,8 @@ export default function GetKakaoMap() {
     if (window.kakao && window.kakao.maps) {
       const container = document.getElementById('mapContainer');
       const options = {
-        center: new window.kakao.maps.LatLng(33.3846, 126.5535),
-        level: 9,
+        center: new window.kakao.maps.LatLng(33.5068, 126.4929),
+        level: 5,
       };
 
       // 지도 생성
@@ -92,7 +92,7 @@ export default function GetKakaoMap() {
   }
 
   return (
-    <div className="relative border-4 border-blue w-[75rem] h-[900px]">
+    <div className="mb-10 relative border-4 border-blue w-[75rem] h-[900px]">
       <div id="mapContainer" className="w-full h-full relative">
         <div id="map" className="w-full h-full" />
       </div>
