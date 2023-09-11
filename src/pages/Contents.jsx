@@ -3,13 +3,12 @@ import ContentItem from '@/components/content/ContentItem';
 import ContentTitle from '@/components/content/ContentTitle';
 import PageHead from '@/components/PageHead';
 import { useQuery } from '@tanstack/react-query';
-import img from './../assets/more.svg';
 import { getPbImageURL } from '@/utils';
 import { NavLink } from 'react-router-dom';
 
 async function fetchContents() {
   const response = await fetch(
-    `https://react-mission.pockethost.io/api/collections/content/records`
+    `${import.meta.env.VITE_PB_API}/collections/content/records`
   );
   return await response.json();
 }
@@ -17,11 +16,18 @@ async function fetchContents() {
 export default function Contents() {
   const { isLoading, data, isError, error } = useQuery(
     ['contents'],
-    fetchContents
+    fetchContents,
+    {
+      staleTime: 1000 * 60 * 60,
+    }
   );
 
   if (isLoading) {
     return <div className="grid place-content-center h-full">로딩 중</div>;
+  }
+
+  if (isError) {
+    return <div role="alert">{error.toString()}</div>;
   }
 
   return (
