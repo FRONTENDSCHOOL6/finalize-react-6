@@ -23,15 +23,11 @@ export default function MainSlide() {
   }, [isPlaying]);
 
   return (
-    <article className="relative w-full" style={{ height: '60vh' }}>
+    <article className="relative w-full h-[100vh]">
       <img
         src={slides[slide].src}
         alt={slides[slide].alt}
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-        }}
+        className="w-full h-full object-cover"
       />
       <div className="bg-white/30 w-full h-full absolute top-0 left-0"></div>
       <p className="absolute top-[calc(50%-120px)] left-[calc(50%-80px)] text-darkblue font-bold text-3xl">
@@ -39,14 +35,7 @@ export default function MainSlide() {
       </p>
       <button
         onClick={() => setIsPlaying(!isPlaying)}
-        className="rounded-full"
-        style={{
-          position: 'absolute',
-          bottom: '10px',
-          right: '10px',
-          width: '30px',
-          height: '30px',
-        }}
+        className="rounded-full absolute bottom-[10px] right-[10px] w-[30px] h-[30px]"
       >
         {isPlaying ? (
           <img src="/pause.png" alt="중지" />
