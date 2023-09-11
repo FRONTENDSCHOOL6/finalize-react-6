@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom';
 import { getPbImageURL } from '@/utils';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function MainContent({ page, data }) {
   if (!data) {
@@ -35,16 +35,14 @@ export default function MainContent({ page, data }) {
           key={item.id}
           className="w-1/3 border-2 border-slate-300 border-solid rounded"
         >
-          <NavLink to={`/content/${item.id}`}>
+          <Link to={`/content/${item.id}`}>
             <figure className="relative h-64">
               <img
                 src={getPbImageURL(item, 'photo')}
                 alt={item.tag}
                 className="absolute top-0 w-full h-4/5 object-cover"
               />
-              {/* <figcaption className="absolute bottom-0 py-4 pl-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75">
-                {item.title}
-              </figcaption> */}
+
               <figcaption className="absolute bottom-0 py-4 px-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75 flex justify-content-between">
                 <div style={{ width: '80%' }}>{item.title}</div>
                 <span className="text-right" style={{ width: '20%' }}>
@@ -52,7 +50,7 @@ export default function MainContent({ page, data }) {
                 </span>
               </figcaption>
             </figure>
-          </NavLink>
+          </Link>
         </li>
       ))}
     </>
