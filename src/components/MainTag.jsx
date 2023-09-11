@@ -20,7 +20,7 @@ export default function MainTag({ data, onTagClick, setPage }) {
   return (
     <>
       <ul className="flex flex-row justify-center items-center gap-2 pb-3">
-        인기태그 :
+        🔥 인기태그 :
         {sortedTags.map((tag) => {
           return (
             <li
