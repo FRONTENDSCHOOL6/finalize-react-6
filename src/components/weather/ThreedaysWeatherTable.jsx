@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import OnedayWeather2 from './OnedayWeather2';
+import OnedayWeather2 from './ThreedaysWeather';
 import { useState } from 'react';
 import { useEffect } from 'react';
 

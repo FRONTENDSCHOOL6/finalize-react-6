@@ -1,7 +1,7 @@
 import SelectLocation from '@/components/weather/SelectLocation';
 import { useEffect, useState } from 'react';
 import GetWeather from '@/components/weather/GetWeather';
-import WeatherTable2 from '@/components/weather/WeatherTable2';
+import WeatherTable2 from '@/components/weather/ThreedaysWeatherTable';
 import PageHead from '@/components/PageHead';
 
 export default function WeatherInfo() {
@@ -73,8 +73,8 @@ export default function WeatherInfo() {
   return (
     <>
       <PageHead title={'Jeju All in One - 제주 날씨'} />
-      <div className="px-8 my-10">
-        <h2 className="text-darkblue font-semibold text-4xl text-center my-10">
+      <div className="py-2 mt-5">
+        <h2 className="text-blue font-semibold text-4xl text-center my-10">
           제주 날씨
           {sublocation && `(${sublocation})`}
         </h2>
