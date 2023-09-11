@@ -4,7 +4,8 @@ import ContentTitle from '@/components/content/ContentTitle';
 import PageHead from '@/components/PageHead';
 import { useQuery } from '@tanstack/react-query';
 import { getPbImageURL } from '@/utils';
-import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 async function fetchContents() {
   const response = await fetch(
@@ -19,8 +20,16 @@ export default function Contents() {
     fetchContents,
     {
       staleTime: 1000 * 60 * 60,
+      select: (array) =>
+        array.items.sort((a, b) => {
+          if (a.created > b.created) return -1;
+          if (a.created < b.created) return 1;
+          return 0;
+        }),
     }
   );
+
+  useEffect(() => {});
 
   if (isLoading) {
     return <div className="grid place-content-center h-full">로딩 중</div>;
@@ -41,7 +50,7 @@ export default function Contents() {
             ⭐로 우리에게 나누어진 &lsquo;우리의 제주&rsquo;를 둘러보세요.
           </p>
 
-          <NavLink to="create">
+          <Link to="/content/create">
             <button
               type="button"
               className="my-5 inline-flex rounded-full items-center bg-lightsand gap-2 px-6 py-3 border-2 border-blue"
@@ -51,11 +60,16 @@ export default function Contents() {
               </p>
               <img src={right} alt="register" />
             </button>
-          </NavLink>
+          </Link>
         </section>
 
+        <div className="flex gap-2 ml-auto mr-[10%]">
+          <button>최신순</button>
+          <button>인기순</button>
+          <button>태그</button>
+        </div>
         <section className="contentContainer p-1 mx-auto bg-gray-100">
-          {data?.items?.map((item) => (
+          {data?.map((item) => (
             <ContentItem
               key={item.id}
               content={item.id}
