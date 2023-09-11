@@ -1,31 +1,100 @@
+import pb from '@/api/pocketbase';
 import Button from '@/components/Button';
 import InputField, { CheckField } from '@/components/InputField';
 import LinkItem from '@/components/LinkItem';
 import LoginPageContent from '@/components/LoginPageContent';
 import Logo from '@/components/Logo';
 import PageHead from '@/components/PageHead';
+import debounce from '@/utils/debounce';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Join() {
-  
+  const navigate = useNavigate();
+
+  const [formState, setFormState] = useState({
+    username: '',
+    nickname: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  });
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const { password, passwordConfirm } = formState;
+
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    await pb.collection('user').create({
+      ...formState,
+      emailVisibility: true,
+    });
+
+    navigate('/login');
+  };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const handleDebounceInput = debounce(handleInput, 500);
 
   return (
     <>
       {/* 헤드 이름 */}
-      <PageHead>Jeju All in One - 회원가입</PageHead>
-
+      <PageHead title="Jeju All in One - 회원가입" />
       {/* 마크업 */}
       <LoginPageContent>
         <Logo />
-        <form action="" className="flex flex-col gap-3 mb-5">
-          <InputField id="id" type="text" placeholder="아이디" />
-          <InputField id="password" type="text" placeholder="비밀번호" />
+
+        {/* 회원가입 폼 */}
+        <form onSubmit={handleRegister} className="flex flex-col gap-3 mb-5">
+          <InputField
+            id="id"
+            type="text"
+            name="username"
+            placeholder="아이디"
+            onChange={handleDebounceInput}
+          />
+          <InputField
+            id="password"
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            onChange={handleDebounceInput}
+          />
           <InputField
             id="checkPassword"
-            type="text"
+            type="password"
+            name="passwordConfirm"
             placeholder="비밀번호 확인"
+            onChange={handleDebounceInput}
           />
-          <InputField id="nickname" type="text" placeholder="닉네임" />
-          <InputField id="email" type="text" placeholder="이메일" />
+          <InputField
+            id="nickname"
+            type="text"
+            name="nickname"
+            placeholder="닉네임"
+            onChange={handleDebounceInput}
+          />
+          <InputField
+            id="email"
+            type="text"
+            name="email"
+            placeholder="이메일"
+            onChange={handleDebounceInput}
+          />
+
+          {/* 약관 동의 */}
           <div className="flex flex-col gap-2 my-3">
             <CheckField
               id="checkAll"
@@ -57,6 +126,8 @@ export default function Join() {
           </div>
           <Button>가입하기</Button>
         </form>
+
+        {/* 로그인 페이지 이동 */}
         <p className="mt-3">
           이미 회원이신가요?&nbsp;
           <LinkItem link="/login" className="font-extrabold text-blue">

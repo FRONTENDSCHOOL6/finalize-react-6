@@ -51,5 +51,4 @@ CheckField.propTypes = {
   name: string.isRequired,
   id: string.isRequired,
   placeholder: string.isRequired,
-  className: string.isRequired,
 };
