@@ -1,13 +1,14 @@
 import SelectLocation from '@/components/weather/SelectLocation';
 import { useEffect, useState } from 'react';
 import GetWeather from '@/components/weather/GetWeather';
-import WeatherTable2 from '@/components/weather/ThreedaysWeatherTable';
+import ThreedaysWeatherTable from '@/components/weather/ThreedaysWeatherTable';
 import PageHead from '@/components/PageHead';
 
 export default function WeatherInfo() {
   const [data, setData] = useState({});
-  const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
+  const [city, setCity] = useState('');
   const [sublocation, setSublocation] = useState('');
+  const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
 
   useEffect(() => {
     const baseUrl =
@@ -76,7 +77,6 @@ export default function WeatherInfo() {
       <div className="py-2 mt-5 mb-10">
         <h2 className="text-blue font-semibold text-4xl text-center">
           제주 날씨
-          {/* {sublocation && `(${sublocation})`} */}
         </h2>
         <div className="flex flex-col justify-center items-center gap-10">
           <div>
@@ -84,16 +84,19 @@ export default function WeatherInfo() {
               <p className="mt-10 font-medium text-xl">제주시 용담동</p>
             )}
             {sublocation && (
-              <p className="mt-10 font-medium text-xl">{sublocation}</p>
+              <p className="mt-10 font-medium text-xl">
+                {city} {sublocation}
+              </p>
             )}
           </div>
           <hr className="w-full" />
           <SelectLocation
-            onCoordinatesChange={setCoordinates}
+            onCityChange={setCity}
             onSublocationChange={setSublocation}
+            onCoordinatesChange={setCoordinates}
           />
           <GetWeather data={data} />
-          <WeatherTable2 coordinates={coordinates} />
+          <ThreedaysWeatherTable coordinates={coordinates} />
         </div>
       </div>
     </>
