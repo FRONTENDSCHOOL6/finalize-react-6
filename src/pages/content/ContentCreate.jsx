@@ -7,13 +7,13 @@ import { colourOptions } from '@/components/content/data/data';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import Map from '@/components/Map';
+import { Map } from '@/components/Map';
+import { useEffect } from 'react';
 
 export default function ContentCreate() {
   const navigate = useNavigate();
 
   const [fileImages, setFileImages] = useState(null);
-  const [tag, setTag] = useState();
   const [placeName, setPlaceName] = useState();
   const [placeAddress, setPlaceAddress] = useState();
 
@@ -21,7 +21,14 @@ export default function ContentCreate() {
   const titleRef = useRef(null);
   const contentRef = useRef(null);
   const customTagRef = useRef(null);
+  const tagRef = useRef(null);
   const photoRef = useRef(null);
+  const placeNameRef = useRef(null);
+  const placeAddressRef = useRef(null);
+
+  useEffect(() => {
+    setPlaceName(placeNameRef.current);
+  }, [placeAddressRef, placeNameRef]);
 
   const handleFileUpload = (e) => {
     const { files } = e.target;
@@ -38,18 +45,21 @@ export default function ContentCreate() {
     const titleValue = titleRef.current.value;
     const contentValue = contentRef.current.value;
     const photoValue = photoRef.current.files;
+    const tagValue = tagRef.current.value;
+    const customTagValue = customTagRef.current.value;
 
-    if (!placeName) return alert('위치를 등록해주세요.');
-    else if (!tag) return alert('태그를 등록해주세요.');
+    // if (!placeName) return alert('위치를 등록해주세요.');
+    if (!tagRef) return alert('태그를 선택해주세요.');
     else if (!photoValue[0]) return alert('사진을 등록해주세요.');
 
     const formData = new FormData();
 
     formData.append('title', titleValue);
     formData.append('content', contentValue);
-    formData.append('location', placeName);
-    formData.append('address', placeAddress);
-    formData.append('tag', tag);
+    formData.append('location', placeNameRef.current);
+    formData.append('address', placeAddressRef.current);
+    formData.append('tag', tagValue);
+    formData.append('customTag', customTagValue);
     if (photoValue) {
       formData.append('photo', photoValue[0]);
     }
@@ -62,8 +72,15 @@ export default function ContentCreate() {
     }
   };
 
+  const handleNoSpace = () => {
+    customTagRef.current.value = customTagRef.current.value.replace(
+      /(\s*)/g,
+      ''
+    );
+  };
+
   const handleTypeSelect = (e) => {
-    setTag(e.value);
+    tagRef.current.value = e.value;
   };
 
   return (
@@ -148,6 +165,7 @@ export default function ContentCreate() {
               className="z-10"
               options={colourOptions}
               styles={colorStyles}
+              ref={tagRef}
               onChange={handleTypeSelect}
               placeholder="제주도 태그를 선택해주세요"
             />
@@ -155,14 +173,17 @@ export default function ContentCreate() {
             <input
               type="text"
               ref={customTagRef}
+              onChange={handleNoSpace}
               className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
               placeholder="나만의 제주도 태그를 만들어주세요.(예: #나의사랑제주도)"
             />
 
             <Map
+              ref={{ placeNameRef, placeAddressRef }}
               place={{ placeName, placeAddress }}
               setPlace={{ setPlaceName, setPlaceAddress }}
             />
+            <div>{placeName}</div>
 
             <button
               type="submit"
