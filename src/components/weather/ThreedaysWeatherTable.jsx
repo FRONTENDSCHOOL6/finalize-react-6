@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import OnedayWeather2 from './ThreedaysWeather';
+import ThreedaysWeather from './ThreedaysWeather';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-export default function WeatherTable2({ coordinates }) {
+export default function ThreedaysWeatherTable({ coordinates }) {
   const [data, setData] = useState({});
   useEffect(() => {
     const baseUrl =
@@ -78,34 +78,34 @@ export default function WeatherTable2({ coordinates }) {
               최<span className="text-red-600">고</span> 기온
             </th>
             {data && (
-              <OnedayWeather2 data={data} category={'TMX'} text={'°C'} />
+              <ThreedaysWeather data={data} category={'TMX'} text={'°C'} />
             )}
           </tr>
           <tr>
             <th className="border-2 h-[50px]">
               최<span className="text-sky-600">저</span> 기온
             </th>
-            <OnedayWeather2 data={data} category={'TMN'} text={'°C'} />
+            <ThreedaysWeather data={data} category={'TMN'} text={'°C'} />
           </tr>
           <tr className="bg-lightsand">
             <th className="border-2 h-[50px]">하늘 상태</th>
-            <OnedayWeather2 data={data} category={'SKY'} />
+            <ThreedaysWeather data={data} category={'SKY'} />
           </tr>
           <tr>
             <th className="border-2 h-[50px]">습도</th>
-            <OnedayWeather2 data={data} category={'REH'} text={'%'} />
+            <ThreedaysWeather data={data} category={'REH'} text={'%'} />
           </tr>
           <tr className=" bg-lightsand">
             <th className="border-2 h-[50px]">강수 형태</th>
-            <OnedayWeather2 data={data} category={'PTY'} />
+            <ThreedaysWeather data={data} category={'PTY'} />
           </tr>
           <tr>
             <th className="border-2 h-[50px]">강수 확률</th>
-            <OnedayWeather2 data={data} category={'POP'} text={'%'} />
+            <ThreedaysWeather data={data} category={'POP'} text={'%'} />
           </tr>
           <tr className="bg-lightsand">
             <th className="border-2 h-[50px]">풍속</th>
-            <OnedayWeather2 data={data} category={'WSD'} text={'m/s'} />
+            <ThreedaysWeather data={data} category={'WSD'} text={'m/s'} />
           </tr>
         </tbody>
       </table>
@@ -117,6 +117,6 @@ export default function WeatherTable2({ coordinates }) {
   );
 }
 
-WeatherTable2.propTypes = {
+ThreedaysWeatherTable.propTypes = {
   coordinates: PropTypes.object.isRequired,
 };
