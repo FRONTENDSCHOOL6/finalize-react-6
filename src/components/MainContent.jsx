@@ -33,7 +33,8 @@ export default function MainContent({ page, data }) {
       {currentPageItems?.map((item) => (
         <li
           key={item.id}
-          className="w-1/3 border-2 border-slate-300 border-solid rounded"
+          className="border-2 border-slate-300 border-solid rounded" // grid
+          // className="w-1/3 border-2 border-slate-300 border-solid rounded" // flex
         >
           <Link to={`/content/${item.id}`}>
             <figure className="relative h-64">
