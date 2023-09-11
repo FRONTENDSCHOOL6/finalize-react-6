@@ -19,44 +19,52 @@ export default function Header() {
     [pathname]
   );
 
+  const isActive = ({ isActive }) => {
+    console.log(isActive);
+    return {
+      fontWeight: isActive ? 'bold' : '',
+      borderBottom: isActive ? '3px solid black' : '',
+    };
+  };
+
   return (
     <header
       className={`h-24 flex flex-row items-center px-8 justify-between min-w-[870px] ${mainHeader}`}
     >
       <h1>
-        <NavLink to="/">
+        <NavLink to="/" className="flex items-center">
           <img src="/logo.png" alt="로고" />
+          <span className="sr-only">Jeju - All in One</span>
         </NavLink>
-        <span className="sr-only">Jeju All in One</span>
       </h1>
       <ul className="flex flex-row items-center gap-8 text-gray-600">
-        <NavLink to="content">
+        <NavLink to="content" style={isActive}>
           <NavigationCenter menu="🍊 우리 제주" />
         </NavLink>
-        <NavLink to="content/create">
+        <NavLink to="content/create" style={isActive}>
           <NavigationCenter menu="🏝️ 나만의 제주" />
         </NavLink>
-        <NavLink to="weather">
+        <NavLink to="weather" style={isActive}>
           <NavigationCenter menu="🌦️ 제주 날씨" />
         </NavLink>
-        <NavLink to="traffic">
+        <NavLink to="traffic" style={isActive}>
           <NavigationCenter menu="🚙 제주 교통" />
         </NavLink>
       </ul>
       <ul className="flex flex-row items-center gap-5">
         {user && user.token ? (
           <>
-            <NavLink to="profile">
+            <NavLink to="profile" style={isActive}>
               <NavigationSide menu="프로필" />
             </NavLink>
             <NavigationSide menu="로그아웃" onClick={logout} />
           </>
         ) : (
           <>
-            <NavLink to="login">
+            <NavLink to="login" style={isActive}>
               <NavigationSide menu="로그인" />
             </NavLink>
-            <NavLink to="join">
+            <NavLink to="join" style={isActive}>
               <NavigationSide menu="회원가입" />
             </NavLink>
           </>
