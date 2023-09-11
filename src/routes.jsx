@@ -32,7 +32,7 @@ const router = createHashRouter(
       <Route path="weather" element={<WeathertInfo />} />
       <Route path="content">
         <Route
-          index
+          path="list"
           element={
             <ProtectRoute>
               <Contents />
