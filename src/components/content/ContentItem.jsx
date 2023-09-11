@@ -11,8 +11,10 @@ export default function ContentItem({ src, content, title, count }) {
             alt={title}
           />
         </figure>
-        <figcaption className="text-white/[.93] flex flex-col text-end absolute bottom-5 right-7">
-          <span className="text-2xl">{title}</span>
+        <figcaption className="text-white flex flex-col text-end absolute bottom-0 w-full p-3 bg-black/40">
+          <span className="text-xl w-3/4 overflow-hidden whitespace-nowrap text-ellipsis ml-auto">
+            {title}
+          </span>
           <span>⭐({count})</span>
         </figcaption>
       </div>
