@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import GetWeather from '@/components/weather/GetWeather';
 import ThreedaysWeatherTable from '@/components/weather/ThreedaysWeatherTable';
 import PageHead from '@/components/PageHead';
+import jejuData from '@/data.json';
 
 export default function WeatherInfo() {
   const [data, setData] = useState({});
@@ -80,13 +81,17 @@ export default function WeatherInfo() {
         </h2>
         <div className="flex flex-col justify-center items-center gap-10">
           <div>
-            {!sublocation && (
+            {!city && !sublocation && (
               <p className="mt-10 font-medium text-xl">제주시 용담동</p>
             )}
-            {sublocation && (
+            {/* city와 sublocation 값이 일치하는 데이터가 있는 경우에만 렌더링 */}
+            {sublocation &&
+            jejuData[city]?.find((loc) => loc.name === sublocation) ? (
               <p className="mt-10 font-medium text-xl">
                 {city} {sublocation}
               </p>
+            ) : (
+              <p className="mt-10 font-medium text-xl">{city}</p>
             )}
           </div>
           <hr className="w-full" />

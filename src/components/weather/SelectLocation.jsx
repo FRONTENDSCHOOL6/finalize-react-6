@@ -14,14 +14,13 @@ export default function SelectLocation({
   const handleCityChange = (e) => {
     setCity(e.target.value);
 
-    setSublocation(''); // city가 변경되면 sublocation 초기화
+    // setSublocation(''); // city가 변경되면 sublocation 초기화
     setCoordinates({ x: null, y: null }); // 좌표도 초기화
     onCityChange(e.target.value); // 상위 컴포넌트로 좌표 전달
   };
 
   const handleSublocationChange = (e) => {
     setSublocation(e.target.value);
-
     onSublocationChange(e.target.value); // 상위 컴포넌트로 좌표 전달
 
     // 해당 data.json에서 sublocation의 좌표 찾기
