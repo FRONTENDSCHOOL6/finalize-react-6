@@ -33,15 +33,19 @@ export default function SelectLocation({
     <div className="flex flex-row gap-x-10">
       <p className="text-xl text-center">지역을 선택해주세요</p>
       <select name="city" className="mx-3" onChange={handleCityChange}>
-        <option value="">- 1차 선택 -</option>
+        <option>- 시 -</option>
         {Object.keys(data).map((cityName) => (
-          <option key={cityName} value={cityName}>
+          <option
+            key={cityName}
+            value={cityName}
+            // selected={cityName === '제주시' ? true : false}
+          >
             {cityName}
           </option>
         ))}
       </select>
       <select name="sublocation" onChange={handleSublocationChange}>
-        <option value="">- 2차 선택 -</option>
+        <option>- 동/읍 -</option>
         {(data[city] || []).map((loc) => (
           <option key={loc.name} value={loc.name}>
             {loc.name}
