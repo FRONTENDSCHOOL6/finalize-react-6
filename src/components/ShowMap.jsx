@@ -42,11 +42,11 @@ export default function ShowMap({
         map.setCenter(coords);
       }
     });
-  }, []);
+  }, [address, location]);
 
   return (
     <>
-      <article id="map" className="w-full h-96"></article>
+      <article id="map" className="h-96 mx-[15%] my-10"></article>
     </>
   );
 }

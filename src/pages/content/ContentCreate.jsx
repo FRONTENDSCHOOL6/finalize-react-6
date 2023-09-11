@@ -66,7 +66,7 @@ export default function ContentCreate() {
 
     try {
       await pb.collection('content').create(formData);
-      navigate('/content');
+      navigate('/content/list');
     } catch (error) {
       console.error(error);
     }
@@ -74,8 +74,8 @@ export default function ContentCreate() {
 
   const handleNoSpace = () => {
     customTagRef.current.value = customTagRef.current.value.replace(
-      /(\s*)/g,
-      ''
+      /(\s+)/g,
+      '_'
     );
   };
 
@@ -175,7 +175,7 @@ export default function ContentCreate() {
               ref={customTagRef}
               onChange={handleNoSpace}
               className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
-              placeholder="나만의 제주도 태그를 만들어주세요.(예: #나의사랑제주도)"
+              placeholder="나만의 제주도 태그를 만들어주세요.(예: #나의_사랑_제주도)"
             />
 
             <Map

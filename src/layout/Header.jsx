@@ -14,13 +14,12 @@ export default function Header() {
   useEffect(
     () =>
       pathname === '/'
-        ? setMainHeader('fixed w-full bg-white/50 z-10')
-        : setMainHeader(''),
+        ? setMainHeader('bg-white/50')
+        : setMainHeader('bg-white/90'),
     [pathname]
   );
 
   const isActive = ({ isActive }) => {
-    console.log(isActive);
     return {
       fontWeight: isActive ? 'bold' : '',
       borderBottom: isActive ? '3px solid black' : '',
@@ -29,7 +28,7 @@ export default function Header() {
 
   return (
     <header
-      className={`h-24 flex flex-row items-center px-8 justify-between min-w-[870px] ${mainHeader}`}
+      className={`h-20 flex flex-row items-center px-8 justify-between min-w-[870px] fixed w-full z-10 ${mainHeader}`}
     >
       <h1>
         <NavLink to="/" className="flex items-center">
@@ -38,7 +37,7 @@ export default function Header() {
         </NavLink>
       </h1>
       <ul className="flex flex-row items-center gap-8 text-gray-600">
-        <NavLink to="content" style={isActive}>
+        <NavLink to="content/list" style={isActive}>
           <NavigationCenter menu="🍊 우리 제주" />
         </NavLink>
         <NavLink to="content/create" style={isActive}>
