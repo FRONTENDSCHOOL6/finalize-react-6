@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import {
   Route,
-  createHashRouter,
+  createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import ProtectRoute from './components/ProtectRoute';
@@ -19,11 +19,13 @@ const MyProfile = lazy(() => import('./pages/MyProfile'));
 const TrafficInfo = lazy(() => import('./pages/TrafficInfo'));
 const WeathertInfo = lazy(() => import('./pages/WeatherInfo'));
 
-const router = createHashRouter(
+const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="login" element={<Login />} />
+      <Route path="/">
+        <Route path="login" element={<Login />} />
+      </Route>
       <Route path="join" element={<Join />} />
       <Route path="findid" element={<FindId />} />
       <Route path="findpw" element={<FindPw />} />
@@ -31,14 +33,8 @@ const router = createHashRouter(
       <Route path="traffic" element={<TrafficInfo />} />
       <Route path="weather" element={<WeathertInfo />} />
       <Route path="content">
-        <Route
-          path="list"
-          element={
-            <ProtectRoute>
-              <Contents />
-            </ProtectRoute>
-          }
-        />
+        <Route index element={<Contents />} />
+        <Route path="list" element={<Contents />} />
         <Route
           path="create"
           element={
@@ -47,11 +43,19 @@ const router = createHashRouter(
             </ProtectRoute>
           }
         />
-        <Route path="edit" element={<ContentEdit />} />
+        <Route
+          path="edit"
+          element={
+            <ProtectRoute>
+              <ContentEdit />
+            </ProtectRoute>
+          }
+        />
         <Route path=":id" element={<ContentDetail />} />
       </Route>
     </Route>
-  )
+  ),
+  { basename: `/` }
 );
 
 export default router;
