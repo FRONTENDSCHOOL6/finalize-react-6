@@ -1,35 +1,47 @@
 import right from '@/assets/right.svg';
+import rightWhite from '@/assets/rightWhite.svg';
 import ContentItem from '@/components/content/ContentItem';
 import ContentTitle from '@/components/content/ContentTitle';
 import PageHead from '@/components/PageHead';
 import { useQuery } from '@tanstack/react-query';
 import { getPbImageURL } from '@/utils';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { colourOptions } from '@/components/content/data/data';
 
-async function fetchContents() {
+async function fetchContents(options) {
+  let queryParams = '';
+
+  if (options.filter === `(tag='')`) {
+    queryParams = `?sort=${options.sort}`;
+  } else {
+    queryParams = `?${Object.entries(options)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join('&')}`;
+  }
+
   const response = await fetch(
-    `${import.meta.env.VITE_PB_API}/collections/content/records`
+    `${import.meta.env.VITE_PB_API}/collections/content/records${queryParams}`
   );
   return await response.json();
 }
 
 export default function Contents() {
-  const { isLoading, data, isError, error } = useQuery(
-    ['contents'],
-    fetchContents,
-    {
-      staleTime: 1000 * 60 * 60,
-      select: (array) =>
-        array.items.sort((a, b) => {
-          if (a.created > b.created) return -1;
-          if (a.created < b.created) return 1;
-          return 0;
-        }),
-    }
-  );
+  const [sort, setSort] = useState('-created');
+  const [tag, setTag] = useState('');
 
-  useEffect(() => {});
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ['contents', sort, tag],
+    queryFn: () => fetchContents({ sort, filter: `(tag='${tag}')` }),
+  });
+
+  const handleTagSelect = (e) => {
+    if (e.target.value) setTag(e.target.value);
+    else setTag('');
+  };
 
   if (isLoading) {
     return <div className="grid place-content-center h-full">로딩 중</div>;
@@ -53,31 +65,48 @@ export default function Contents() {
           <Link to="/content/create">
             <button
               type="button"
-              className="my-5 inline-flex rounded-full items-center bg-lightsand gap-2 px-6 py-3 border-2 border-blue"
+              className="my-5 inline-flex text-blue rounded-full items-center bg-lightsand gap-2 px-6 py-3 border-2 border-blue 
+              hover:bg-darkblue hover:text-lightsand transform transition-all"
+              onMouseOver={(e) =>
+                (e.currentTarget.children[1].src = rightWhite)
+              }
+              onMouseOut={(e) => (e.currentTarget.children[1].src = right)}
             >
-              <p className="text-blue font-extrabold text-lg">
-                추억을 공유하기
-              </p>
-              <img src={right} alt="register" />
+              <p className="font-extrabold text-lg ">⭐을 나눠주기</p>
+              <img src={right} alt="register" className="" />
             </button>
           </Link>
         </section>
 
-        <div className="flex gap-2 ml-auto mr-[10%]">
-          <button>최신순</button>
-          <button>인기순</button>
-          <button>태그</button>
+        <div className="w-11/12 text-right mb-5">
+          <button onClick={() => setTag('')} type="button" className="mr-2">
+            모아보기
+          </button>
+          <select
+            name="태그"
+            id="tagSelect"
+            onChange={handleTagSelect}
+            value={tag}
+          >
+            {colourOptions.map((item) => (
+              <option value={item.value} key={item.value}>
+                {item.value}
+              </option>
+            ))}
+          </select>
         </div>
-        <section className="contentContainer p-1 mx-auto bg-gray-100">
-          {data?.map((item) => (
-            <ContentItem
-              key={item.id}
-              content={item.id}
-              title={item.title}
-              count={item.commentId.length}
-              src={getPbImageURL(item, 'photo')}
-            />
-          ))}
+        <section className="contentContainer p-1 bg-gray-100 min-h-[100vh] w-11/12">
+          {data?.items?.map((item) => {
+            return (
+              <ContentItem
+                key={item.id}
+                content={item.id}
+                title={item.title}
+                count={item.commentId.length}
+                src={getPbImageURL(item, 'photo')}
+              />
+            );
+          })}
         </section>
 
         <section className="flex justify-center my-20">
