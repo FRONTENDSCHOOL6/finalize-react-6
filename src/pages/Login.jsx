@@ -45,7 +45,7 @@ export default function Login() {
         username: nickname,
         email: email,
         token: userToken,
-        isKakao: false
+        isKakao: false,
       });
 
       if (!state) {

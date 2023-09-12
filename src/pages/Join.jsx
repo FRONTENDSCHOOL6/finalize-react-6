@@ -4,12 +4,12 @@ import InputField, { CheckField } from '@/components/InputField';
 import LinkItem from '@/components/LinkItem';
 import LoginPageContent from '@/components/login/LoginPageContent';
 import Logo from '@/components/Logo';
-import Modal from '@/components/Modal';
+import Modal from '@/components/modal/Modal';
 import PageHead from '@/components/PageHead';
 import {
   TermsOfServicePrivacy,
   TermsOfServiceUse,
-} from '@/components/TermsOfService';
+} from '@/components/modal/TermsOfService';
 import debounce from '@/utils/debounce';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
