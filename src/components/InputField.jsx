@@ -34,7 +34,7 @@ export function CheckField({ id, name, placeholder, className }) {
         id={id}
         name={name}
         placeholder={placeholder}
-        className="mr-2"
+        className="mr-3 transform scale-150"
       />
       <label htmlFor={id}>{placeholder}</label>
     </div>
@@ -51,4 +51,5 @@ CheckField.propTypes = {
   name: string.isRequired,
   id: string.isRequired,
   placeholder: string.isRequired,
+  className: string,
 };
