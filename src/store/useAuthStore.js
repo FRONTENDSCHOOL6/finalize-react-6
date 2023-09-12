@@ -1,5 +1,6 @@
 import pb from '@/api/pocketbase';
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
 const KAKAO_LOGOUT_REDIRECT_URI = import.meta.env.VITE_KAKAO_LOGOUT_REDIRECT_URI;
@@ -20,7 +21,8 @@ const userInitState = {
   isKakao: false
 };
 
-export const useAuthStore = create((set, get) => ({
+
+export const useAuthStore = create(persist((set, get) => ({
   user: userInitState,
 
   setUser: (user) => {
@@ -46,4 +48,6 @@ export const useAuthStore = create((set, get) => ({
       pb.authStore.clear();
     }
   },
+}), {
+  name: 'user'
 }));

@@ -8,8 +8,7 @@ export default function Header() {
   const { pathname } = useLocation();
   const [mainHeader, setMainHeader] = useState('');
 
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const { user, logout } = useAuthStore();
 
   useEffect(
     () =>
