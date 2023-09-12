@@ -1,14 +1,15 @@
 import SelectLocation from '@/components/weather/SelectLocation';
 import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import GetWeather from '@/components/weather/GetWeather';
-import WeatherTable2 from '@/components/weather/WeatherTable2';
+import ThreedaysWeatherTable from '@/components/weather/ThreedaysWeatherTable';
+import PageHead from '@/components/PageHead';
+import jejuData from '@/data.json';
 
 export default function WeatherInfo() {
   const [data, setData] = useState({});
-  const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
+  const [city, setCity] = useState('');
   const [sublocation, setSublocation] = useState('');
-  const [baseDate, setBaseDate] = useState(''); // baseDate 상태 추가
+  const [coordinates, setCoordinates] = useState({ x: 52, y: 38 });
 
   useEffect(() => {
     const baseUrl =
@@ -37,7 +38,7 @@ export default function WeatherInfo() {
     let baseTime;
 
     if (hour < 2) {
-      // 자정 이전인 경우 전날의 시간으로 설정
+      // 새벽 2시 이전인 경우 전날 23시로 baseTime 설정
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
       const prevDayYear = yesterday.getFullYear();
@@ -48,27 +49,21 @@ export default function WeatherInfo() {
 
       baseTime = '2300';
     } else {
-      // 현재 시간 기준으로 가장 가까운 시간 찾기
+      // 현재 시간 기준으로 가장 가까운 baseTime 찾기
       const index = baseTimes.findIndex(
         (time) => hour < parseInt(time.slice(0, 2))
       );
       baseTime = index !== -1 ? baseTimes[index - 1] : '2300';
     }
-
     async function fetchWeatherData() {
       const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=1500&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${coordinates.x}&ny=${coordinates.y}`;
       try {
         const response = await fetch(url);
-        // console.log(url);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         setData(data);
-        setBaseDate(baseDate); // baseDate 상태 업데이트
-
-        // setData({ ...data, baseDate });
-        // console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -78,23 +73,37 @@ export default function WeatherInfo() {
   }, [coordinates]);
 
   return (
-    <div className="px-8 my-10">
-      <Helmet>
-        <title>Jeju All in One - 제주 날씨</title>
-      </Helmet>
-      <h2 className="text-darkblue font-semibold text-4xl text-center my-10">
-        제주 날씨
-        {sublocation && `(${sublocation})`}
-      </h2>
-      <div className="flex flex-col justify-center items-center gap-10">
-        <SelectLocation
-          onCoordinatesChange={setCoordinates}
-          onSublocationChange={setSublocation}
-        />
-        <GetWeather data={data} />
-        {/* <WeatherTable2 data={data} baseDate={baseDate}/> */}
-        <WeatherTable2 coordinates={coordinates} baseDate={baseDate} />
+    <>
+      <PageHead title={'Jeju All in One - 제주 날씨'} />
+      <div className="py-2 mt-5 mb-10">
+        <h2 className="text-blue font-semibold text-4xl text-center">
+          제주 날씨
+        </h2>
+        <div className="flex flex-col justify-center items-center gap-10">
+          <div>
+            {!city && !sublocation && (
+              <p className="mt-10 font-medium text-xl">제주시 용담동</p>
+            )}
+            {/* city와 sublocation 값이 일치하는 데이터가 있는 경우에만 렌더링 */}
+            {sublocation &&
+            jejuData[city]?.find((loc) => loc.name === sublocation) ? (
+              <p className="mt-10 font-medium text-xl">
+                {city} {sublocation}
+              </p>
+            ) : (
+              <p className="mt-10 font-medium text-xl">{city}</p>
+            )}
+          </div>
+          <hr className="w-full" />
+          <SelectLocation
+            onCityChange={setCity}
+            onSublocationChange={setSublocation}
+            onCoordinatesChange={setCoordinates}
+          />
+          <GetWeather data={data} />
+          <ThreedaysWeatherTable coordinates={coordinates} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

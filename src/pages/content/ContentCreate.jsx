@@ -1,26 +1,34 @@
 import pb from '@/api/pocketbase';
 import photo from '@/assets/image.svg';
-import right from '@/assets/right_white.svg';
 import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
-import { colorStyles } from '@/components/content/TagSelect';
+import { colorStyles } from '@/components/content/colorStyles';
+import { colourOptions } from '@/components/content/data/data';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { colourOptions } from '@/components/content/data/data';
 import Select from 'react-select';
-import Map from '@/components/Map';
+import { Map } from '@/components/Map';
+import { useEffect } from 'react';
 
 export default function ContentCreate() {
   const navigate = useNavigate();
 
   const [fileImages, setFileImages] = useState(null);
-  const [tag, setTag] = useState();
-  const [location, setLocation] = useState();
+  const [placeName, setPlaceName] = useState();
+  const [placeAddress, setPlaceAddress] = useState();
 
   const formRef = useRef(null);
   const titleRef = useRef(null);
   const contentRef = useRef(null);
+  const customTagRef = useRef(null);
+  const tagRef = useRef(null);
   const photoRef = useRef(null);
+  const placeNameRef = useRef(null);
+  const placeAddressRef = useRef(null);
+
+  useEffect(() => {
+    setPlaceName(placeNameRef.current);
+  }, [placeAddressRef, placeNameRef]);
 
   const handleFileUpload = (e) => {
     const { files } = e.target;
@@ -36,32 +44,43 @@ export default function ContentCreate() {
 
     const titleValue = titleRef.current.value;
     const contentValue = contentRef.current.value;
-    // const locationValue = locationRef.current.value;
-    // const tagValue = tagRef.current.value;
     const photoValue = photoRef.current.files;
+    const tagValue = tagRef.current.value;
+    const customTagValue = customTagRef.current.value;
 
-    console.log(location);
+    // if (!placeName) return alert('위치를 등록해주세요.');
+    if (!tagRef) return alert('태그를 선택해주세요.');
+    else if (!photoValue[0]) return alert('사진을 등록해주세요.');
+
     const formData = new FormData();
 
     formData.append('title', titleValue);
     formData.append('content', contentValue);
-    formData.append('location', location);
-    formData.append('tag', tag);
+    formData.append('location', placeNameRef.current);
+    formData.append('address', placeAddressRef.current);
+    formData.append('tag', tagValue);
+    formData.append('customTag', customTagValue);
     if (photoValue) {
       formData.append('photo', photoValue[0]);
     }
 
     try {
       await pb.collection('content').create(formData);
-      navigate('/content');
+      navigate('/content/list');
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleNoSpace = () => {
+    customTagRef.current.value = customTagRef.current.value.replace(
+      /(\s+)/g,
+      '_'
+    );
+  };
+
   const handleTypeSelect = (e) => {
-    setTag(e.value);
-    console.log(e, e.value, tag);
+    tagRef.current.value = e.value;
   };
 
   return (
@@ -76,43 +95,43 @@ export default function ContentCreate() {
         onSubmit={handleCreate}
         className="flex flex-col gap-2 items-center"
       >
-        <div className="flex gap-10 mx-auto px-10 max-w-7xl mt-10 mb-32 min-w-[1000px]">
+        <div className="flex w-4/5 gap-6 mx-auto px-10 mt-10 mb-32 min-w-[1000px]">
           {/* upload file */}
-          <div className="relative w-[800px]">
+          <div className="relative w-full flex-grow">
             <label htmlFor="photo" className="sr-only">
               사진 등록
             </label>
             <input
               type="file"
-              accept="*.jpg,*.png,*.jpeg,*.webp,*.avif"
+              accept="image/jpg,image/png,image/jpeg,image/webp,image/avif"
               name="photo"
               id="photo"
               ref={photoRef}
               onChange={handleFileUpload}
               className="absolute w-full h-full opacity-0 cursor-pointer"
             />
-            {!fileImages && (
-              <img
-                src={photo}
-                alt="photo"
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-              />
-            )}
             <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100">
+              {!fileImages && (
+                <img
+                  src={photo}
+                  alt="photo"
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                />
+              )}
               {fileImages?.map((file) => {
                 return (
                   <img
                     key={file.label}
                     src={file.image}
                     alt={file.label}
-                    className="w-full max-h-[350px] my-auto"
+                    className="m-auto bg-slate-100 max-h-[660px]"
                   />
                 );
               })}
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-6">
+          <div className="w-full flex flex-col gap-2 flex-grow">
             <div className="w-full">
               <label htmlFor="title" className="sr-only">
                 제목
@@ -123,7 +142,7 @@ export default function ContentCreate() {
                 name="title"
                 placeholder="제목을 입력해주세요"
                 ref={titleRef}
-                className="w-full py-3 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
                 required
               />
             </div>
@@ -137,46 +156,35 @@ export default function ContentCreate() {
                 name="content"
                 placeholder="내용을 입력해주세요"
                 ref={contentRef}
-                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue"
                 required
               />
             </div>
-            {/* input 버튼 클릭이나 클릭이 이루어지면 위치 검색 모달 띄우기 */}
-            {/* <div className="w-full relative">
-              <label htmlFor="location" className="sr-only">
-                위치 검색
-              </label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                placeholder="위치 검색"
-                ref={locationRef}
-                className="w-full py-3 px-4 border rounded-md border-lightsand focus:outline-none focus:border-lightblue"
-                required
-              />
-              <button
-                type="button"
-                className="bg-lightblue p-2 rounded-md absolute right-2 top-[50%] -translate-y-[50%] hover:bg-blue"
-              >
-                <img src={right} alt="search" />
-              </button>
-            </div> */}
-            <Map location={location} setLocation={setLocation} />
 
-            {/* <TagSelect /> */}
             <Select
-              closeMenuOnSelect={false}
-              // isMulti
-              // defaultValue={[colourOptions[0]]}
+              className="z-10"
               options={colourOptions}
               styles={colorStyles}
-              // ref={tagRef}
+              ref={tagRef}
               onChange={handleTypeSelect}
-              value={colourOptions.filter(function (option) {
-                return option.value === tag;
-              })}
+              placeholder="제주도 태그를 선택해주세요"
             />
+
+            <input
+              type="text"
+              ref={customTagRef}
+              onChange={handleNoSpace}
+              className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
+              placeholder="나만의 제주도 태그를 만들어주세요.(예: #나의_사랑_제주도)"
+            />
+
+            <Map
+              ref={{ placeNameRef, placeAddressRef }}
+              place={{ placeName, placeAddress }}
+              setPlace={{ setPlaceName, setPlaceAddress }}
+            />
+            <div>{placeName}</div>
+
             <button
               type="submit"
               className="text-white font-bold bg-lightblue px-4 py-3 rounded-md hover:bg-blue"

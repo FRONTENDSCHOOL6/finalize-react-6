@@ -35,6 +35,14 @@ const router = createBrowserRouter(
       <Route path="content">
         <Route index element={<Contents />} />
         <Route
+          path="list"
+          element={
+            <ProtectRoute>
+              <Contents />
+            </ProtectRoute>
+          }
+        />
+        <Route
           path="create"
           element={
             <ProtectRoute>
