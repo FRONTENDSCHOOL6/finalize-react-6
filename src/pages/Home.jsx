@@ -2,6 +2,7 @@ import pb from '@/api/pocketbase';
 import MainContent from '@/components/MainContent';
 import MainSlide from '@/components/MainSlide';
 import MainTag from '@/components/MainTag';
+import Spinner from '@/components/Spinner';
 import TitleButton from '@/components/TitleButton';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -35,7 +36,11 @@ export default function Home() {
   }, [page]);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-content-center h-[600px]">
+        <Spinner size={160} />
+      </div>
+    );
   }
 
   const filteredData = selectedTag
@@ -56,8 +61,6 @@ export default function Home() {
       <section className="m-10">
         <TitleButton title="우리의 제주의 별" link="content/list" />
         <MainTag data={data} onTagClick={setSelectedTag} setPage={setPage} />
-        {/* <ul className="flex grow gap-5"> */}
-        {/* <ul className="grid custom:grid-cols-1 grid-cols-3 gap-5"> */}
         <ul className="contentContainer">
           <MainContent page={page} data={filteredData} />
         </ul>

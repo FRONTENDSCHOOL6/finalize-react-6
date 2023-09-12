@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 
 export default function MainTag({ data, onTagClick, setPage }) {
   const tags = data.map((item) => item.tag);
@@ -19,7 +20,7 @@ export default function MainTag({ data, onTagClick, setPage }) {
 
   return (
     <>
-      <ul className="flex flex-row justify-center items-center gap-2 pb-3">
+      <ul className="flex flex-row justify-center items-center gap-5 pb-3">
         🔥 인기태그 :
         {sortedTags.map((tag) => {
           return (
@@ -31,7 +32,13 @@ export default function MainTag({ data, onTagClick, setPage }) {
                 setPage(1); // 페이지를 1로 설정
               }}
             >
-              {tag}
+              <motion.div
+                className="box"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+              >
+                {tag}
+              </motion.div>
             </li>
           );
         })}
@@ -42,7 +49,14 @@ export default function MainTag({ data, onTagClick, setPage }) {
           }}
           className="cursor-pointer"
         >
-          / All
+          {/* <span>/</span> */}
+          <motion.div
+            className="box"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+          >
+            / All
+          </motion.div>
         </li>
       </ul>
     </>

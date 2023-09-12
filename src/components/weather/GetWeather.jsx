@@ -1,10 +1,15 @@
+import Spinner from '../Spinner';
 import ImgSky from './ImgSky';
 import WeatherTable from './WeatherTable';
 import PropTypes from 'prop-types';
 
 export default function GetWeather({ data }) {
   if (!data.response) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-content-center h-[600px]">
+        <Spinner size={160} />
+      </div>
+    );
   }
   return (
     <>

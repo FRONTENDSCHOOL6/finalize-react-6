@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
+import Spinner from '../Spinner';
 
 export default function ImgSky({ data }) {
   if (!data.response) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-content-center h-[600px]">
+        <Spinner size={160} />
+      </div>
+    );
   }
   // 하늘 상태
   const sky = data?.response?.body?.items?.item[5]?.fcstValue;
