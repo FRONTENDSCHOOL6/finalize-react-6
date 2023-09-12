@@ -1,9 +1,9 @@
-import { SubLogo } from "@/components/Logo";
+import { SubLogo } from '@/components/Logo';
 import InputField from '@/components/InputField';
 import Button from '@/components/Button';
-import LinkItem from "@/components/LinkItem";
+import LinkItem from '@/components/LinkItem';
 import PageHead from '@/components/PageHead';
-import LoginPageContent from "@/components/LoginPageContent";
+import LoginPageContent from '@/components/login/LoginPageContent';
 
 export default function FindId() {
   return (
@@ -21,10 +21,12 @@ export default function FindId() {
           <Button>아이디 찾기</Button>
         </form>
         <p>
-          <LinkItem link="/login" className="font-extrabold text-blue">로그인</LinkItem>
+          <LinkItem link="/login" className="font-extrabold text-blue">
+            로그인
+          </LinkItem>
           으로 돌아가기
         </p>
       </LoginPageContent>
     </>
-  )
+  );
 }
