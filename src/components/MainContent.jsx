@@ -34,16 +34,12 @@ export default function MainContent({ page, data }) {
         <li
           key={item.id}
           className="relative border-2 border-slate-300 border-solid rounded"
-          // className="border-2 border-slate-300 border-solid rounded" // grid
-          // className="w-1/3 border-2 border-slate-300 border-solid rounded" // flex
         >
           <Link to={`/content/${item.id}`}>
             <figure className="imageContainer brightness-[0.85] overflow-hidden">
-              {/* <figure className="relative h-64"> */}
               <img
                 src={getPbImageURL(item, 'photo')}
                 alt={item.tag}
-                // className="absolute top-0 w-full h-4/5 object-cover"
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover w-full h-full"
               />
 
