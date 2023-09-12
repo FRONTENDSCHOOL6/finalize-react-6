@@ -9,12 +9,9 @@ export default function MainSlide() {
 
   const slides = [
     { src: '/mainSlide1.jpg', alt: '제주도 바다' },
-    { src: '/mainSlide2.jpeg', alt: '제주도 풍경' },
     { src: '/mainSlide3.jpeg', alt: '제주도 하늘' },
     { src: '/jejuImage1.jpg', alt: '제주도 메밀꽃' },
-    { src: '/jejuImage2.jpg', alt: '제주도 오름' },
     { src: '/jejuImage3.jpg', alt: '제주도 감귤나무' },
-    { src: '/jejuImage4.jpg', alt: '제주도 돌담' },
   ];
 
   const togglePlayPause = () => {
