@@ -23,7 +23,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="login" element={<Login />} />
+      <Route path="/">
+        <Route path="login" element={<Login />} />
+      </Route>
       <Route path="join" element={<Join />} />
       <Route path="findid" element={<FindId />} />
       <Route path="findpw" element={<FindPw />} />
@@ -31,14 +33,7 @@ const router = createBrowserRouter(
       <Route path="traffic" element={<TrafficInfo />} />
       <Route path="weather" element={<WeathertInfo />} />
       <Route path="content">
-        <Route
-          index
-          element={
-            <ProtectRoute>
-              <Contents />
-            </ProtectRoute>
-          }
-        />
+        <Route index element={<Contents />} />
         <Route
           path="create"
           element={
@@ -47,11 +42,19 @@ const router = createBrowserRouter(
             </ProtectRoute>
           }
         />
-        <Route path="edit" element={<ContentEdit />} />
+        <Route
+          path="edit"
+          element={
+            <ProtectRoute>
+              <ContentEdit />
+            </ProtectRoute>
+          }
+        />
         <Route path=":id" element={<ContentDetail />} />
       </Route>
     </Route>
-  ), {basename: `/`}
+  ),
+  { basename: `/` }
 );
 
 export default router;
