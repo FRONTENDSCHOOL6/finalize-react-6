@@ -34,14 +34,7 @@ const router = createBrowserRouter(
       <Route path="weather" element={<WeathertInfo />} />
       <Route path="content">
         <Route index element={<Contents />} />
-        <Route
-          path="list"
-          element={
-            <ProtectRoute>
-              <Contents />
-            </ProtectRoute>
-          }
-        />
+        <Route path="list" element={<Contents />} />
         <Route
           path="create"
           element={
