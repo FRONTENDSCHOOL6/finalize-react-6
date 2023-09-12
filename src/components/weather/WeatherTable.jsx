@@ -1,9 +1,14 @@
+import Spinner from '../Spinner';
 import OnedayWeather from './OnedayWeather';
 import PropTypes from 'prop-types';
 
 export default function WeatherTable({ data }) {
   if (!data.response) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-content-center h-[600px]">
+        <Spinner size={160} />
+      </div>
+    );
   }
   return (
     <>

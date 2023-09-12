@@ -2,6 +2,7 @@ import pb from '@/api/pocketbase';
 import MainContent from '@/components/MainContent';
 import MainSlide from '@/components/MainSlide';
 import MainTag from '@/components/MainTag';
+import Spinner from '@/components/Spinner';
 import TitleButton from '@/components/TitleButton';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -35,7 +36,11 @@ export default function Home() {
   }, [page]);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-content-center h-[600px]">
+        <Spinner size={160} />
+      </div>
+    );
   }
 
   const filteredData = selectedTag

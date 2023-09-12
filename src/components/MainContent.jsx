@@ -1,10 +1,15 @@
 import { getPbImageURL } from '@/utils';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Spinner from './Spinner';
 
 export default function MainContent({ page, data }) {
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-content-center h-[600px]">
+        <Spinner size={160} />
+      </div>
+    );
   }
 
   // 댓글이 있는 항목만 선택
