@@ -23,7 +23,7 @@ export default function Login() {
   // empty, success, fail
   const [isLogin, setIsLogin] = useState('empty');
 
-  const setUser = useAuthStore(state => state.setUser);
+  const { setUser } = useAuthStore();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -44,8 +44,9 @@ export default function Login() {
         userId: username,
         username: nickname,
         email: email,
-        token: userToken
-      })
+        token: userToken,
+        isKakao: false
+      });
 
       if (!state) {
         navigate('/');
