@@ -12,6 +12,7 @@ export default function ContentDetail() {
   const [content, setContent] = useState();
   const [photo, setPhoto] = useState();
   const [tag, setTag] = useState();
+  const [customTag, setCustomTag] = useState();
   const [comment, setComment] = useState([]);
   const [location, setLocation] = useState();
   const [address, setAddress] = useState();
@@ -27,13 +28,15 @@ export default function ContentDetail() {
             { requestKey: 'string' }
           );
 
-        const { title, content, tag, expand, location, address } = jejuContent;
+        const { title, content, tag, customTag, expand, location, address } =
+          jejuContent;
         setPhoto(getPbImageURL(jejuContent, 'photo'));
         setContent(content);
         setTag(tag);
         setTitle(title);
         setLocation(location);
         setAddress(address);
+        setCustomTag(customTag);
         if (expand) setComment(expand.commentId);
       } catch (error) {
         console.error(error);
@@ -57,7 +60,9 @@ export default function ContentDetail() {
         <article className="w-full py-2 px-4 rounded-md border border-gray-500">
           <p className="pb-2 font-bold flex justify-between">
             {title}
-            <span className="font-light">#{tag}</span>
+            <span className="font-light">
+              #{tag} #{customTag}
+            </span>
           </p>
           {content}
         </article>
