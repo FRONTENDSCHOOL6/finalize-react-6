@@ -2,7 +2,7 @@ import pb from '@/api/pocketbase';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import LinkItem from '@/components/LinkItem';
-import LoginPageContent from '@/components/LoginPageContent';
+import LoginPageContent from '@/components/login/LoginPageContent';
 import Logo from '@/components/Logo';
 import PageHead from '@/components/PageHead';
 import KakaoLogin from '@/components/login/KakaoLogin';
@@ -23,7 +23,7 @@ export default function Login() {
   // empty, success, fail
   const [isLogin, setIsLogin] = useState('empty');
 
-  const setUser = useAuthStore(state => state.setUser);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -44,8 +44,8 @@ export default function Login() {
         userId: username,
         username: nickname,
         email: email,
-        token: userToken
-      })
+        token: userToken,
+      });
 
       if (!state) {
         navigate('/');
