@@ -1,12 +1,52 @@
+import pb from '@/api/pocketbase';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 export default function KakaoLogin() {
-  const REST_API_KEY = '31f2b1ab7dcd9129cde0a0f768e39c1f';
-  const REDIRECT_URI = 'http://localhost:3000/auth';
+  const navigate = useNavigate();
+  const { state } = useLocation();
 
-  // oauth 요청 URL
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const { setUser } = useAuthStore();
 
-  const handleLogin = () => {
-    window.location.href = kakaoURL;
+  const handleLogin = async (e) => {
+    // e.preventDefault();
+
+    try {
+      const user = await pb
+        .collection('user')
+        .authWithOAuth2({ provider: 'kakao' });
+
+      const { id, username, email, accessToken: token } = user.meta;
+      console.log(user.meta);
+
+      const updateUser = {
+        username: id,
+        nickname: username,
+        email,
+        token,
+      };
+
+      setUser({
+        userId: id,
+        username: username,
+        email: email,
+        token: token,
+        isKakao: true
+      });
+
+      await pb.collection('user').update(user.record.id, updateUser);
+
+      if (!state) {
+        navigate('/');
+      } else {
+        const { wishLocationPath } = state;
+        navigate(wishLocationPath === '/login' ? '/' : wishLocationPath, {
+          replace: true,
+        });
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 
   return (
