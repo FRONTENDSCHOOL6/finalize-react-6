@@ -61,7 +61,7 @@ export default function ContentDetail() {
           <p className="pb-2 font-bold flex justify-between">
             {title}
             <span className="font-light">
-              #{tag} #{customTag}
+              #{tag} {customTag && `#${customTag}`}
             </span>
           </p>
           {content}
