@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
+import Spinner from '../Spinner';
 
 export default function ThreedaysWeather({ data, category, text }) {
   if (!data.response) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-content-center h-[600px]">
+        <Spinner size={160} />
+      </div>
+    );
   }
 
   const filteredItems = data?.response?.body?.items.item.filter(
