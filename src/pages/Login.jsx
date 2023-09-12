@@ -2,7 +2,7 @@ import pb from '@/api/pocketbase';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import LinkItem from '@/components/LinkItem';
-import LoginPageContent from '@/components/LoginPageContent';
+import LoginPageContent from '@/components/login/LoginPageContent';
 import Logo from '@/components/Logo';
 import PageHead from '@/components/PageHead';
 import KakaoLogin from '@/components/login/KakaoLogin';
