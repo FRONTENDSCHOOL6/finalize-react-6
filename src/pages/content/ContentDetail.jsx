@@ -5,8 +5,13 @@ import PageHead from '@/components/PageHead';
 import CommentItem from '@/components/content/CommentItem';
 import pb from '@/api/pocketbase';
 import ShowMap from '@/components/ShowMap';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useRef } from 'react';
+
+pb.autoCancellation(false);
 
 export default function ContentDetail() {
+  const { user } = useAuthStore();
   const { id } = useParams();
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
@@ -16,6 +21,7 @@ export default function ContentDetail() {
   const [comment, setComment] = useState([]);
   const [location, setLocation] = useState();
   const [address, setAddress] = useState();
+  const writerRef = useRef(null);
 
   useEffect(() => {
     async function getContent() {
@@ -24,7 +30,7 @@ export default function ContentDetail() {
           .collection('content')
           .getOne(
             id,
-            { expand: 'commentId,commentId.userId' },
+            { expand: 'commentId,commentId.userId,userId' },
             { requestKey: 'string' }
           );
 
@@ -37,7 +43,9 @@ export default function ContentDetail() {
         setLocation(location);
         setAddress(address);
         setCustomTag(customTag);
+
         if (expand) setComment(expand.commentId);
+        if (expand) writerRef.current = expand.userId.username;
       } catch (error) {
         console.error(error);
       }
@@ -66,11 +74,13 @@ export default function ContentDetail() {
           </p>
           {content}
         </article>
-        <Link to="/content/edit" className="ml-auto">
-          <button className="bg-blue text-white py-2 px-4 rounded-lg">
-            수정
-          </button>
-        </Link>
+        {writerRef.current === user?.userId && (
+          <Link to="/content/edit" className="ml-auto">
+            <button className="bg-blue text-white py-2 px-4 rounded-lg">
+              수정
+            </button>
+          </Link>
+        )}
       </section>
 
       <hr className="hr h-2 border-2" />
@@ -100,7 +110,7 @@ export default function ContentDetail() {
         </div>
 
         {/* 댓글 달리는 영역 */}
-        {comment.length !== 0 && (
+        {comment?.length !== 0 && (
           <div className="w-full flex flex-col pt-10 px-[15%]">
             {/* <CommentItem /> */}
             {comment?.map((item) => {
