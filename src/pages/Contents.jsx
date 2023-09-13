@@ -8,12 +8,13 @@ import { getPbImageURL } from '@/utils';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { colourOptions } from '@/components/content/data/data';
+import Spinner from '@/components/Spinner';
 
 async function fetchContents(options) {
   let queryParams = '';
 
   if (options.filter === `(tag='')`) {
-    queryParams = `?sort=${options.sort}`;
+    queryParams = `?sort=${options.sort}&page=${options.page}&perPage=${options.perPage}`;
   } else {
     queryParams = `?${Object.entries(options)
       .map(
@@ -30,21 +31,26 @@ async function fetchContents(options) {
 }
 
 export default function Contents() {
+  // const pageSize = 10;
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(9);
+
   const [sort, setSort] = useState('-created');
   const [tag, setTag] = useState('');
 
   const { isLoading, data, isError, error } = useQuery({
-    queryKey: ['contents', sort, tag],
-    queryFn: () => fetchContents({ sort, filter: `(tag='${tag}')` }),
+    queryKey: ['contents', sort, tag, page, perPage],
+    queryFn: () =>
+      fetchContents({ sort, filter: `(tag='${tag}')`, page, perPage }),
+    keepPreviousData: true,
   });
 
   const handleTagSelect = (e) => {
-    if (e.target.value) setTag(e.target.value);
-    else setTag('');
+    setTag(e.target.value);
   };
 
   if (isLoading) {
-    return <div className="grid place-content-center h-full">로딩 중</div>;
+    return <Spinner className="mx-auto" />;
   }
 
   if (isError) {
@@ -72,8 +78,8 @@ export default function Contents() {
               }
               onMouseOut={(e) => (e.currentTarget.children[1].src = right)}
             >
-              <p className="font-extrabold text-lg ">⭐을 나눠주기</p>
-              <img src={right} alt="register" className="" />
+              <p className="font-extrabold text-lg">⭐ 나눠주기</p>
+              <img src={right} alt="링크 화살표" />
             </button>
           </Link>
         </section>
@@ -88,6 +94,7 @@ export default function Contents() {
             onChange={handleTagSelect}
             value={tag}
           >
+            <option>- 태그 -</option>
             {colourOptions.map((item) => (
               <option value={item.value} key={item.value}>
                 {item.value}
@@ -95,7 +102,8 @@ export default function Contents() {
             ))}
           </select>
         </div>
-        <section className="contentContainer p-1 bg-gray-100 min-h-[100vh] w-11/12">
+        <section className="contentContainer p-1 bg-gray-100 w-11/12">
+          {data.items.length === 0 && <ContentItem />}
           {data?.items?.map((item) => {
             return (
               <ContentItem
@@ -109,13 +117,22 @@ export default function Contents() {
           })}
         </section>
 
-        <section className="flex justify-center my-20">
-          <button type="button" className="px-4 text-gray-400 text-xl">
+        <section className="flex justify-center gap-5 my-10">
+          <button
+            onClick={() => setPage((old) => Math.max(old - 1, 0))}
+            disabled={page === 1}
+            className="disabled:font-extralight font-bold"
+          >
             &lt;
           </button>
-          {/* 추후 api 통신하면서 수정 */}
-          <div>1 2 3</div>
-          <button type="button" className="px-4 text-gray-400 text-xl">
+          <span>{`${page} / ${data.totalPages}`}</span>
+          <button
+            onClick={() => {
+              setPage((old) => old + 1);
+            }}
+            disabled={page === data.totalPages}
+            className="disabled:font-extralight font-bold"
+          >
             &gt;
           </button>
         </section>
