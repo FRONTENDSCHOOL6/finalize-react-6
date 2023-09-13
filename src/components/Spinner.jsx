@@ -1,90 +1,75 @@
 import { number, string, arrayOf } from 'prop-types';
 
-export default function Spinner({
-  size = 200,
-  message = '로딩 중...',
-  colors = ['#93dbe9', '#689cc5', '#5e6fa3'],
-  ...restProps
-}) {
+export default function Spinner() {
   return (
     <svg
-      width={size}
-      height={size}
-      display="block"
-      preserveAspectRatio="xMidYMid"
+      xmlns="http://www.w3.org/2000/svg"
+      className="m-auto h-[100vh]"
+      width="200px"
+      height="200px"
       viewBox="0 0 100 100"
-      {...restProps}
+      preserveAspectRatio="xMidYMid"
     >
-      <title>{message}</title>
-      <circle cx="80" cy="50" r="5" fill={colors[0]}>
-        <animate
-          attributeName="cx"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="80;35.00000000000001"
-        ></animate>
-        <animate
-          attributeName="cy"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="50;75.98076211353316"
-        ></animate>
-        <animate
-          attributeName="fill"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="#93dbe9;#689cc5"
-        ></animate>
-      </circle>
-      <circle cx="35" cy="75.981" r="5" fill={colors[1]}>
-        <animate
-          attributeName="cx"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="35.00000000000001;34.999999999999986"
-        ></animate>
-        <animate
-          attributeName="cy"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="75.98076211353316;24.019237886466847"
-        ></animate>
-        <animate
-          attributeName="fill"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="#689cc5;#5e6fa3"
-        ></animate>
-      </circle>
-      <circle cx="35" cy="24.019" r="5" fill={colors[2]}>
-        <animate
-          attributeName="cx"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="34.999999999999986;80"
-        ></animate>
-        <animate
-          attributeName="cy"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="24.019237886466847;49.99999999999999"
-        ></animate>
-        <animate
-          attributeName="fill"
-          dur="1.282051282051282s"
-          keyTimes="0;1"
-          repeatCount="indefinite"
-          values="#5e6fa3;#93dbe9"
-        ></animate>
-      </circle>
+      <g transform="translate(20 50)">
+        <circle cx="0" cy="0" r="6" fill="#85a2b6">
+          <animateTransform
+            attributeName="transform"
+            type="scale"
+            begin="-0.375s"
+            calcMode="spline"
+            keySplines="0.3 0 0.7 1;0.3 0 0.7 1"
+            values="0;1;0"
+            keyTimes="0;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          ></animateTransform>
+        </circle>
+      </g>
+      <g transform="translate(40 50)">
+        <circle cx="0" cy="0" r="6" fill="#bbcedd">
+          <animateTransform
+            attributeName="transform"
+            type="scale"
+            begin="-0.25s"
+            calcMode="spline"
+            keySplines="0.3 0 0.7 1;0.3 0 0.7 1"
+            values="0;1;0"
+            keyTimes="0;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          ></animateTransform>
+        </circle>
+      </g>
+      <g transform="translate(60 50)">
+        <circle cx="0" cy="0" r="6" fill="#dce4eb">
+          <animateTransform
+            attributeName="transform"
+            type="scale"
+            begin="-0.125s"
+            calcMode="spline"
+            keySplines="0.3 0 0.7 1;0.3 0 0.7 1"
+            values="0;1;0"
+            keyTimes="0;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          ></animateTransform>
+        </circle>
+      </g>
+      <g transform="translate(80 50)">
+        <circle cx="0" cy="0" r="6" fill="#cfcccc">
+          <animateTransform
+            attributeName="transform"
+            type="scale"
+            begin="0s"
+            calcMode="spline"
+            keySplines="0.3 0 0.7 1;0.3 0 0.7 1"
+            values="0;1;0"
+            keyTimes="0;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          ></animateTransform>
+        </circle>
+      </g>
     </svg>
   );
 }

@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import Spinner from './components/Spinner';
 
 const queryClient = new QueryClient();
 
@@ -13,7 +14,7 @@ function App() {
     <>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <Suspense fallback="페이지 로딩 중...">
+          <Suspense fallback={<Spinner />}>
             <RouterProvider router={router} />
           </Suspense>
           <ReactQueryDevtools />

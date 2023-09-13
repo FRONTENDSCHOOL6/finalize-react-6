@@ -31,7 +31,7 @@ export default function Header() {
     >
       <h1>
         <NavLink to="/" className="flex items-center">
-          <img src="/logo.png" alt="로고" />
+          <img src="/logo.png" alt="로고" className="w-24" />
           <span className="sr-only">Jeju - All in One</span>
         </NavLink>
       </h1>

@@ -91,7 +91,7 @@ export default function WeatherInfo() {
                 {city} {sublocation}
               </p>
             ) : (
-              <p className="mt-10 font-medium text-xl">{city}</p>
+              ''
             )}
           </div>
           <hr className="w-full" />

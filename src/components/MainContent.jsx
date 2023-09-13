@@ -49,7 +49,7 @@ export default function MainContent({ page, data }) {
               />
 
               <figcaption className="absolute bottom-0 py-4 px-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75 flex justify-content-between">
-                <div style={{ width: '80%' }}>{item.title}</div>
+                <div className="ellipsis w-4/5">{item.title}</div>
                 <span className="text-right" style={{ width: '20%' }}>
                   ⭐️ {item.commentId.length}
                 </span>

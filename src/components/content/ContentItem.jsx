@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
 
-export default function ContentItem({ src, content, title, count }) {
+export default function ContentItem({
+  src = '/jejuImage5.jpg',
+  content = '',
+  title = '당신의 제주를 나눠주세요',
+  count = '99',
+}) {
   return (
     <Link to={`/content/${content}`}>
       <div className="relative">
