@@ -7,6 +7,7 @@ import pb from '@/api/pocketbase';
 import ShowMap from '@/components/ShowMap';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useRef } from 'react';
+import AddComment from '@/components/content/AddComment';
 
 pb.autoCancellation(false);
 
@@ -22,6 +23,9 @@ export default function ContentDetail() {
   const [location, setLocation] = useState();
   const [address, setAddress] = useState();
   const writerRef = useRef(null);
+
+  // const [text, setText] = useState();
+  const [contentId, setContentId] = useState();
 
   useEffect(() => {
     async function getContent() {
@@ -43,6 +47,9 @@ export default function ContentDetail() {
         setLocation(location);
         setAddress(address);
         setCustomTag(customTag);
+
+        // console.log('id:', id);
+        setContentId(id);
 
         if (expand) setComment(expand.commentId);
         if (expand) writerRef.current = expand.userId.username;
@@ -89,7 +96,7 @@ export default function ContentDetail() {
       <section className="py-20 flex flex-col justify-center text-center items-center mx-auto min-h-full max-w-[1200px]">
         {/* 댓글 등록 */}
         <div className="w-full flex flex-row gap-4 justify-between items-center px-[15%]">
-          <div className="grow w-full">
+          {/* <div className="grow w-full">
             <label htmlFor="comment" className="sr-only">
               댓글
             </label>
@@ -106,7 +113,9 @@ export default function ContentDetail() {
             className="min-w-fit px-4 py-3 bg-lightblue hover:bg-blue border-2 text-white font-bold border-lightsand rounded-md"
           >
             ⭐ 마음 등록
-          </button>
+          </button> */}
+          {/* <AddComment text={text} /> */}
+          <AddComment contentId={contentId} />
         </div>
 
         {/* 댓글 달리는 영역 */}
