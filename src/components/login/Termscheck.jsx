@@ -5,10 +5,10 @@ import Modal from '@/components/modal/Modal';
 import {
   TermsOfServicePrivacy,
   TermsOfServiceUse,
-} from '../modal/TermsOfService';
+} from '@/components/modal/TermsOfService';
 import { useEffect } from 'react';
 
-export default function Termscheck() {
+export default function Termscheck({ setIsAgreed }) {
   const [isAllAccepted, setIsAllAccepted] = useState(false);
   const [isUseAccepted, setIsUseAccepted] = useState(false);
   const [isPrivacyAccepted, setIsPrivacyAccepted] = useState(false);
@@ -28,11 +28,13 @@ export default function Termscheck() {
 
   useEffect(() => {
     if (!isUseAccepted || !isPrivacyAccepted) {
-      setIsAllAccepted(false);
+    setIsAllAccepted(false);
+    setIsAgreed(false); // 약관 미동의 상태 반영
     } else {
-      setIsAllAccepted(true);
+    setIsAllAccepted(true);
+    setIsAgreed(true); // 약관 동의 상태 반영
     }
-  }, [isUseAccepted, isPrivacyAccepted]);
+    }, [isUseAccepted, isPrivacyAccepted]);
 
   useEffect(() => {
     if (isAllAccepted) {

@@ -20,8 +20,15 @@ export default function Join() {
     passwordConfirm: '',
   });
 
+  const [isAgreed, setIsAgreed] = useState(false);
+
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (!isAgreed) {
+      alert('약관에 동의해주세요.');
+      return;
+    }
 
     const { password, passwordConfirm } = formState;
 
@@ -88,14 +95,14 @@ export default function Join() {
           />
           <InputField
             id="email"
-            type="text"
+            type="email"
             name="email"
             placeholder="이메일"
             onChange={handleDebounceInput}
           />
 
           {/* 약관 동의 */}
-          <Termscheck />
+          <Termscheck setIsAgreed={setIsAgreed} />
         </form>
 
         {/* 로그인 페이지 이동 */}
