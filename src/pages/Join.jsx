@@ -7,7 +7,7 @@ import PageHead from '@/components/PageHead';
 import debounce from '@/utils/debounce';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Termscheck from '@/components/login/Termscheck';
+import Termscheck from '@/components/join/Termscheck';
 
 export default function Join() {
   const navigate = useNavigate();
