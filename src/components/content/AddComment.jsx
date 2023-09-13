@@ -6,16 +6,43 @@ import { useState } from 'react';
 
 export default function AddComment({ contentId }) {
   const [commentInput, setcommentInput] = useState();
+  const [uniqueId, setUniqueId] = useState();
 
   const user = localStorage.getItem('user');
   const userObj = JSON.parse(user);
   const userId = userObj.state.user.userId;
 
-  const commentRef = useRef(null);
+  // const auth = localStorage.getItem('pocketbase_auth');
+  // const tokenObj = JSON.parse(auth);
+  // const token = tokenObj.token;
+
+  // const commentRef = useRef(null);
+
+  // useEffect(() => {
+  //   console.log('commentInput:', commentInput);
+  // }, [commentInput]);
 
   useEffect(() => {
-    console.log('commentInput:', commentInput);
-  }, [commentInput]);
+    const fetchUserId = async () => {
+      const uniqueId = await findId();
+      // userId 값을 상태 변수나 다른 곳에 저장
+      setUniqueId(uniqueId);
+    };
+    fetchUserId();
+  }, []);
+
+  const findId = async () => {
+    const resultList = await pb.collection('user').getList(1, 50);
+    // console.log('resultList:', resultList);
+    // console.log(resultList.items);
+    let uniqueId = '';
+    for (let item of resultList.items) {
+      uniqueId = item.id;
+      console.log(item.id);
+    }
+    console.log('uniqueId:', uniqueId);
+    return uniqueId;
+  };
 
   const handleInput = debounce((e) => {
     setcommentInput(e.target.value);
@@ -24,34 +51,54 @@ export default function AddComment({ contentId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
+    // const uniqueId = await pb
+    //   .collection('user')
+    //   .getFirstListItem(nickname={userId});
+    // console.log('uniqueId:', uniqueId);
 
-    formData.append('star', true);
-    formData.append('comment', commentRef.current.value);
-    formData.append('contentId', contentId);
-    formData.append('userId', userId);
+    // const formData = new FormData();
 
-    console.log('formData:', formData);
+    // formData.append('star', true);
+    // formData.append('comment', commentRef.current.value);
+    // formData.append('contentId', contentId);
+    // formData.append('userId', userId);
 
     // formData 조회하는 방법
-    for (const [key, value] of formData.entries()) {
-      console.log('key:', key, 'value:', value);
-    }
+    // for (const [key, value] of formData.entries()) {
+    //   console.log('key:', key, 'value:', value);
+    // }
 
-    const data = {
-      star: true,
-      // comment: commentInput,
-      comment: 'test',
-      contentId: contentId,
-      // userId: userId,
-      userId: '0y0a8b6gea00jf1',
-    };
+    // const data = {
+    //   star: true,
+    //   comment: { commentInput },
+    //   // comment: 'test',
+    //   contentId: contentId,
+    //   userId: { userId },
+    //   // userId: '0y0a8b6gea00jf1',
+    // };
 
-    console.log('data: ', data);
-    console.log('contentId:', contentId);
-    console.log('userId;', userId);
+    // console.log('data: ', data);
+    // console.log('contentId:', contentId);
+    // console.log('userId;', userId);
 
     try {
+      const data = {
+        star: true,
+        comment: commentInput,
+        // comment: 'test',
+        contentId: contentId,
+        // userId: '0y0a8b6gea00jf1',
+        // userId: token,
+        userId: uniqueId,
+        // userId: userId,
+      };
+
+      console.log('data: ', data);
+      console.log('contentId:', contentId);
+      console.log('userId;', userId);
+      // console.log('token:', token);
+      console.log('성공');
+
       if (!userId) {
         alert('로그인 후 이용 가능합니다.');
         return; // 로그인하지 않은 상태에서도 댓글이 서버로 전송되기 때문에 return 필요
@@ -60,16 +107,12 @@ export default function AddComment({ contentId }) {
       // console.log('formData:', formData);
       // console.log(data);
       const record = await pb.collection('comment').create(data);
-      console.log(record);
+      console.log('record: ', record);
 
       // return record;
     } catch (error) {
       console.error(error);
     }
-
-    // const auth = localStorage.getItem('pocketbase_auth');
-    // const tokenObj = JSON.parse(auth);
-    // const token = tokenObj.token;
   };
 
   return (
@@ -83,7 +126,7 @@ export default function AddComment({ contentId }) {
             type="text"
             id="comment"
             name="comment"
-            ref={commentRef}
+            // ref={commentRef}
             defaultValue={commentInput}
             placeholder="별과 함께 이 제주에 대한 마음을 입력해주세요."
             onChange={handleInput}
