@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Button from '@/components/Button';
 import { CheckField } from '@/components/InputField';
-import Modal from '@/components/modal/Modal';
+import Modal from '@/components/join/Modal';
 import {
   TermsOfServicePrivacy,
   TermsOfServiceUse,
-} from '@/components/modal/TermsOfService';
+} from '@/components/join/TermsOfService';
 import { useEffect } from 'react';
 
 export default function Termscheck({ setIsAgreed }) {
@@ -28,13 +28,13 @@ export default function Termscheck({ setIsAgreed }) {
 
   useEffect(() => {
     if (!isUseAccepted || !isPrivacyAccepted) {
-    setIsAllAccepted(false);
-    setIsAgreed(false); // 약관 미동의 상태 반영
+      setIsAllAccepted(false);
+      setIsAgreed(false); // 약관 미동의 상태 반영
     } else {
-    setIsAllAccepted(true);
-    setIsAgreed(true); // 약관 동의 상태 반영
+      setIsAllAccepted(true);
+      setIsAgreed(true); // 약관 동의 상태 반영
     }
-    }, [isUseAccepted, isPrivacyAccepted]);
+  }, [isUseAccepted, isPrivacyAccepted]);
 
   useEffect(() => {
     if (isAllAccepted) {
