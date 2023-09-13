@@ -1,7 +1,7 @@
 import pb from '@/api/pocketbase';
 import debounce from '@/utils/debounce';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 export default function AddComment({ contentId }) {
   const [commentInput, setcommentInput] = useState(''); // submit 후 input 초기화 위해 빈 문자열
@@ -69,8 +69,8 @@ export default function AddComment({ contentId }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div className="grow w-full">
+      <form onSubmit={handleSubmit} className="grow w-full flex">
+        <div className="flex-grow mr-2">
           <label htmlFor="comment" className="sr-only">
             댓글
           </label>
@@ -94,3 +94,7 @@ export default function AddComment({ contentId }) {
     </>
   );
 }
+
+AddComment.propTypes = {
+  contentId: PropTypes.string.isRequired,
+};
