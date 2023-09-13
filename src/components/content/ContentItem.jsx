@@ -1,3 +1,4 @@
+import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default function ContentItem({
@@ -24,3 +25,10 @@ export default function ContentItem({
     </Link>
   );
 }
+
+ContentItem.propTypes = {
+  src: string,
+  content: string,
+  title: string,
+  count: string,
+};

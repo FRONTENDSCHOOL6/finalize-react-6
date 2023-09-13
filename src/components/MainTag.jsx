@@ -20,8 +20,22 @@ export default function MainTag({ data, onTagClick, setPage }) {
 
   return (
     <>
-      <ul className="flex flex-row justify-center items-center gap-5 pb-3">
-        🔥 인기태그 :
+      <ul className="flex flex-row justify-center items-center gap-2 pb-3 absolute top-0 left-[calc(50%-150px)]">
+        <li
+          onClick={() => {
+            onTagClick(null);
+            setPage(1); // 페이지를 1로 설정
+          }}
+          className="cursor-pointer"
+        >
+          <motion.div
+            className="box"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+          >
+            제주의 ⭐
+          </motion.div>
+        </li>
         {sortedTags.map((tag) => {
           return (
             <li
@@ -42,22 +56,6 @@ export default function MainTag({ data, onTagClick, setPage }) {
             </li>
           );
         })}
-        <li
-          onClick={() => {
-            onTagClick(null);
-            setPage(1); // 페이지를 1로 설정
-          }}
-          className="cursor-pointer"
-        >
-          {/* <span>/</span> */}
-          <motion.div
-            className="box"
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-          >
-            / All
-          </motion.div>
-        </li>
       </ul>
     </>
   );

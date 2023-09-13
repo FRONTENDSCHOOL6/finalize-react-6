@@ -1,3 +1,4 @@
+import { string } from 'prop-types';
 import { useEffect } from 'react';
 
 const { kakao } = window;
@@ -50,3 +51,8 @@ export default function ShowMap({
     </>
   );
 }
+
+ShowMap.propTypes = {
+  address: string,
+  location: string,
+};
