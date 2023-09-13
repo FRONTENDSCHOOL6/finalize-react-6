@@ -1,18 +1,13 @@
 import pb from '@/api/pocketbase';
-import Button from '@/components/Button';
-import InputField, { CheckField } from '@/components/InputField';
+import InputField from '@/components/InputField';
 import LinkItem from '@/components/LinkItem';
 import LoginPageContent from '@/components/login/LoginPageContent';
 import Logo from '@/components/Logo';
-import Modal from '@/components/modal/Modal';
 import PageHead from '@/components/PageHead';
-import {
-  TermsOfServicePrivacy,
-  TermsOfServiceUse,
-} from '@/components/modal/TermsOfService';
 import debounce from '@/utils/debounce';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Termscheck from '@/components/login/Termscheck';
 
 export default function Join() {
   const navigate = useNavigate();
@@ -100,36 +95,7 @@ export default function Join() {
           />
 
           {/* 약관 동의 */}
-          <div className="flex flex-col gap-2 my-3">
-            <CheckField
-              id="checkAll"
-              name="checkAll"
-              placeholder="전체 약관 동의"
-              className="w-[400px] px-5 py-4 bg-gray-200 rounded-md"
-            />
-            <div className="flex justify-between items-center px-5">
-              <CheckField
-                id="checkUse"
-                name="checkUse"
-                placeholder="이용 약관 동의"
-                className="pt-1"
-              />
-              <Modal>
-                <TermsOfServiceUse />
-              </Modal>
-            </div>
-            <div className="flex justify-between items-center px-5">
-              <CheckField
-                id="checkPrivacy"
-                name="checkPrivacy"
-                placeholder="개인정보 수집 및 이용 동의"
-              />
-              <Modal>
-                <TermsOfServicePrivacy />
-              </Modal>
-            </div>
-          </div>
-          <Button>가입하기</Button>
+          <Termscheck />
         </form>
 
         {/* 로그인 페이지 이동 */}

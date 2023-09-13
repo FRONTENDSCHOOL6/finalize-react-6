@@ -26,7 +26,7 @@ export default function InputField({
   );
 }
 
-export function CheckField({ id, name, placeholder, className }) {
+export function CheckField({ id, name, placeholder, className, ...restProps }) {
   return (
     <div className={className ? className : ''}>
       <input
@@ -35,6 +35,7 @@ export function CheckField({ id, name, placeholder, className }) {
         name={name}
         placeholder={placeholder}
         className="mr-3 transform scale-150"
+        {...restProps}
       />
       <label htmlFor={id}>{placeholder}</label>
     </div>
