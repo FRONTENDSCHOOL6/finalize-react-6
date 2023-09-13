@@ -44,7 +44,7 @@ const router = createBrowserRouter(
           }
         />
         <Route
-          path="edit"
+          path="edit/:id"
           element={
             <ProtectRoute>
               <ContentEdit />

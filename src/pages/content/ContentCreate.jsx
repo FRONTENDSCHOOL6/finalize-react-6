@@ -9,9 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { Map } from '@/components/Map';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function ContentCreate() {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   const [fileImages, setFileImages] = useState(null);
   const [placeName, setPlaceName] = useState();
@@ -49,8 +52,27 @@ export default function ContentCreate() {
     const customTagValue = customTagRef.current.value;
 
     // if (!placeName) return alert('위치를 등록해주세요.');
-    if (!tagRef) return alert('태그를 선택해주세요.');
-    else if (!photoValue[0]) return alert('사진을 등록해주세요.');
+    if (!tagRef) {
+      toast('태그를 선택해주세요.', {
+        position: 'top-center',
+        icon: '🚨',
+        ariaProps: {
+          role: 'alert',
+          'aria-live': 'polite',
+        },
+      });
+    }
+
+    if (!photoValue[0]) {
+      toast('사진을 등록해주세요.', {
+        position: 'top-center',
+        icon: '🚨',
+        ariaProps: {
+          role: 'alert',
+          'aria-live': 'polite',
+        },
+      });
+    }
 
     const formData = new FormData();
 
@@ -60,6 +82,7 @@ export default function ContentCreate() {
     formData.append('address', placeAddressRef.current);
     formData.append('tag', tagValue);
     formData.append('customTag', customTagValue);
+    formData.set('userId', pb.authStore.model.id);
     if (photoValue) {
       formData.append('photo', photoValue[0]);
     }
