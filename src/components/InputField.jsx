@@ -43,7 +43,7 @@ export function CheckField({ id, name, placeholder, className, ...restProps }) {
 }
 
 InputField.propTypes = {
-  type: oneOf(['text', 'password']),
+  type: oneOf(['text', 'password', 'email']),
   name: string.isRequired,
   placeholder: string.isRequired,
 };
