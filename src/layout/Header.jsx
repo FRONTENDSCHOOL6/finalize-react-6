@@ -56,6 +56,7 @@ export default function Header() {
       <ul className="flex flex-row items-center gap-5">
         {user && user.token ? (
           <>
+          <span className='font-bold text-gray-600'>{user.username} 님</span>
             <NavLink to={`profile/${user.id}`} style={isActive}>
               <NavigationSide menu="프로필" />
             </NavLink>
