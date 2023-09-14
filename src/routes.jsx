@@ -65,27 +65,4 @@ const router = createBrowserRouter(
   { basename: `/` }
 );
 
-// const router = createHashRouter([
-//   {
-//     path: '/',
-//     element: <RootLayout />,
-//     children: [
-//       { index: true, element: <Home /> },
-//       {
-//         path: 'content',
-//         element: <Contents />,
-//         children: [
-//           { path: 'create', element: <ContentCreate /> },
-//           { path: 'edit', element: <ContentEdit /> },
-//         ],
-//       },
-//       { path: 'join', element: <Join /> },
-//       { path: 'login', element: <Login /> },
-//       { path: 'profile', element: <MyProfile /> },
-//       { path: 'traffic', element: <TrafficInfo /> },
-//       { path: 'weather', element: <WeathertInfo /> },
-//     ],
-//   },
-// ]);
-
 export default router;
