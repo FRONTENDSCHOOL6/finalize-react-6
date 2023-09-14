@@ -37,7 +37,7 @@ export default function Login() {
 
       setIsLogin('success');
 
-      const { nickname, email, username } = response.record;
+      const { nickname, email, username, id } = response.record;
       const userToken = response.token;
 
       setUser({
@@ -45,6 +45,7 @@ export default function Login() {
         username: nickname,
         email: email,
         token: userToken,
+        id: id,
         isKakao: false,
       });
 

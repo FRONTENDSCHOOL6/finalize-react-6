@@ -29,7 +29,14 @@ const router = createBrowserRouter(
       <Route path="join" element={<Join />} />
       <Route path="findid" element={<FindId />} />
       <Route path="findpw" element={<FindPw />} />
-      <Route path="profile" element={<MyProfile />} />
+      <Route
+        path="profile/:id"
+        element={
+          <ProtectRoute>
+            <MyProfile />
+          </ProtectRoute>
+        }
+      />
       <Route path="traffic" element={<TrafficInfo />} />
       <Route path="weather" element={<WeathertInfo />} />
       <Route path="content">
