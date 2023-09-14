@@ -17,7 +17,7 @@ export default {
         KakaoYellow: '#FEE500',
       },
       screens: {
-        mobile: {min: '62.5em'}
+        mobile: { min: '62.5em' },
       },
       boxShadow: {
         content:
