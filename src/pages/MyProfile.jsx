@@ -1,14 +1,18 @@
 import pb from '@/api/pocketbase';
-import MainContent from '@/components/MainContent';
+import PageHead from '@/components/PageHead';
 import ProfileComment from '@/components/ProfileComment';
 import TitleButton from '@/components/TitleButton';
+import ContentItem from '@/components/content/ContentItem';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { getPbImageURL } from '@/utils';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function MyProfile() {
   const { user } = useAuthStore();
+  const [nickname, setNickname] = useState('');
+  const [post, setPost] = useState([]);
+  const [comment, setComment] = useState([]);
 
   useEffect(() => {
     async function getContent() {
@@ -17,30 +21,51 @@ export default function MyProfile() {
           .collection('user')
           .getOne(
             user.id,
-            { expand: 'comment,content' },
+            { expand: 'comment,comment.contentId,content' },
             { requestKey: 'string' }
           );
 
-        console.log(jejuContent);
+        const { nickname, expand } = jejuContent;
+        setNickname(nickname);
+
+        if (expand && expand.comment) {
+          setComment(expand.comment);
+        }
+        if (expand && expand.content) {
+          setPost(expand.content);
+        }
       } catch (error) {
         console.error(error);
       }
     }
 
     getContent();
-  }, []);
+  }, [user.id]);
 
   return (
     <>
-      <Helmet>
-        <title>Jeju All in One - 내 프로필</title>
-      </Helmet>
+      <PageHead title="Jeju All in One - 내 프로필" />
+
+      <section className="pt-10 font-bold text-lg text-center">
+        {nickname} 님 환영합니다.
+      </section>
 
       <section className="mx-10 pt-10">
         <TitleButton title="나의 제주" link="#" />
         <hr />
-        <ul className="flex grow gap-5 my-10 w-11/12 mx-auto">
-          {/* <MainContent /> */}
+        <ul className="my-10 w-11/12 mx-auto contentContainer">
+          {post?.length === 0 && <ContentItem />}
+          {post?.slice(0, 3).map((item) => {
+            return (
+              <ContentItem
+                key={item.id}
+                content={item.id}
+                title={item.title}
+                count={item.commentId.length}
+                src={getPbImageURL(item, 'photo')}
+              />
+            );
+          })}
         </ul>
       </section>
 
@@ -48,22 +73,30 @@ export default function MyProfile() {
         <TitleButton title="나의 제주의 별" link="#" />
         <hr />
         <ul className="w-11/12 mx-auto my-10">
-          <Link to="/content">
-            <ProfileComment
-              src="/jejuImage1.jpg"
-              alt="메밀꽃밭"
-              date="2023-09-06"
-              comment="메밀꽃밭을 보는 순간, 그에 사로잡힌 나는, 그 밭에 누워 삼박사일을 보내고만 싶었다."
-            />
-          </Link>
-          <Link to="/content">
-            <ProfileComment
-              src="/jejuImage2.jpg"
-              alt="오름"
-              date="2023-09-06"
-              comment="오름의 정상을 보자마자, 정상과 구름의 조화로운 신비에 사로잡혀 무엇에 홀린 듯 정신없이 올라갔다."
-            />
-          </Link>
+          {comment?.length === 0 && (
+            <>
+              <Link to="/content">
+                <ProfileComment
+                  src="/jejuImage5.jpg"
+                  alt="제주 바다"
+                  date="2023-09-06"
+                  comment="제주를 향한 당신의 별을 우리에게 나누어주세요"
+                />
+              </Link>
+            </>
+          )}
+          {comment?.map((item) => {
+            return (
+              <Link to={`/content/${item.contentId}`} key={item.id}>
+                <ProfileComment
+                  src={getPbImageURL(item.expand.contentId, 'photo')}
+                  alt={item.title}
+                  date={item.updated.split(' ')[0]}
+                  comment={item.comment}
+                />
+              </Link>
+            );
+          })}
         </ul>
       </section>
     </>
