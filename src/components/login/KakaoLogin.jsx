@@ -8,9 +8,7 @@ export default function KakaoLogin() {
 
   const { setUser } = useAuthStore();
 
-  const handleLogin = async (e) => {
-    // e.preventDefault();
-
+  const handleLogin = async () => {
     try {
       const user = await pb
         .collection('user')
