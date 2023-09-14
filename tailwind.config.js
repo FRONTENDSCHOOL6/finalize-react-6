@@ -1,11 +1,11 @@
-/ @type {import('tailwindcss').Config} */;
+/** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.jsx'],
+  content: ["./index.html", "./src/**/*.jsx"],
   theme: {
     extend: {
       important: true,
       fontFamily: {
-        suit: ['SUIT Variable'],
+        suit: ["SUIT Variable"],
       },
       colors: {
         darkblue: '#013F4E',

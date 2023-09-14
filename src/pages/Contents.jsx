@@ -71,7 +71,7 @@ export default function Contents() {
           <Link to="/content/create">
             <button
               type="button"
-              className="my-5 inline-flex text-blue rounded-full items-center bg-lightsand gap-2 px-6 py-3 border-2 border-blue 
+              className="my-5 inline-flex text-blue rounded-full items-center bg-lightsand gap-2 px-6 py-3 border-2 border-blue
               hover:bg-darkblue hover:text-lightsand transform transition-all"
               onMouseOver={(e) =>
                 (e.currentTarget.children[1].src = rightWhite)
