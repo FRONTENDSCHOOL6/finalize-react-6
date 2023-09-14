@@ -169,7 +169,14 @@ export default function ContentDetail() {
         )}
       </section>
       <hr />
-      <ShowMap address={address} location={location} />
+      <ShowMap
+        address={
+          address && address !== 'null'
+            ? address
+            : '제주특별자치도 제주시 공항로 2'
+        }
+        location={location && location !== 'null' ? location : '제주국제공항'}
+      />
     </>
   );
 }
