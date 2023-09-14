@@ -15,13 +15,14 @@ function ProtectRoute({ children }) {
     if (!token) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
-      toast('로그인 된 사용자만 이용 가능한 페이지입니다.', {
-        position: 'top-center',
+      toast('로그인이 필요합니다.', {
+        position: 'top-right',
         icon: '🚨',
         ariaProps: {
           role: 'alert',
           'aria-live': 'polite',
         },
+        duration: 1500
       });
 
       navigate('/login', { state: { wishLocationPath } });
