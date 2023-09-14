@@ -81,6 +81,7 @@ export default function AddComment({ contentId }) {
             defaultValue={commentInput}
             placeholder="별과 함께 이 제주에 대한 마음을 입력해주세요."
             onChange={handleInput}
+            required
             className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue"
           />
         </div>
