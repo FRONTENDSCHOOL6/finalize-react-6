@@ -28,9 +28,9 @@ export default function Modal({ children }) {
           >
             <button
               onClick={openModalHandler}
-              className="bg-blue text-center text-white rounded-lg m-[10px] w-[30px] h-[30px] leading-none"
+              className="bg-blue text-center text-xl text-white rounded-lg m-[10px] w-[30px] leading-[30px]"
             >
-              x
+              X
             </button>
             {/* 내용 부분에 스크롤 추가 */}
             <div className="m-7 overflow-auto max-h-[400px]">{children}</div>

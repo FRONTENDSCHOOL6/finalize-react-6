@@ -54,10 +54,10 @@ export default function Home() {
         <MainSlide />
       </section>
 
-      <section className="m-10 relative">
+      <section className="my-28 mx-10 relative">
         <TitleButton title="우리의 제주의 별" link="content/list" />
         <MainTag data={data} onTagClick={setSelectedTag} setPage={setPage} />
-        <ul className="contentContainer">
+        <ul className="contentContainer mt-4">
           <MainContent page={page} data={filteredData} />
         </ul>
 
@@ -68,7 +68,7 @@ export default function Home() {
               key={num}
               onClick={() => setPage(num)}
               disabled={page === num}
-              className="bg-lightsand px-2 rounded-full border-2 mt-8 w-5 h-5 flex items-center justify-center hover:border-blue"
+              className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
             ></button>
           ))}
         </div>
