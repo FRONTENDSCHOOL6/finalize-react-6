@@ -22,7 +22,7 @@ export default function Header() {
   const isActive = ({ isActive }) => {
     return {
       fontWeight: isActive ? 'bold' : '',
-      borderBottom: isActive ? '3px solid black' : '',
+      borderBottom: isActive ? '3px solid #013F4E' : '',
     };
   };
 
