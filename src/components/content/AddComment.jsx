@@ -20,19 +20,19 @@ export default function AddComment({ contentId }) {
 
   //# user에서 uniqueId 가져오기
   const findId = async () => {
-    // const result = await pb.collection('user').getList(1, 50, {
-    //   filter: 'username === userId',
-    // });
-    // const uniqueId = result.items[0].id;
+    const result = await pb.collection('user').getList(1, 50, {
+      filter: `(username = '${userId}')`,
+    });
+    const uniqueId = result.items[0].id;
 
-    // return uniqueId;
-    // console.log(runiqueId);
-    const resultList = await pb.collection('user').getList(1, 50);
-    let uniqueId = '';
-    for (let item of resultList.items) {
-      uniqueId = item.id;
-    }
+    // console.log(uniqueId);
     return uniqueId;
+    // const resultList = await pb.collection('user').getList(1, 50);
+    // let uniqueId = '';
+    // for (let item of resultList.items) {
+    //   uniqueId = item.id;
+    // }
+    // return uniqueId;
   };
 
   // const connectId = async () => {
