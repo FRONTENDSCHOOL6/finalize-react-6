@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 export default function AddComment({ contentId }) {
-  const [commentInput, setcommentInput] = useState(''); // submit 후 input 초기화 위해 빈 문자열
+  const [commentInput, setcommentInput] = useState();
   const [uniqueId, setUniqueId] = useState();
 
   const user = localStorage.getItem('user');
@@ -78,7 +78,8 @@ export default function AddComment({ contentId }) {
             type="text"
             id="comment"
             name="comment"
-            defaultValue={commentInput}
+            defaultValue={commentInput} // 초기화용 defaultValue
+            value={commentInput} // // 입력 필드의 값을 commentInput 상태와 연결
             placeholder="별과 함께 이 제주에 대한 마음을 입력해주세요."
             onChange={handleInput}
             required
