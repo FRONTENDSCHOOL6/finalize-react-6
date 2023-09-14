@@ -53,6 +53,7 @@ export default function KakaoLogin() {
     <>
       <button
         className="w-[400px] h-[50px] font-semibold text-black bg-KakaoYellow rounded-md"
+        type='button'
         onClick={handleLogin}
       >
         카카오로 로그인
