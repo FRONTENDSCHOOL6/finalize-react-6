@@ -1,11 +1,11 @@
-import { string } from 'prop-types';
+import { number, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default function ContentItem({
   src = '/jejuImage5.jpg',
   content = '',
   title = '당신의 제주를 나눠주세요',
-  count = '99',
+  count = 99,
 }) {
   return (
     <Link to={`/content/${content}`}>
@@ -30,5 +30,5 @@ ContentItem.propTypes = {
   src: string,
   content: string,
   title: string,
-  count: string,
+  count: number,
 };

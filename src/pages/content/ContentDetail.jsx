@@ -9,8 +9,6 @@ import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-pb.autoCancellation(false);
-
 export default function ContentDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -50,7 +48,6 @@ export default function ContentDetail() {
         setAddress(address);
         setCustomTag(customTag);
 
-        // console.log('id:', id);
         setContentId(id);
 
         if (expand) setComment(expand.commentId);
@@ -155,7 +152,6 @@ export default function ContentDetail() {
         {/* 댓글 달리는 영역 */}
         {comment?.length !== 0 && (
           <div className="w-full flex flex-col pt-10 px-[15%]">
-            {/* <CommentItem /> */}
             {comment?.map((item) => {
               return (
                 <CommentItem
