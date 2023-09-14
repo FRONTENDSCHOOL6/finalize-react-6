@@ -51,7 +51,7 @@ export default function MyProfile() {
       </section>
 
       <section className="mx-10 pt-10">
-        <TitleButton title="나의 제주" link="#" />
+        <TitleButton title="나의 제주" link="#" count={comment.length} />
         <hr />
         <ul className="my-10 w-11/12 mx-auto contentContainer">
           {post?.length === 0 && <ContentItem />}
@@ -70,7 +70,12 @@ export default function MyProfile() {
       </section>
 
       <section className="mx-10 mb-12">
-        <TitleButton title="나의 제주의 별" link="#" />
+        <TitleButton
+          title="나의 제주의 별"
+          link="#"
+          count={comment.length}
+          section="댓글"
+        />
         <hr />
         <ul className="w-11/12 mx-auto my-10">
           {comment?.length === 0 && (
