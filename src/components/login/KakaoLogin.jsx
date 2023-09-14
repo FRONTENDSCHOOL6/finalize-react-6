@@ -8,9 +8,7 @@ export default function KakaoLogin() {
 
   const { setUser } = useAuthStore();
 
-  const handleLogin = async (e) => {
-    // e.preventDefault();
-
+  const handleLogin = async () => {
     try {
       const user = await pb
         .collection('user')
@@ -53,6 +51,7 @@ export default function KakaoLogin() {
     <>
       <button
         className="w-[400px] h-[50px] font-semibold text-black bg-KakaoYellow rounded-md"
+        type='button'
         onClick={handleLogin}
       >
         카카오로 로그인

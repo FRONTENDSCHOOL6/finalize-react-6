@@ -5,8 +5,7 @@ import ContentTitle from '@/components/content/ContentTitle';
 import { colorStyles } from '@/components/content/colorStyles';
 import { colourOptions } from '@/components/content/data/data';
 import { getPbImageURL } from '@/utils';
-import { toaster } from '@/utils/toast';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
@@ -32,7 +31,7 @@ export default function ContentEdit() {
   const [fileImages, setFileImages] = useState([]);
   const [placeName, setPlaceName] = useState();
   const [placeAddress, setPlaceAddress] = useState();
-  const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedTag, setSelectedTag] = useState();
 
   const formRef = useRef(null);
   const titleRef = useRef(null);
@@ -43,7 +42,7 @@ export default function ContentEdit() {
   const placeNameRef = useRef(null);
   const placeAddressRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function getContent() {
       try {
         const jejuContent = await pb
@@ -58,12 +57,11 @@ export default function ContentEdit() {
         const photoUrl = (contentData.photo = getPbImageURL(
           jejuContent,
           'photo'
-          ));
+        ));
         setInitialImage({ image: photoUrl, label: photoUrl });
 
         contentData.tag = tagRef.current.value = tag;
-        const idx = colourOptions.findIndex((e) => e.value == tag)
-        setSelectedTag(idx);
+        setSelectedTag(colourOptions.findIndex((e) => e.value == tag));
         contentData.location = placeNameRef.current.value = location;
         contentData.address = placeAddressRef.current.value = address;
       } catch (error) {
@@ -234,6 +232,7 @@ export default function ContentEdit() {
               options={colourOptions}
               styles={colorStyles}
               ref={tagRef}
+              key={colourOptions[selectedTag]}
               defaultValue={colourOptions[selectedTag]}
               onChange={handleTypeSelect}
               placeholder="제주도 태그를 선택해주세요"
