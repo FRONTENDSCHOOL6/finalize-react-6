@@ -2,39 +2,68 @@ import pb from '@/api/pocketbase';
 import debounce from '@/utils/debounce';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRef } from 'react';
 
 export default function AddComment({ contentId }) {
-  const [commentInput, setcommentInput] = useState(''); // submit 후 input 초기화 위해 빈 문자열
+  const [text, setText] = useState();
   const [uniqueId, setUniqueId] = useState();
+  // const [connect, setConnect] = useState();
+  const inputRef = useRef(''); // 댓글 초기화
 
   const user = localStorage.getItem('user');
   const userObj = JSON.parse(user);
   const userId = userObj.state.user.userId;
 
-  useEffect(() => {
-    const fetchUserId = async () => {
-      const uniqueId = await findId();
-      setUniqueId(uniqueId);
-    };
-    fetchUserId();
-  }, []);
+  // useEffect(() => {
 
+  // },[connect])
+
+  //# user에서 uniqueId 가져오기
   const findId = async () => {
-    const resultList = await pb.collection('user').getList(1, 50);
+    const result = await pb.collection('user').getList(1, 50, {
+      filter: `(username = '${userId}')`,
+    });
+    const uniqueId = result.items[0].id;
 
-    let uniqueId = '';
-    for (let item of resultList.items) {
-      uniqueId = item.id;
-    }
+    // console.log(uniqueId);
     return uniqueId;
+    // const resultList = await pb.collection('user').getList(1, 50);
+    // let uniqueId = '';
+    // for (let item of resultList.items) {
+    //   uniqueId = item.id;
+    // }
+    // return uniqueId;
   };
 
+  // const connectId = async () => {
+  //   const data = {
+  //     "username": "test_username_update",
+  //     "emailVisibility": false,
+  //     "password": "87654321",
+  //     "passwordConfirm": "87654321",
+  //     "oldPassword": "12345678",
+  //     "nickname": "test",
+  //     "comment": [
+  //         "RELATION_RECORD_ID"
+  //     ],
+  //     "content": [
+  //         "RELATION_RECORD_ID"
+  //     ]
+  // };
+
+  // const record = await pb.collection('user').update('RECORD_ID', data);
+  // }
+
   const handleInput = debounce((e) => {
-    setcommentInput(e.target.value);
+    setText(e.target.value);
   }, 500);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const uniqueId = await findId(); // findId()의 결과값을 직접 uniqueId 변수에 할당
+
+    setUniqueId(uniqueId);
 
     // formData.append('star', true);
     // formData.append('comment', commentRef.current.value);
@@ -49,7 +78,7 @@ export default function AddComment({ contentId }) {
     try {
       const data = {
         star: true,
-        comment: commentInput,
+        comment: text,
         contentId: contentId,
         userId: uniqueId,
       };
@@ -61,7 +90,9 @@ export default function AddComment({ contentId }) {
 
       const record = await pb.collection('comment').create(data);
       console.log('성공');
-      setcommentInput('');
+      setText('');
+      inputRef.current.value = ''; // 댓글 초기화
+      // setConnect();
     } catch (error) {
       console.error(error);
     }
@@ -78,7 +109,8 @@ export default function AddComment({ contentId }) {
             type="text"
             id="comment"
             name="comment"
-            defaultValue={commentInput}
+            ref={inputRef} // 댓글 초기화
+            defaultValue={text}
             placeholder="별과 함께 이 제주에 대한 마음을 입력해주세요."
             onChange={handleInput}
             required
