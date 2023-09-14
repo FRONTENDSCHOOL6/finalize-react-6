@@ -7,7 +7,7 @@ import PageHead from '@/components/PageHead';
 import debounce from '@/utils/debounce';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Termscheck from '@/components/login/Termscheck';
+import Termscheck from '@/components/join/Termscheck';
 
 export default function Join() {
   const navigate = useNavigate();
@@ -20,22 +20,39 @@ export default function Join() {
     passwordConfirm: '',
   });
 
+  const [isAgreed, setIsAgreed] = useState(false);
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const { password, passwordConfirm } = formState;
+    if (!isAgreed) {
+      alert('약관에 동의해주세요.');
+      return;
+    }
+
+    const { username, nickname, email, password, passwordConfirm } = formState;
 
     if (password !== passwordConfirm) {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
 
-    await pb.collection('user').create({
-      ...formState,
-      emailVisibility: true,
-    });
+    if (!username || !nickname || !email || !password || !passwordConfirm) {
+      alert('모든 필드를 채워주세요.');
+      return;
+    }
 
-    navigate('/login');
+    try {
+      await pb.collection('user').create({
+        ...formState,
+        emailVisibility: true,
+      });
+
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+      alert('회원 가입에 실패하였습니다.');
+    }
   };
 
   const handleInput = (e) => {
@@ -88,14 +105,13 @@ export default function Join() {
           />
           <InputField
             id="email"
-            type="text"
+            type="email"
             name="email"
             placeholder="이메일"
             onChange={handleDebounceInput}
           />
-
           {/* 약관 동의 */}
-          <Termscheck />
+          <Termscheck setIsAgreed={setIsAgreed} />
         </form>
 
         {/* 로그인 페이지 이동 */}

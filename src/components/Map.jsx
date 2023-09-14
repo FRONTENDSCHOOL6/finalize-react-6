@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import '@/styles/map.css';
 import { forwardRef } from 'react';
+import { useMapStore } from '@/store/useMapStore';
 
 const { kakao } = window;
 
@@ -9,7 +10,12 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
   // const { setPlaceName, setPlaceAddress } = setPlace;
   // console.log(ref.placeAddressRef.current);
 
-  function search() {
+  const placeName = useMapStore((state) => state.name);
+  const placeAddress = useMapStore((state) => state.address);
+  const setName = useMapStore((state) => state.handleName);
+  const setAddress = useMapStore((state) => state.handleAddress);
+
+  const search = () => {
     // 마커를 담을 배열입니다
     var markers = [];
 
@@ -81,7 +87,7 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
           marker = addMarker(placePosition, i),
           itemEl = getListItem(i, places[i]), // 검색 결과 항목 Element를 생성합니다
-          address = places[i].road_address_name;
+          address = places[i].address_name;
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
@@ -98,9 +104,10 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
           kakao.maps.event.addListener(marker, 'click', function () {
             ref.placeNameRef.current = title;
             ref.placeAddressRef.current = address;
-            // console.log(ref.placeNameRef.current, ref.placeAddressRef.current);
-            // setPlaceName(title);
-            // setPlaceAddress(address);
+            setName(title);
+            setAddress(address);
+            console.log(ref.placeNameRef.current);
+            console.log(ref.placeAddressRef.current);
           });
 
           kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -114,8 +121,8 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
           itemEl.onclick = function () {
             ref.placeNameRef.current = title;
             ref.placeAddressRef.current = address;
-            // setPlaceName(title);
-            // setPlaceAddress(address);
+            setName(title);
+            setAddress(address);
           };
 
           itemEl.onmouseout = function () {
@@ -215,7 +222,7 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
         el.removeChild(el.lastChild);
       }
     }
-  }
+  };
 
   useEffect(() => {
     search();
@@ -227,7 +234,7 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
       <div id="menu_wrap" className="bg-white">
         <div className="option">
           <div>
-            <form onSubmit={search} className="flex">
+            <form className="flex">
               <input
                 type="text"
                 defaultValue="제주국제공항"
@@ -236,7 +243,8 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
                 size="15"
               />
               <button
-                type="submit"
+                type="button"
+                onClick={search}
                 className="w-1/3 bg-lightblue p-2 rounded-md text-gray-200 hover:bg-blue"
               >
                 검색
@@ -246,13 +254,14 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
         </div>
         <p className="p-2 pb-0 font-extrabold">
           장소 : {ref.placeNameRef.current}
+          {/* {placeName} */}
         </p>
         <p className="p-2 font-extrabold">
           주소 : {ref.placeAddressRef.current}
+          {/* {placeAddress} */}
         </p>
         <hr />
         <ul id="placesList"></ul>
-        {/* <div id="pagination"></div> */}
       </div>
     </div>
   );

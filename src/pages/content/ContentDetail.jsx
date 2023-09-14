@@ -1,19 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { getPbImageURL } from '@/utils';
-import PageHead from '@/components/PageHead';
-import CommentItem from '@/components/content/CommentItem';
 import pb from '@/api/pocketbase';
+import PageHead from '@/components/PageHead';
 import ShowMap from '@/components/ShowMap';
+import CommentItem from '@/components/content/CommentItem';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useRef } from 'react';
 import AddComment from '@/components/content/AddComment';
+import { getPbImageURL } from '@/utils';
+import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 pb.autoCancellation(false);
 
 export default function ContentDetail() {
-  const { user } = useAuthStore();
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { user } = useAuthStore();
+
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [photo, setPhoto] = useState();
@@ -58,7 +61,50 @@ export default function ContentDetail() {
     }
 
     getContent();
-  }, []);
+  }, [id]);
+
+  const handleDelete = async () => {
+    toast.custom(
+      (t) => (
+        <div
+          className={`${
+            t.visible ? 'animate-enter' : 'animate-leave'
+          } max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="w-full flex flex-col p-5 text-center gap-10">
+            <p className="font-semibold text-lg mt-4">
+              게시물을 삭제하시겠습니까 ?
+            </p>
+            <div className="flex justify-center items-center gap-5">
+              <button
+                onClick={async () => {
+                  try {
+                    await pb.collection('content').delete(id);
+                    toast.remove(t.id);
+                    navigate('/content/list');
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+                className="bg-lightblue focus:bg-blue text-center text-white rounded-lg px-4 py-3 leading-none"
+              >
+                삭제
+              </button>
+              <button
+                onClick={() => toast.remove(t.id)}
+                className="bg-lightblue focus:bg-blue text-center text-white rounded-lg px-4 py-3 leading-none"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+      }
+    );
+  };
 
   return (
     <>
@@ -80,12 +126,20 @@ export default function ContentDetail() {
           </p>
           {content}
         </article>
-        {writerRef.current === user?.userId && (
-          <Link to="/content/edit" className="ml-auto">
-            <button className="bg-blue text-white py-2 px-4 rounded-lg">
-              수정
+        {writerRef.current !== null && writerRef.current === user?.userId && (
+          <div className="flex gap-2">
+            <Link to={`/content/edit/${id}`}>
+              <button className="bg-blue text-white py-2 px-4 rounded-lg">
+                수정
+              </button>
+            </Link>
+            <button
+              className="bg-blue text-white py-2 px-4 rounded-lg"
+              onClick={handleDelete}
+            >
+              삭제
             </button>
-          </Link>
+          </div>
         )}
       </section>
 

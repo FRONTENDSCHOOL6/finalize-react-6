@@ -31,7 +31,6 @@ async function fetchContents(options) {
 }
 
 export default function Contents() {
-  // const pageSize = 10;
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(9);
 
@@ -47,6 +46,7 @@ export default function Contents() {
 
   const handleTagSelect = (e) => {
     setTag(e.target.value);
+    setPage(1);
   };
 
   if (isLoading) {
@@ -125,12 +125,17 @@ export default function Contents() {
           >
             &lt;
           </button>
-          <span>{`${page} / ${data.totalPages}`}</span>
+          <span>
+            {`${page}`}
+            {data.totalPages !== 1 &&
+              data.totalPages !== 0 &&
+              ` / ${data.totalPages}`}
+          </span>
           <button
             onClick={() => {
               setPage((old) => old + 1);
             }}
-            disabled={page === data.totalPages}
+            disabled={page === data.totalPages || data.totalPages === 0}
             className="disabled:font-extralight font-bold"
           >
             &gt;
