@@ -4,7 +4,6 @@ import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
 import { colorStyles } from '@/components/content/colorStyles';
 import { colourOptions } from '@/components/content/data/data';
-import { useTagStore } from '@/store/useTagStore';
 import { getPbImageURL } from '@/utils';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -42,8 +41,6 @@ export default function ContentEdit() {
   const photoRef = useRef(null);
   const placeNameRef = useRef(null);
   const placeAddressRef = useRef(null);
-
-  const { setTag, tag } = useTagStore();
 
   useLayoutEffect(() => {
     async function getContent() {
