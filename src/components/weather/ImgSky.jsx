@@ -1,7 +1,14 @@
 import PropTypes from 'prop-types';
 import Spinner from '../Spinner';
+import { useEffect } from 'react';
 
 export default function ImgSky({ data }) {
+  // useEffect를 사용하여 data prop이 변경될 때마다 로그를 출력합니다.
+  useEffect(() => {
+    console.log('data has changed:', data);
+  }, [data]);
+  console.log('data:', data);
+
   if (!data.response) {
     return (
       <div className="grid place-content-center h-[600px]">
@@ -31,6 +38,7 @@ export default function ImgSky({ data }) {
 
   // 강수 형태
   const rain = data?.response?.body?.items?.item[6]?.fcstValue;
+  console.log('rain:', rain);
   let rainSrc = '';
   let rainAlt = '';
   let rainText = '';

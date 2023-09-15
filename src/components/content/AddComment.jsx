@@ -7,8 +7,7 @@ import toast from 'react-hot-toast';
 
 export default function AddComment({ contentId, onCommentInfoChange }) {
   const [text, setText] = useState('');
-  const [commentUserId, setcommentUserId] = useState(); // 댓글 쓴 user id
-  const [connect, setConnect] = useState(); // 댓글 입력 후
+  const [commentUserId, setCommentUserId] = useState(); // 댓글 쓴 user id
   const inputRef = useRef(''); // 댓글 초기화
 
   //# localStorage에서 가져오기
@@ -72,7 +71,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
     }
 
     const uniqueId = await findId(); // findId()의 결과값을 직접 uniqueId 변수에 할당
-    setcommentUserId(uniqueId);
+    setCommentUserId(uniqueId);
 
     try {
       const data = {
@@ -88,41 +87,35 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
       console.log('성공');
       setText('');
       inputRef.current.value = ''; // 댓글 초기화
-      // console.log('data:', data);
-      // setConnect(data);
-      setConnect(record);
       onCommentInfoChange(record);
       console.log('record:', record);
       // console.log('record.id:', record.id); // 댓글 생성 후 만들어지는 id
-      // contentUpdate({ record });
       userUpdate(record);
+      // await contentUpdate(record); // 댓글 등록된 후!
     } catch (error) {
       console.error(error);
     }
   };
 
-  //# user에 업데이트
+  //# user에 업데이트 (처음에는 안되네,,,)
   const userUpdate = async (record) => {
-    console.log('contentUpdatd record:', record);
     return await pb.collection('user').update(commentUserId, {
       'comment+': record.id,
     });
   };
 
   //# content에 업데이트
-  const contentUpdate = async ({ record }) => {
-    console.log('contentUpdatd record:', record);
-    // return await pb.collection('content').update(contentId, {
-    //   'commentId+': record.id,
-    // });
+  const contentUpdate = async (record) => {
+    // console.log('contentUpdatd record:', record);
+    return await pb.collection('content').update(contentId, {
+      'commentId+': record.id,
+    });
   };
 
-  //# 댓글 등록 후 업데이트
-  useEffect(() => {
-    console.log('connect:', connect);
-    // userUpdate(record);
-    // contentUpdate(record);
-  }, [connect]);
+  //# 댓글 등록 후
+  // useEffect(() => {
+  //   console.log('connect:', connect);
+  // }, [connect]);
 
   return (
     <>

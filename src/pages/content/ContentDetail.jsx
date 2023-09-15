@@ -48,6 +48,8 @@ export default function ContentDetail() {
             { requestKey: 'string' }
           );
 
+        // console.log('jejuContetnt', jejuContent);
+
         const { title, content, tag, customTag, expand, location, address } =
           jejuContent;
         setPhoto(getPbImageURL(jejuContent, 'photo'));
