@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host --port=3000",
     "build": "vite build",
+    "deploy": "gh-page --save-dev --remote upstream",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "pocketbase": ".\\pocketbase\\pocketbase serve --http='127.0.0.1:3000'",
