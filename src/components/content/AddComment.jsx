@@ -6,97 +6,29 @@ import { useRef } from 'react';
 import toast from 'react-hot-toast';
 
 export default function AddComment({ contentId, onCommentInfoChange }) {
-  const [text, setText] = useState();
-  const [uniqueId, setUniqueId] = useState(); // users id
+  const [text, setText] = useState('');
+  const [commentUserId, setcommentUserId] = useState(); // 댓글 쓴 user id
   const [connect, setConnect] = useState(); // 댓글 입력 후
   const inputRef = useRef(''); // 댓글 초기화
-  // const [result, setResult] = useState();
 
   //# localStorage에서 가져오기
   const user = localStorage.getItem('user');
   const userObj = JSON.parse(user);
   const userId = userObj.state.user.userId; // sohee
 
-  //# 댓글 등록 후 업데이트 contentId, id 확인
-  useEffect(() => {
-    console.log('connect:', connect);
-
-    //# user 업데이트
-    // const connectComment = async () => {
-    // const updateData = {
-    //   // username: 'test_username_update',
-    //   // emailVisibility: false,
-    //   // password: '87654321',
-    //   // passwordConfirm: '87654321',
-    //   // oldPassword: '12345678',
-    //   // nickname: 'test',
-    //   // comment: ['RELATION_RECORD_ID'],
-    //   ...result,
-    //   content: [connect.id],
-    // };
-    // console.log('updateData:', updateData);
-    // const userInfo = await pb.collection('user').update(uniqueId, updateData);
-    // console.log('userInfo:', userInfo);
-    // };
-
-    // console.log('connect.id:', connect.id);
-    // commentId(connect.id);
-    // console.log('connect.id:', connect.id); // 댓글 id
-
-    // const getOne = async () => {
-    //   const getOneId = await pb
-    //     .collection('comment')
-    //     // .getFirstListItem(`'id=${connect.id}'`);
-    //     .getFirstListItem();
-    //   console.log('getOneId:', getOneId);
-    // };
-
-    // getOne();
-
-    // if (connect) {
-    //   const update = async () => {
-    //     const post = await pb.collection('comment').update(connect.id, {
-    //       // users: connect.id,
-    //       // users: uniqueIdco,
-    //     });
-    //     console.log(connect.id);
-    //   };
-    //   update();
-    // }
-  }, [connect]);
-
   //# user에서 uniqueId 가져오기
   const findId = async () => {
     const result = await pb.collection('user').getList(1, 50, {
       expand: 'comment, content',
-      // filter: `(username = '${userId}')`,
+      filter: `(username = '${userId}')`,
     });
 
-    // setResult(result);
     // console.log('result: ', result);
 
     const uniqueId = result.items[0].id; // 0y0a8b6gea00jf1
     const userName = result.items[0].username; // sohee
     const emailVisiblility = false;
     const nickName = result.items[0].nickname; // 소희
-
-    // console.log('username:', userName);
-    // console.log('emailVisiblility:', emailVisiblility);
-    // console.log('nicname:', nickName);
-
-    //% comment가 존재하는지 확인
-    let connectComment;
-    if (result.items[0].comment) {
-      connectComment = result.items[0].comment[0];
-    }
-    // console.log('connectComment:', connectComment);
-
-    //% content가 존재하는지 확인
-    let connectContent;
-    if (result.items[0].content) {
-      connectContent = result.items[0].content[0];
-    }
-    // console.log('connectContent:', connectContent);
 
     return uniqueId;
   };
@@ -110,12 +42,12 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 엔터 쳤을 때 공백 전송되지않도록
+    // 공백이 전송되지않도록
     if (!text.trim()) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
       toast('댓글을 입력해주세요.', {
-        position: 'top-center',
+        position: 'top-right',
         icon: '🚨',
         ariaProps: {
           role: 'alert',
@@ -129,7 +61,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
       toast('로그인 후 이용 가능합니다.', {
-        position: 'top-center',
+        position: 'top-right',
         icon: '🚨',
         ariaProps: {
           role: 'alert',
@@ -140,8 +72,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
     }
 
     const uniqueId = await findId(); // findId()의 결과값을 직접 uniqueId 변수에 할당
-
-    setUniqueId(uniqueId);
+    setcommentUserId(uniqueId);
 
     try {
       const data = {
@@ -152,7 +83,6 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
       };
 
       const record = await pb.collection('comment').create(data, {
-        // expand: 'content, user',
         expand: ['userId, contentId'],
       });
       console.log('성공');
@@ -164,10 +94,35 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
       onCommentInfoChange(record);
       console.log('record:', record);
       // console.log('record.id:', record.id); // 댓글 생성 후 만들어지는 id
+      // contentUpdate({ record });
+      userUpdate(record);
     } catch (error) {
       console.error(error);
     }
   };
+
+  //# user에 업데이트
+  const userUpdate = async (record) => {
+    console.log('contentUpdatd record:', record);
+    return await pb.collection('user').update(commentUserId, {
+      'comment+': record.id,
+    });
+  };
+
+  //# content에 업데이트
+  const contentUpdate = async ({ record }) => {
+    console.log('contentUpdatd record:', record);
+    // return await pb.collection('content').update(contentId, {
+    //   'commentId+': record.id,
+    // });
+  };
+
+  //# 댓글 등록 후 업데이트
+  useEffect(() => {
+    console.log('connect:', connect);
+    // userUpdate(record);
+    // contentUpdate(record);
+  }, [connect]);
 
   return (
     <>
@@ -201,6 +156,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
 
 AddComment.propTypes = {
   contentId: PropTypes.string.isRequired,
+  onCommentInfoChange: PropTypes.func.isRequired,
 };
 
 // 파일 업로드 시에 formData 사용
