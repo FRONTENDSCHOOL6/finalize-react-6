@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Set environment variables
+        run: |
+          echo "VITE_PB_URL=${{ secrets.VITE_PB_URL }}" >> $GITHUB_ENV
+          echo "VITE_PB_API=${{ secrets.VITE_PB_API }}" >> $GITHUB_ENV
+          echo "VITE_KAKAO_CLIENT_ID=${{ secrets.VITE_KAKAO_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "VITE_KAKAO_LOGOUT_REDIRECT_URI=${{ secrets.VITE_KAKAO_LOGOUT_REDIRECT_URI }}" >> $GITHUB_ENV
+          echo "VITE_WEATHER_API_KEY=${{ secrets.VITE_WEATHER_API_KEYT }}" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
