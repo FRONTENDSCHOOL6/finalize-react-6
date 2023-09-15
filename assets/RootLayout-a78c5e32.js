@@ -1,4 +1,4 @@
-import{j as e,a as m,l as f,u,r as h,N as o,O as p}from"./vendor-544b9a11.js";import{u as b}from"./index-f591e0b4.js";function n({menu:l,logout:a}){return e.jsx(e.Fragment,{children:e.jsx("li",{onClick:a,className:"py-3 cursor-pointer text-base text-center leading-8 hover:text-darkblue hover:border-b-[3px] hover:border-darkblue",children:l})})}n.propTypes={menu:m.string.isRequired,logout:m.func};var j={exports:{}};/*!
+import{j as e,a as m,l as f,u,r as h,N as o,O as p}from"./vendor-544b9a11.js";import{u as b}from"./index-b22ccbb2.js";function n({menu:l,logout:a}){return e.jsx(e.Fragment,{children:e.jsx("li",{onClick:a,className:"py-3 cursor-pointer text-base text-center leading-8 hover:text-darkblue hover:border-b-[3px] hover:border-darkblue",children:l})})}n.propTypes={menu:m.string.isRequired,logout:m.func};var j={exports:{}};/*!
 	Copyright (c) 2018 Jed Watson.
 	Licensed under the MIT License (MIT), see
 	http://jedwatson.github.io/classnames
