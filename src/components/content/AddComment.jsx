@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import toast from 'react-hot-toast';
 
-export default function AddComment({ contentId }) {
+export default function AddComment({ contentId, onCommentInfoChange }) {
   const [text, setText] = useState();
   const [uniqueId, setUniqueId] = useState(); // users id
   const [connect, setConnect] = useState(); // 댓글 입력 후
@@ -101,12 +101,29 @@ export default function AddComment({ contentId }) {
     return uniqueId;
   };
 
+  //# 입력 칸
   const handleInput = debounce((e) => {
     setText(e.target.value);
   }, 500);
 
+  //# 전송 버튼
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 엔터 쳤을 때 공백 전송되지않도록
+    if (!text.trim()) {
+      import.meta.env.MODE === 'development' && toast.dismiss();
+
+      toast('댓글을 입력해주세요.', {
+        position: 'top-center',
+        icon: '🚨',
+        ariaProps: {
+          role: 'alert',
+          'aria-live': 'polite',
+        },
+      });
+      return;
+    }
 
     if (!userId) {
       import.meta.env.MODE === 'development' && toast.dismiss();
@@ -136,6 +153,7 @@ export default function AddComment({ contentId }) {
 
       const record = await pb.collection('comment').create(data, {
         // expand: 'content, user',
+        expand: ['userId, contentId'],
       });
       console.log('성공');
       setText('');
@@ -143,8 +161,9 @@ export default function AddComment({ contentId }) {
       // console.log('data:', data);
       // setConnect(data);
       setConnect(record);
+      onCommentInfoChange(record);
       console.log('record:', record);
-      console.log('record.id:', record.id); // 댓글 생성 후 만들어지는 id
+      // console.log('record.id:', record.id); // 댓글 생성 후 만들어지는 id
     } catch (error) {
       console.error(error);
     }

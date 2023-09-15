@@ -27,6 +27,16 @@ export default function ContentDetail() {
 
   const [contentId, setContentId] = useState();
 
+  //# 댓글 추가 후 반영하기
+  const [commentInfo, setCommentInfo] = useState();
+  console.log('commentInfo:', commentInfo);
+  useEffect(() => {
+    if (commentInfo) {
+      // comment 배열에 commentInfo 객체를 추가
+      setComment((prevComments) => [...prevComments, commentInfo]);
+    }
+  }, [commentInfo]);
+
   useEffect(() => {
     async function getContent() {
       try {
@@ -146,7 +156,7 @@ export default function ContentDetail() {
       <section className="py-20 flex flex-col justify-center text-center items-center mx-auto min-h-full max-w-[1200px]">
         {/* 댓글 등록 */}
         <div className="w-full flex flex-row gap-4 justify-between items-center px-[15%]">
-          <AddComment contentId={id} />
+          <AddComment contentId={id} onCommentInfoChange={setCommentInfo} />
         </div>
 
         {/* 댓글 달리는 영역 */}
@@ -161,6 +171,14 @@ export default function ContentDetail() {
                 />
               );
             })}
+            {/* 새로 추가된 댓글 출력 */}
+            {commentInfo && (
+              <CommentItem
+                key={commentInfo.id}
+                writer={commentInfo.expand.userId.nickname}
+                comment={commentInfo.comment}
+              />
+            )}
           </div>
         )}
       </section>
