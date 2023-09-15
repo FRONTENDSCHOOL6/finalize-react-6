@@ -31,7 +31,7 @@ export default function Header() {
       <nav className="flex items-center h-20 justify-between space-x-4 px-8">
         <h1>
           <NavLink to="/" className="flex items-center">
-            <img src="/logo.png" alt="로고" className="w-24" />
+            <img src="./logo.png" alt="로고" className="w-24" />
             <span className="sr-only">Jeju - All in One</span>
           </NavLink>
         </h1>
@@ -117,8 +117,16 @@ export default function Header() {
         </div>
       </nav>
       <div className={classNames('mobile:hidden', { hidden: !menuToggle })}>
-        <ul className={`${mainHeader} mobile:flex justify-center bg-slate-100 font-semibold font-heading list-none text-gray-600`}>
-          <li className={`text-center text-lg py-3 text-darkblue font-bold ${user.token ? 'block' : 'hidden'}`}>{user.username}님 어서오세요!</li>
+        <ul
+          className={`${mainHeader} mobile:flex justify-center bg-slate-100 font-semibold font-heading list-none text-gray-600`}
+        >
+          <li
+            className={`text-center text-lg py-3 text-darkblue font-bold ${
+              user.token ? 'block' : 'hidden'
+            }`}
+          >
+            {user.username}님 어서오세요!
+          </li>
           <NavLink
             to="content/list"
             style={isActive}
