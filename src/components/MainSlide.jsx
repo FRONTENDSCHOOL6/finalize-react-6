@@ -8,10 +8,10 @@ export default function MainSlide() {
   const swiperRef = useRef(null); // useRef로 관리하는 값은 값이 변해도 화면이 렌더링되지 않음
 
   const slides = [
-    { src: '/mainSlide1.jpg', alt: '제주도 바다' },
-    { src: '/mainSlide3.jpeg', alt: '제주도 하늘' },
-    { src: '/jejuImage1.jpg', alt: '제주도 메밀꽃' },
-    { src: '/jejuImage3.jpg', alt: '제주도 감귤나무' },
+    { src: './mainSlide1.jpg', alt: '제주도 바다' },
+    { src: './mainSlide3.jpeg', alt: '제주도 하늘' },
+    { src: './jejuImage1.jpg', alt: '제주도 메밀꽃' },
+    { src: './jejuImage3.jpg', alt: '제주도 감귤나무' },
   ];
 
   const togglePlayPause = () => {
@@ -57,9 +57,9 @@ export default function MainSlide() {
         className="rounded-full absolute bottom-[10px] right-[10px] w-[30px] h-[30px] z-50"
       >
         {isPlaying ? (
-          <img src="/pause.png" alt="중지" />
+          <img src="./pause.png" alt="중지" />
         ) : (
-          <img src="/play.png" alt="재생" />
+          <img src="./play.png" alt="재생" />
         )}
       </button>
     </article>

@@ -62,7 +62,7 @@ const router = createBrowserRouter(
       </Route>
     </Route>
   ),
-  { basename: `/finalize-react-6/` }
+  { basename: `https://frontendschool6.github.io/finalize-react-6/` }
 );
 
 export default router;
