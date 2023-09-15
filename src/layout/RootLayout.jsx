@@ -8,7 +8,7 @@ export default function RootLayout() {
   return (
     <>
       <Header />
-      <main className={pathname !== '/' ? 'pt-16' : ''}>
+      <main className={pathname !== '/' ? 'py-28 ' : ''}>
         <Outlet />
       </main>
       <Footer />
