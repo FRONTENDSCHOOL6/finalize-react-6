@@ -12,29 +12,14 @@ export default function CommentItem({
 }) {
   // console.log('commentId:', commentId);
 
+  const [showOptions, setShowOptions] = useState(false);
+
   const [userName] = useState(() => {
     const user = localStorage.getItem('user');
     const userObj = JSON.parse(user);
     const userName = userObj.state.user.username; // 소희
     return userName;
   });
-
-  const [nickName, setNickName] = useState(null);
-
-  useEffect(() => {
-    const findNickname = async () => {
-      const result = await pb.collection('user').getList(1, 1, {
-        expand: 'comment, content',
-        filter: `(nickname = '${userName}')`,
-      });
-
-      const resultNickName = result.items[0].nickname; // 소희
-      setNickName(resultNickName);
-    };
-    findNickname();
-  }, [userName]);
-
-  const [showOptions, setShowOptions] = useState(false);
 
   const handleSelect = () => {
     setShowOptions(!showOptions);
@@ -45,10 +30,10 @@ export default function CommentItem({
     // setShowOptions(false); // Close the dropdown after action
   };
 
-  const handleDelete = (commentId) => {
+  const handleDelete = async (commentId) => {
     // setShowOptions(false); // Close the dropdown after action
 
-    if (userName !== nickName) {
+    if (userName !== writer) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
       toast('작성자만 삭제 가능합니다.', {
@@ -62,18 +47,8 @@ export default function CommentItem({
       return;
     }
 
-    const deleteComment = async () => {
-      console.log('삭제', commentId);
-      await pb.collection('comment').delete(commentId);
-    };
-
-    deleteComment();
-  };
-
-  const fineUserName = async () => {
-    const record = await pb.collection('comment').getOne('RECORD_ID', {
-      expand: 'users',
-    });
+    console.log('삭제', commentId);
+    await pb.collection('comment').delete(commentId);
   };
 
   return (
@@ -86,14 +61,6 @@ export default function CommentItem({
         <p className="grow text-start bg-pink-200">{comment}</p>
         <button onClick={handleSelect} className="bg-sky-300 shrink-0 ">
           <img src={more} alt="more" />
-          {/* 
-          {showOptions &&
-            totalCommentInfo.commentId.map((id) => (
-              <ul key={id} className="dropdown-menu">
-                <li onClick={() => handleEdit(id)}>수정</li>
-                <li onClick={() => handleDelete(id)}>삭제</li>
-              </ul>
-            ))} */}
           {showOptions && (
             <ul key={commentId} className="dropdown-menu">
               <li onClick={() => handleEdit(commentId)}>수정</li>
