@@ -11,9 +11,9 @@ export default function CommentItem({
   commentId,
   onCommentChange,
 }) {
-  // console.log('commentId:', commentId);
-
   const [showOptions, setShowOptions] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedComment, setEditedComment] = useState(comment);
 
   const [userName] = useState(() => {
     const user = localStorage.getItem('user');
@@ -26,9 +26,7 @@ export default function CommentItem({
     setShowOptions(!showOptions);
   };
 
-  const handleEdit = async (commentId) => {
-    setShowOptions(false); // Close the dropdown after action
-
+  const handleEdit = (commentId) => {
     if (userName !== writer) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
@@ -43,8 +41,13 @@ export default function CommentItem({
       return;
     }
 
+    setShowOptions(false); // Close the dropdown after action
+    setIsEditMode(!isEditMode);
+  };
+
+  const handleSaveClick = async (commentId) => {
     const updateData = {
-      comment: '수정(Update)',
+      comment: editedComment,
     };
 
     try {
@@ -53,6 +56,7 @@ export default function CommentItem({
     } catch (error) {
       throw new Error(error.message);
     }
+    setIsEditMode(false);
   };
 
   const handleDelete = async (commentId) => {
@@ -92,12 +96,24 @@ export default function CommentItem({
         <div className="text-darkblue font-semibold bg-orange-300">
           {writer}
         </div>
-        <p className="grow text-start bg-pink-200">{comment}</p>
+        {isEditMode ? (
+          <input
+            type="text"
+            value={editedComment}
+            onChange={(e) => setEditedComment(e.target.value)}
+          />
+        ) : (
+          <p className="grow text-start bg-pink-200">{editedComment}</p>
+        )}
         <button onClick={handleSelect} className="bg-sky-300 shrink-0 ">
           <img src={more} alt="more" />
           {showOptions && (
             <ul key={commentId} className="dropdown-menu">
               <li onClick={() => handleEdit(commentId)}>수정</li>
+              {isEditMode && (
+                <li onClick={() => handleSaveClick(commentId)}>저장</li>
+              )}
+
               <li onClick={() => handleDelete(commentId)}>삭제</li>
             </ul>
           )}
