@@ -38,6 +38,10 @@ export default function ContentDetail() {
     }
   }, [commentInfo]);
 
+  //# 댓글 삭제
+  const [deletedCommentIds, setDeletedCommentIds] = useState([]);
+  const isCommentDeleted = (commentId) => deletedCommentIds.includes(commentId);
+
   useEffect(() => {
     async function getContent() {
       try {
@@ -168,13 +172,16 @@ export default function ContentDetail() {
         {comment?.length !== 0 && (
           <div className="w-full flex flex-col pt-10 px-[15%]">
             {comment?.map((item) => {
+              if (isCommentDeleted(item.id)) {
+                return null; // 삭제된 댓글은 숨김
+              }
               return (
                 <CommentItem
                   key={item.id}
                   writer={item.expand.userId.nickname}
                   comment={item.comment}
                   commentId={item.id}
-                  onCommentInfoChange={setCommentInfo}
+                  onCommentChange={setComment}
                 />
               );
             })}

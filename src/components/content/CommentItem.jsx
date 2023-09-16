@@ -8,7 +8,7 @@ export default function CommentItem({
   writer = '작성자',
   comment = '댓글입니다',
   commentId,
-  onCommentInfoChange,
+  onCommentChange,
 }) {
   // console.log('commentId:', commentId);
 
@@ -49,6 +49,11 @@ export default function CommentItem({
 
     console.log('삭제', commentId);
     await pb.collection('comment').delete(commentId);
+
+    // 댓글 삭제 후 comment 배열에서도 제거
+    onCommentChange((prevComments) =>
+      prevComments.filter((item) => item.id !== commentId)
+    );
   };
 
   return (
