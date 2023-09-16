@@ -5,6 +5,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function CommentItem({
+  contentId,
   writer = '작성자',
   comment = '댓글입니다',
   commentId,
@@ -25,13 +26,37 @@ export default function CommentItem({
     setShowOptions(!showOptions);
   };
 
-  const handleEdit = () => {
-    console.log('수정');
-    // setShowOptions(false); // Close the dropdown after action
+  const handleEdit = async (commentId) => {
+    setShowOptions(false); // Close the dropdown after action
+
+    if (userName !== writer) {
+      import.meta.env.MODE === 'development' && toast.dismiss();
+
+      toast('작성자만 수정 가능합니다.', {
+        position: 'top-right',
+        icon: '🚨',
+        ariaProps: {
+          role: 'alert',
+          'aria-live': 'polite',
+        },
+      });
+      return;
+    }
+
+    const updateData = {
+      comment: '수정(Update)',
+    };
+
+    try {
+      await pb.collection('comment').update(commentId, updateData);
+      console.log('수정');
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 
   const handleDelete = async (commentId) => {
-    // setShowOptions(false); // Close the dropdown after action
+    setShowOptions(false); // Close the dropdown after action
 
     if (userName !== writer) {
       import.meta.env.MODE === 'development' && toast.dismiss();
@@ -47,13 +72,17 @@ export default function CommentItem({
       return;
     }
 
-    console.log('삭제', commentId);
-    await pb.collection('comment').delete(commentId);
+    try {
+      await pb.collection('comment').delete(commentId);
 
-    // 댓글 삭제 후 comment 배열에서도 제거
-    onCommentChange((prevComments) =>
-      prevComments.filter((item) => item.id !== commentId)
-    );
+      // 댓글 삭제 후 comment 배열에서도 제거
+      onCommentChange((prevComments) =>
+        prevComments.filter((item) => item.id !== commentId)
+      );
+      console.log('삭제', commentId);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 
   return (
