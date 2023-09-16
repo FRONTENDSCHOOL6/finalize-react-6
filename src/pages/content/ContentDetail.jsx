@@ -29,7 +29,7 @@ export default function ContentDetail() {
 
   //# 댓글 추가 후 반영하기
   const [commentInfo, setCommentInfo] = useState();
-  console.log('commentInfo:', commentInfo);
+  // console.log('commentInfo:', commentInfo);
   useEffect(() => {
     if (commentInfo) {
       // comment 배열에 commentInfo 객체를 추가
@@ -173,14 +173,6 @@ export default function ContentDetail() {
                 />
               );
             })}
-            {/* 새로 추가된 댓글 출력 */}
-            {commentInfo && (
-              <CommentItem
-                key={commentInfo.id}
-                writer={commentInfo.expand.userId.nickname}
-                comment={commentInfo.comment}
-              />
-            )}
           </div>
         )}
       </section>

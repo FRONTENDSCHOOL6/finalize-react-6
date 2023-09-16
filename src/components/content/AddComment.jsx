@@ -1,47 +1,39 @@
 import pb from '@/api/pocketbase';
 import debounce from '@/utils/debounce';
-import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function AddComment({ contentId, onCommentInfoChange }) {
   const [text, setText] = useState('');
-  const [commentUserId, setCommentUserId] = useState(); // 댓글 쓴 user id
+  const [commentUserId, setCommentUserId] = useState('');
   const inputRef = useRef(''); // 댓글 초기화
 
-  //# localStorage에서 가져오기
-  const user = localStorage.getItem('user');
-  const userObj = JSON.parse(user);
-  const userId = userObj.state.user.userId; // sohee
+  //@ 컴포넌트가 렌더링 될 때마다 로컬스토리지 값을 읽지 않도록 userId 상태로 관리하세요.
+  const [userId] = useState(() => {
+    const user = localStorage.getItem('user');
+    const userObj = JSON.parse(user);
+    const userId = userObj.state.user.userId;
+    return userId;
+  });
 
-  //# user에서 uniqueId 가져오기
   const findId = async () => {
-    const result = await pb.collection('user').getList(1, 50, {
+    const result = await pb.collection('user').getList(1, 1, {
       expand: 'comment, content',
       filter: `(username = '${userId}')`,
     });
 
-    // console.log('result: ', result);
-
-    const uniqueId = result.items[0].id; // 0y0a8b6gea00jf1
-    const userName = result.items[0].username; // sohee
-    const emailVisiblility = false;
-    const nickName = result.items[0].nickname; // 소희
-
+    const uniqueId = result.items[0].id;
     return uniqueId;
   };
 
-  //# 입력 칸
   const handleInput = debounce((e) => {
     setText(e.target.value);
   }, 500);
 
-  //# 전송 버튼
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 공백이 전송되지않도록
     if (!text.trim()) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
@@ -67,55 +59,64 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
           'aria-live': 'polite',
         },
       });
-      return; // 로그인하지 않은 상태에서도 댓글이 서버로 전송되기 때문에 return 필요
+      return;
     }
 
-    const uniqueId = await findId(); // findId()의 결과값을 직접 uniqueId 변수에 할당
-    setCommentUserId(uniqueId);
+    const uniqueId = await findId();
 
-    try {
-      const data = {
-        star: true,
-        comment: text,
-        contentId: contentId,
-        userId: uniqueId,
+    //@ ※ commentUserId 상태는 스냅샷으로 즉시 값이 변경되지 않습니다.
+    //@   그러므로 값이 변경된 이후 서버에 요청해야 합니다. (아래 useEffect 참고)
+    setCommentUserId(uniqueId);
+  };
+
+  useEffect(() => {
+    // 댓글 작성자가 존재할 경우에만 처리
+    if (commentUserId) {
+      //# user.comment에 레코드 ID 추가
+      const userUpdate = async (record) => {
+        return await pb.collection('user').update(commentUserId, {
+          'comment+': record.id,
+        });
       };
 
-      const record = await pb.collection('comment').create(data, {
-        expand: ['userId, contentId'],
-      });
-      console.log('성공');
-      setText('');
-      inputRef.current.value = ''; // 댓글 초기화
-      onCommentInfoChange(record);
-      console.log('record:', record);
-      // console.log('record.id:', record.id); // 댓글 생성 후 만들어지는 id
-      userUpdate(record);
-      // await contentUpdate(record); // 댓글 등록된 후!
-    } catch (error) {
-      console.error(error);
+      //# content.commendId에 레코드 ID 추가
+      const contentUpdate = async (record) => {
+        return await pb.collection('content').update(contentId, {
+          'commentId+': record.id,
+        });
+      };
+
+      //# 마음 등록 전송 후 처리할 사항
+      const afterSubmit = async () => {
+        const data = {
+          star: true,
+          comment: text,
+          contentId: contentId,
+          userId: commentUserId,
+        };
+
+        if (inputRef.current.value.trim()) {
+          const record = await pb.collection('comment').create(data, {
+            expand: 'userId',
+          });
+
+          setText('');
+          inputRef.current.value = '';
+
+          await contentUpdate(record);
+          await userUpdate(record);
+
+          onCommentInfoChange?.(record);
+        }
+      };
+
+      try {
+        afterSubmit();
+      } catch (error) {
+        console.error(error);
+      }
     }
-  };
-
-  //# user에 업데이트 (처음에는 안되네,,,)
-  const userUpdate = async (record) => {
-    return await pb.collection('user').update(commentUserId, {
-      'comment+': record.id,
-    });
-  };
-
-  //# content에 업데이트
-  const contentUpdate = async (record) => {
-    // console.log('contentUpdatd record:', record);
-    return await pb.collection('content').update(contentId, {
-      'commentId+': record.id,
-    });
-  };
-
-  //# 댓글 등록 후
-  // useEffect(() => {
-  //   console.log('connect:', connect);
-  // }, [connect]);
+  }, [commentUserId, contentId, onCommentInfoChange, text]);
 
   return (
     <>
