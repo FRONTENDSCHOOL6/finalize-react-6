@@ -3,9 +3,9 @@ import more from '@/assets/more.svg';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import PropTypes from 'prop-types';
 
 export default function CommentItem({
-  contentId,
   writer = '작성자',
   comment = '댓글입니다',
   commentId,
@@ -52,7 +52,6 @@ export default function CommentItem({
 
     try {
       await pb.collection('comment').update(commentId, updateData);
-      console.log('수정');
     } catch (error) {
       throw new Error(error.message);
     }
@@ -83,7 +82,6 @@ export default function CommentItem({
       onCommentChange((prevComments) =>
         prevComments.filter((item) => item.id !== commentId)
       );
-      console.log('삭제', commentId);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -122,3 +120,10 @@ export default function CommentItem({
     </>
   );
 }
+
+CommentItem.propTypes = {
+  writer: PropTypes.string.isRequired,
+  comment: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired,
+  onCommentChange: PropTypes.func.isRequired,
+};

@@ -178,7 +178,7 @@ export default function ContentDetail() {
               return (
                 <CommentItem
                   key={item.id}
-                  contentId={id}
+                  // contentId={id}
                   writer={item.expand.userId.nickname}
                   comment={item.comment}
                   commentId={item.id}
