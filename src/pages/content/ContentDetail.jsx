@@ -26,6 +26,7 @@ export default function ContentDetail() {
   const writerRef = useRef(null);
 
   const [contentId, setContentId] = useState();
+  const [totalCommentInfo, setTotalCommentInfo] = useState();
 
   //# 댓글 추가 후 반영하기
   const [commentInfo, setCommentInfo] = useState();
@@ -48,10 +49,11 @@ export default function ContentDetail() {
             { requestKey: 'string' }
           );
 
-        // console.log('jejuContetnt', jejuContent);
+        // console.log('jejuContetent', jejuContent);
 
         const { title, content, tag, customTag, expand, location, address } =
           jejuContent;
+
         setPhoto(getPbImageURL(jejuContent, 'photo'));
         setContent(content);
         setTag(tag);
@@ -61,6 +63,7 @@ export default function ContentDetail() {
         setCustomTag(customTag);
 
         setContentId(id);
+        setTotalCommentInfo(jejuContent);
 
         if (expand) setComment(expand.commentId);
         if (expand) writerRef.current = expand.userId.username;
@@ -170,6 +173,8 @@ export default function ContentDetail() {
                   key={item.id}
                   writer={item.expand.userId.nickname}
                   comment={item.comment}
+                  commentId={item.id}
+                  onCommentInfoChange={setCommentInfo}
                 />
               );
             })}
