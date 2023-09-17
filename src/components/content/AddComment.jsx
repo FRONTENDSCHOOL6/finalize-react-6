@@ -34,7 +34,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!text.trim()) {
+    if (!inputRef.current.value.trim()) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
       toast('댓글을 입력해주세요.', {
