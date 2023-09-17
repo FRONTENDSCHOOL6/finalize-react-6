@@ -80,38 +80,69 @@ export default function CommentItem({
       });
       return;
     }
-
-    try {
-      await pb.collection('comment').delete(commentId);
-
-      // 댓글 삭제 후 comment 배열에서도 제거
-      onCommentChange((prevComments) =>
-        prevComments.filter((item) => item.id !== commentId)
-      );
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    toast.custom(
+      (t) => (
+        <div
+          className={`${
+            t.visible ? 'animate-enter' : 'animate-leave'
+          } max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="w-full flex flex-col p-5 text-center gap-10">
+            <p className="font-semibold text-lg mt-4">
+              댓글을 삭제하시겠습니까 ?
+            </p>
+            <div className="flex justify-center items-center gap-5">
+              <button
+                onClick={async () => {
+                  try {
+                    await pb.collection('comment').delete(commentId);
+                    toast.remove(t.id);
+                    onCommentChange((prevComments) =>
+                      prevComments.filter((item) => item.id !== commentId)
+                    );
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+                className="bg-lightblue focus:bg-blue text-center text-white rounded-lg px-4 py-3 leading-none"
+              >
+                삭제
+              </button>
+              <button
+                onClick={() => toast.remove(t.id)}
+                className="bg-lightblue focus:bg-blue text-center text-white rounded-lg px-4 py-3 leading-none"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+      }
+    );
   };
 
   return (
     <>
       <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4">
         <span>⭐</span>
-        <div className="text-darkblue font-semibold">{writer}</div>
+        <div className="text-darkblue font-semibold  ">{writer}</div>
         {isEditMode ? (
           <input
             type="text"
             value={editedComment}
-            className="grow text-start"
+            className="grow text-start bg-lightsand"
             onChange={(e) => setEditedComment(e.target.value)}
           /> // 수정 누르면 isEditMode가 false(기본값)에서 true로 바뀜
         ) : (
           <p className="grow text-start">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
-        <button onClick={handleSelect} className="shrink-0 ">
+        <button onClick={handleSelect} className="shrink-0">
           <img src={more} alt="more" />
           {showOptions && (
-            <ul key={commentId} className="dropdown-menu ">
+            <ul key={commentId} className="dropdown-menu">
               {isEditMode ? (
                 <>
                   <li onClick={() => handleSave(commentId)}>저장</li>
