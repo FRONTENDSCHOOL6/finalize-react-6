@@ -1,6 +1,6 @@
 import pb from '@/api/pocketbase';
 import more from '@/assets/more.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 
@@ -18,7 +18,7 @@ export default function CommentItem({
   const [userName] = useState(() => {
     const user = localStorage.getItem('user');
     const userObj = JSON.parse(user);
-    const userName = userObj.state.user.username; // 소희
+    const userName = userObj.state.user.username;
     return userName;
   });
 
@@ -42,10 +42,10 @@ export default function CommentItem({
     }
 
     setShowOptions(false); // Close the dropdown after action
-    setIsEditMode(!isEditMode);
+    setIsEditMode(true);
   };
 
-  const handleSaveClick = async (commentId) => {
+  const handleSave = async (commentId) => {
     const updateData = {
       comment: editedComment,
     };
@@ -58,7 +58,7 @@ export default function CommentItem({
     setIsEditMode(false);
   };
 
-  const handleCancleClick = () => {
+  const handleCancel = () => {
     setIsEditMode(false);
     // 수정 취소 시 원래 댓글 내용으로 복원
     setEditedComment(originalComment);
@@ -95,32 +95,29 @@ export default function CommentItem({
 
   return (
     <>
-      <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4 bg-yellow-200">
-        <span className="bg-gray-200">⭐</span>
-        <div className="text-darkblue font-semibold bg-orange-300">
-          {writer}
-        </div>
+      <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4">
+        <span>⭐</span>
+        <div className="text-darkblue font-semibold">{writer}</div>
         {isEditMode ? (
           <input
             type="text"
             value={editedComment}
-            className="grow text-start bg-pink-200"
+            className="grow text-start"
             onChange={(e) => setEditedComment(e.target.value)}
           /> // 수정 누르면 isEditMode가 false(기본값)에서 true로 바뀜
         ) : (
-          <p className="grow text-start bg-pink-200">{editedComment}</p> // 저장 누르면 isEditMode(false)
+          <p className="grow text-start">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
-        <button onClick={handleSelect} className="bg-sky-300 shrink-0 ">
+        <button onClick={handleSelect} className="shrink-0 ">
           <img src={more} alt="more" />
           {showOptions && (
-            <ul key={commentId} className="dropdown-menu">
-              {isEditMode && (
+            <ul key={commentId} className="dropdown-menu ">
+              {isEditMode ? (
                 <>
-                  <li onClick={() => handleSaveClick(commentId)}>저장</li>
-                  <li onClick={() => handleCancleClick(commentId)}>취소</li>
+                  <li onClick={() => handleSave(commentId)}>저장</li>
+                  <li onClick={() => handleCancel(commentId)}>취소</li>
                 </>
-              )}
-              {!isEditMode && (
+              ) : (
                 <>
                   <li onClick={() => handleEdit(commentId)}>수정</li>
                   <li onClick={() => handleDelete(commentId)}>삭제</li>
