@@ -1,6 +1,6 @@
 import pb from '@/api/pocketbase';
 import more from '@/assets/more.svg';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 
@@ -24,25 +24,7 @@ export default function CommentItem({
 
   const handleSelect = () => {
     setShowOptions(!showOptions);
-  };
-
-  const handleEdit = () => {
-    if (userName !== writer) {
-      import.meta.env.MODE === 'development' && toast.dismiss();
-
-      toast('작성자만 수정 가능합니다.', {
-        position: 'top-right',
-        icon: '🚨',
-        ariaProps: {
-          role: 'alert',
-          'aria-live': 'polite',
-        },
-      });
-      return;
-    }
-
-    setShowOptions(false); // Close the dropdown after action
-    setIsEditMode(true);
+    setIsEditMode(!isEditMode);
   };
 
   const handleSave = async (commentId) => {
@@ -55,6 +37,7 @@ export default function CommentItem({
     } catch (error) {
       throw new Error(error.message);
     }
+    setShowOptions(false);
     setIsEditMode(false);
   };
 
@@ -67,19 +50,6 @@ export default function CommentItem({
   const handleDelete = async (commentId) => {
     setShowOptions(false); // Close the dropdown after action
 
-    if (userName !== writer) {
-      import.meta.env.MODE === 'development' && toast.dismiss();
-
-      toast('작성자만 삭제 가능합니다.', {
-        position: 'top-right',
-        icon: '🚨',
-        ariaProps: {
-          role: 'alert',
-          'aria-live': 'polite',
-        },
-      });
-      return;
-    }
     toast.custom(
       (t) => (
         <div
@@ -139,24 +109,22 @@ export default function CommentItem({
         ) : (
           <p className="grow text-start">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
-        <button onClick={handleSelect} className="shrink-0">
-          <img src={more} alt="more" />
+        <div onClick={handleSelect} className="shrink-0 cursor-pointer">
+          {!showOptions && userName === writer && <img src={more} alt="more" />}
           {showOptions && (
-            <ul key={commentId} className="dropdown-menu">
-              {isEditMode ? (
-                <>
-                  <li onClick={() => handleSave(commentId)}>저장</li>
-                  <li onClick={() => handleCancel(commentId)}>취소</li>
-                </>
-              ) : (
-                <>
-                  <li onClick={() => handleEdit(commentId)}>수정</li>
-                  <li onClick={() => handleDelete(commentId)}>삭제</li>
-                </>
-              )}
+            <ul className="dropdown-menu flex gap-2">
+              <li>
+                <button onClick={() => handleSave(commentId)}>수정</button>
+              </li>
+              <li>
+                <button onClick={() => handleDelete(commentId)}>삭제</button>
+              </li>
+              <li>
+                <button onClick={() => handleCancel(commentId)}>취소</button>
+              </li>
             </ul>
           )}
-        </button>
+        </div>
       </div>
     </>
   );
