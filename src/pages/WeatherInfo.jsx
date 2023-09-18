@@ -14,7 +14,7 @@ export default function WeatherInfo() {
   useEffect(() => {
     const baseUrl =
       'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst';
-    const serviceKey = `${process.env.VITE_WEATHER_API_KEY}`;
+    const serviceKey = import.meta.env.VITE_WEATHER_API_KEY;
 
     // 날짜
     const today = new Date();
