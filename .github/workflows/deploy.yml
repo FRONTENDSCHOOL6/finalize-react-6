@@ -36,6 +36,7 @@ jobs:
           node-version: 18
           cache: 'npm'
           # cache-dependency-path: ./package-lock.json
+			# 환경 변수 등록
       - name: Set environment variables
         run: |
           echo "VITE_PB_URL=${{ secrets.VITE_PB_URL }}" >> $GITHUB_ENV
