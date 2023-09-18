@@ -1,17 +1,30 @@
 import { useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
+import 'swiper/css/effect-fade';
 
 export default function MainSlide() {
   const [isPlaying, setIsPlaying] = useState(true);
   const swiperRef = useRef(null); // useRef로 관리하는 값은 값이 변해도 화면이 렌더링되지 않음
 
   const slides = [
-    { src: '/mainSlide1.jpg', alt: '제주도 바다' },
-    { src: '/mainSlide3.jpeg', alt: '제주도 하늘' },
-    { src: '/jejuImage1.jpg', alt: '제주도 메밀꽃' },
-    { src: '/jejuImage3.jpg', alt: '제주도 감귤나무' },
+    {
+      src: 'https://frontendschool6.github.io/finalize-react-6/mainSlide1.jpg',
+      alt: '제주도 바다',
+    },
+    {
+      src: 'https://frontendschool6.github.io/finalize-react-6/jejuImage1.jpg',
+      alt: '제주도 메밀꽃',
+    },
+    {
+      src: 'https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg',
+      alt: '제주도 맑은 바다',
+    },
+    {
+      src: 'https://frontendschool6.github.io/finalize-react-6/jejuImage3.jpg',
+      alt: '제주도 감귤나무',
+    },
   ];
 
   const togglePlayPause = () => {
@@ -27,12 +40,13 @@ export default function MainSlide() {
     <article className="relative w-full h-[100vh]">
       <Swiper
         ref={swiperRef}
-        modules={[Autoplay]}
+        modules={[Autoplay, EffectFade]}
         slidesPerView={1}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         loop={true}
-        speed={1500}
+        speed={3000}
         parallax={true}
+        effect={'fade'}
         className="w-full h-full object-cover"
       >
         {slides.map((slideContent, index) => (
@@ -57,9 +71,9 @@ export default function MainSlide() {
         className="rounded-full absolute bottom-[10px] right-[10px] w-[30px] h-[30px] z-50"
       >
         {isPlaying ? (
-          <img src="/pause.png" alt="중지" />
+          <img src="./pause.png" alt="중지" />
         ) : (
-          <img src="/play.png" alt="재생" />
+          <img src="./play.png" alt="재생" />
         )}
       </button>
     </article>

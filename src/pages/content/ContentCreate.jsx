@@ -88,7 +88,12 @@ export default function ContentCreate() {
     }
 
     try {
-      await pb.collection('content').create(formData);
+      const contentData = await pb.collection('content').create(formData);
+      if (contentData) {
+        await pb
+          .collection('user')
+          .update(user.id, { 'content+': contentData.id });
+      }
       navigate('/content/list');
     } catch (error) {
       console.error(error);
@@ -197,8 +202,9 @@ export default function ContentCreate() {
               type="text"
               ref={customTagRef}
               onChange={handleNoSpace}
+              maxLength={30}
               className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
-              placeholder="나만의 제주도 태그를 만들어주세요.(예: #나의_사랑_제주도)"
+              placeholder="나만의 제주도 태그를 만들어주세요.(30자 이내, 예: #나의_사랑_제주도)"
             />
 
             <Map

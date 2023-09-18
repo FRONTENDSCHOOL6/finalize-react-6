@@ -31,7 +31,11 @@ export default function Header() {
       <nav className="flex items-center h-20 justify-between space-x-4 px-8">
         <h1>
           <NavLink to="/" className="flex items-center">
-            <img src="/logo.png" alt="로고" className="w-24" />
+            <img
+              src="https://frontendschool6.github.io/finalize-react-6/logo.png"
+              alt="로고"
+              className="w-24"
+            />
             <span className="sr-only">Jeju - All in One</span>
           </NavLink>
         </h1>
