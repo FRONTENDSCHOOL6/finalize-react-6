@@ -1,58 +1,31 @@
 import pb from '@/api/pocketbase';
 import debounce from '@/utils/debounce';
-import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 
-export default function AddComment({ contentId }) {
-  const [text, setText] = useState();
-  const [uniqueId, setUniqueId] = useState();
-  // const [connect, setConnect] = useState();
+export default function AddComment({ contentId, onCommentInfoChange }) {
+  const [text, setText] = useState('');
+  const [commentUserId, setCommentUserId] = useState('');
   const inputRef = useRef(''); // 댓글 초기화
 
-  const user = localStorage.getItem('user');
-  const userObj = JSON.parse(user);
-  const userId = userObj.state.user.userId;
+  //@ 컴포넌트가 렌더링 될 때마다 로컬스토리지 값을 읽지 않도록 userId 상태로 관리하세요.
+  const [userId] = useState(() => {
+    const user = localStorage.getItem('user');
+    const userObj = JSON.parse(user);
+    const userId = userObj.state.user.userId;
+    return userId;
+  });
 
-  // useEffect(() => {
-
-  // },[connect])
-
-  //# user에서 uniqueId 가져오기
   const findId = async () => {
-    const result = await pb.collection('user').getList(1, 50, {
+    const result = await pb.collection('user').getList(1, 1, {
+      expand: 'comment, content',
       filter: `(username = '${userId}')`,
     });
+
     const uniqueId = result.items[0].id;
-
-    // console.log(uniqueId);
     return uniqueId;
-    // const resultList = await pb.collection('user').getList(1, 50);
-    // let uniqueId = '';
-    // for (let item of resultList.items) {
-    //   uniqueId = item.id;
-    // }
-    // return uniqueId;
   };
-
-  // const connectId = async () => {
-  //   const data = {
-  //     "username": "test_username_update",
-  //     "emailVisibility": false,
-  //     "password": "87654321",
-  //     "passwordConfirm": "87654321",
-  //     "oldPassword": "12345678",
-  //     "nickname": "test",
-  //     "comment": [
-  //         "RELATION_RECORD_ID"
-  //     ],
-  //     "content": [
-  //         "RELATION_RECORD_ID"
-  //     ]
-  // };
-
-  // const record = await pb.collection('user').update('RECORD_ID', data);
-  // }
 
   const handleInput = debounce((e) => {
     setText(e.target.value);
@@ -61,42 +34,89 @@ export default function AddComment({ contentId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const uniqueId = await findId(); // findId()의 결과값을 직접 uniqueId 변수에 할당
+    if (!inputRef.current.value.trim()) {
+      import.meta.env.MODE === 'development' && toast.dismiss();
 
-    setUniqueId(uniqueId);
+      toast('댓글을 입력해주세요.', {
+        position: 'top-right',
+        icon: '🚨',
+        ariaProps: {
+          role: 'alert',
+          'aria-live': 'polite',
+        },
+      });
+      return;
+    }
 
-    // formData.append('star', true);
-    // formData.append('comment', commentRef.current.value);
-    // formData.append('contentId', contentId);
-    // formData.append('userId', userId);
+    if (!userId) {
+      import.meta.env.MODE === 'development' && toast.dismiss();
 
-    // formData 조회하는 방법
-    // for (const [key, value] of formData.entries()) {
-    //   console.log('key:', key, 'value:', value);
-    // }
+      toast('로그인 후 이용 가능합니다.', {
+        position: 'top-right',
+        icon: '🚨',
+        ariaProps: {
+          role: 'alert',
+          'aria-live': 'polite',
+        },
+      });
+      return;
+    }
 
-    try {
-      const data = {
-        star: true,
-        comment: text,
-        contentId: contentId,
-        userId: uniqueId,
+    const uniqueId = await findId();
+
+    //@ ※ commentUserId 상태는 스냅샷으로 즉시 값이 변경되지 않습니다.
+    //@   그러므로 값이 변경된 이후 서버에 요청해야 합니다. (아래 useEffect 참고)
+    setCommentUserId(uniqueId);
+  };
+
+  useEffect(() => {
+    // 댓글 작성자가 존재할 경우에만 처리
+    if (commentUserId) {
+      //# user.comment에 레코드 ID 추가
+      const userUpdate = async (record) => {
+        return await pb.collection('user').update(commentUserId, {
+          'comment+': record.id,
+        });
       };
 
-      if (!userId) {
-        alert('로그인 후 이용 가능합니다.');
-        return; // 로그인하지 않은 상태에서도 댓글이 서버로 전송되기 때문에 return 필요
-      }
+      //# content.commendId에 레코드 ID 추가
+      const contentUpdate = async (record) => {
+        return await pb.collection('content').update(contentId, {
+          'commentId+': record.id,
+        });
+      };
 
-      const record = await pb.collection('comment').create(data);
-      console.log('성공');
-      setText('');
-      inputRef.current.value = ''; // 댓글 초기화
-      // setConnect();
-    } catch (error) {
-      console.error(error);
+      //# 마음 등록 전송 후 처리할 사항
+      const afterSubmit = async () => {
+        const data = {
+          star: true,
+          comment: text,
+          contentId: contentId,
+          userId: commentUserId,
+        };
+
+        if (inputRef.current.value.trim()) {
+          const record = await pb.collection('comment').create(data, {
+            expand: 'userId',
+          });
+
+          setText('');
+          inputRef.current.value = '';
+
+          await contentUpdate(record);
+          await userUpdate(record);
+
+          onCommentInfoChange?.(record);
+        }
+      };
+
+      try {
+        afterSubmit();
+      } catch (error) {
+        console.error(error);
+      }
     }
-  };
+  }, [commentUserId, contentId, onCommentInfoChange, text]);
 
   return (
     <>
@@ -130,4 +150,16 @@ export default function AddComment({ contentId }) {
 
 AddComment.propTypes = {
   contentId: PropTypes.string.isRequired,
+  onCommentInfoChange: PropTypes.func.isRequired,
 };
+
+// 파일 업로드 시에 formData 사용
+// formData.append('star', true);
+// formData.append('comment', commentRef.current.value);
+// formData.append('contentId', contentId);
+// formData.append('userId', userId);
+
+// formData 조회하는 방법
+// for (const [key, value] of formData.entries()) {
+//   console.log('key:', key, 'value:', value);
+// }
