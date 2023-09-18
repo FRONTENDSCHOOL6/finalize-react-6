@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Spinner from './Spinner';
 
-export default function MainContent({ page, data }) {
+export default function MainContent({ page, setPage, data }) {
   if (!data) {
     return (
       <div className="grid place-content-center h-[600px]">
@@ -15,7 +15,7 @@ export default function MainContent({ page, data }) {
   // 댓글이 있는 항목만 선택
   const commentList = data?.filter((item) => item.commentId.length > 0) || [];
 
-  // 댓글 수에 따라 내림차순으로 정렬, 그리고 동일한 댓글 수의 경우 최신 순으로 정렬
+  // 댓글 수에 따라 내림차순, 그리고 최신 순으로 9개 정렬
   const sortedList = commentList.sort((a, b) => {
     if (b.commentId.length !== a.commentId.length) {
       return b.commentId.length - a.commentId.length;
@@ -23,15 +23,38 @@ export default function MainContent({ page, data }) {
       return new Date(b.created) - new Date(a.created);
     }
   });
-
-  // 처음 9개 요소만 선택
   const nineItems = sortedList.slice(0, 9);
 
-  // 전체 아이템 목록에서 현재 페이지에 해당하는 부분만 추출
+  // 현재 페이지에 보여줄 아이템 수는 3개
   const itemsPerPage = 3;
-  const startIndex = (page - 1) * itemsPerPage; // 현재 페이지의 첫 번째 아이템 인덱스
-  const endIndex = startIndex + itemsPerPage; // 현재 페이지의 마지막 아이템 인덱스
+  const totalItems = nineItems.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // 현재 페이지의 아이템을 추출
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
   const currentPageItems = nineItems.slice(startIndex, endIndex);
+
+  // 페이지 버튼을 생성
+  const pageButtons = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageButtons.push(
+      <div
+        className="flex flex-row justify-center gap-3"
+        key={`pageButton-${i}`}
+      >
+        <button
+          onClick={() => {
+            setPage(i);
+          }}
+          disabled={page === i}
+          className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
+        >
+          {i}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -58,11 +81,23 @@ export default function MainContent({ page, data }) {
           </Link>
         </li>
       ))}
+      {/* Pagination Controls */}
+      <div className="flex flex-row justify-center gap-3">
+        {/* <button
+          key={id}
+          onClick={() => setPage(num)}
+          // disabled={page === num}
+          className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
+        > */}
+        {pageButtons}
+        {/* </button> */}
+      </div>
     </>
   );
 }
 
 MainContent.propTypes = {
   page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

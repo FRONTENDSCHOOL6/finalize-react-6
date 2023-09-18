@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 
 export default function MainTag({ data, onTagClick, setPage }) {
   const tags = data.map((item) => item.tag);
 
-  // Count tag occurrences
+  // 태그의 별 개수
   const tagCounts = tags.reduce((counts, tag) => {
     if (!counts[tag]) {
       counts[tag] = 0;
@@ -19,8 +18,6 @@ export default function MainTag({ data, onTagClick, setPage }) {
   sortedTag.sort((a, b) => b[1] - a[1]);
   const sortedTags = sortedTag.map((pair) => pair[0]);
 
-  const [selectedTag, setSelectedTag] = useState(null);
-
   return (
     <>
       <ul className="flex flex-row justify-center items-center gap-2 pb-3 absolute top-0 left-[calc(50%-150px)]">
@@ -28,12 +25,11 @@ export default function MainTag({ data, onTagClick, setPage }) {
           onClick={() => {
             onTagClick(null);
             setPage(1); // 페이지를 1로 설정
-            setSelectedTag(null);
           }}
           className="cursor-pointer"
         >
           <motion.div
-            className={`box ${selectedTag === null ? 'font-extrabold' : ''}`}
+            className={`box ${onTagClick === null ? 'font-extrabold' : ''}`}
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >
@@ -48,11 +44,11 @@ export default function MainTag({ data, onTagClick, setPage }) {
               onClick={() => {
                 onTagClick(tag);
                 setPage(1); // 페이지를 1로 설정
-                setSelectedTag(tag);
+                onTagClick(tag);
               }}
             >
               <motion.div
-                className={`box ${selectedTag === tag ? 'font-extrabold' : ''}`}
+                className={`box ${onTagClick === tag ? 'font-extrabold' : ''}`}
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
@@ -69,5 +65,5 @@ export default function MainTag({ data, onTagClick, setPage }) {
 MainTag.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   onTagClick: PropTypes.func,
-  setPage: PropTypes.func.isRequired,
+  setPage: PropTypes.func,
 };

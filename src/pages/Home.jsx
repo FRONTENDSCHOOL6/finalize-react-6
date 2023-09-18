@@ -58,11 +58,10 @@ export default function Home() {
         <TitleButton title="우리의 제주의 별" link="content/list" />
         <MainTag data={data} onTagClick={setSelectedTag} setPage={setPage} />
         <ul className="contentContainer mt-4">
-          <MainContent page={page} data={filteredData} />
+          <MainContent page={page} data={filteredData} setPage={setPage} />
         </ul>
 
-        {/* Pagination Controls */}
-        <div className="flex flex-row justify-center gap-3">
+        {/* <div className="flex flex-row justify-center gap-3">
           {[1, 2, 3].map((num) => (
             <button
               key={num}
@@ -71,7 +70,7 @@ export default function Home() {
               className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
             ></button>
           ))}
-        </div>
+        </div> */}
 
         <button
           className="flex mx-auto mt-10 rounded-full bg-lightsand px-6 py-3 border-2 text-blue border-blue
