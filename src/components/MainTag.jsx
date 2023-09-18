@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 export default function MainTag({ data, onTagClick, setPage }) {
   const tags = data.map((item) => item.tag);
@@ -18,6 +19,8 @@ export default function MainTag({ data, onTagClick, setPage }) {
   sortedTag.sort((a, b) => b[1] - a[1]);
   const sortedTags = sortedTag.map((pair) => pair[0]);
 
+  const [selectedTag, setSelectedTag] = useState(null);
+
   return (
     <>
       <ul className="flex flex-row justify-center items-center gap-2 pb-3 absolute top-0 left-[calc(50%-150px)]">
@@ -25,11 +28,12 @@ export default function MainTag({ data, onTagClick, setPage }) {
           onClick={() => {
             onTagClick(null);
             setPage(1); // 페이지를 1로 설정
+            setSelectedTag(null);
           }}
           className="cursor-pointer"
         >
           <motion.div
-            className="box"
+            className={`box ${selectedTag === null ? 'font-extrabold' : ''}`}
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >
@@ -44,10 +48,11 @@ export default function MainTag({ data, onTagClick, setPage }) {
               onClick={() => {
                 onTagClick(tag);
                 setPage(1); // 페이지를 1로 설정
+                setSelectedTag(tag);
               }}
             >
               <motion.div
-                className="box"
+                className={`box ${selectedTag === tag ? 'font-extrabold' : ''}`}
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
