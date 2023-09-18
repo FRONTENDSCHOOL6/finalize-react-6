@@ -225,7 +225,9 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
   };
 
   useEffect(() => {
-    search();
+    kakao.maps.load(() => {
+      search();
+    })
   });
 
   return (
