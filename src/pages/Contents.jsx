@@ -71,7 +71,7 @@ export default function Contents() {
           <Link to="/content/create">
             <button
               type="button"
-              className="my-5 inline-flex text-blue rounded-full items-center bg-lightsand gap-2 px-6 py-3 border-2 border-blue 
+              className="my-5 inline-flex text-blue rounded-full items-center bg-lightsand gap-2 px-6 py-3 border-2 border-blue
               hover:bg-darkblue hover:text-lightsand transform transition-all"
               onMouseOver={(e) =>
                 (e.currentTarget.children[1].src = rightWhite)
@@ -119,7 +119,10 @@ export default function Contents() {
 
         <section className="flex justify-center gap-5 my-10">
           <button
-            onClick={() => setPage((old) => Math.max(old - 1, 0))}
+            onClick={() => {
+              setPage((old) => Math.max(old - 1, 0));
+              window.scrollTo(0, 0);
+            }}
             disabled={page === 1}
             className="disabled:font-extralight font-bold"
           >
@@ -134,6 +137,7 @@ export default function Contents() {
           <button
             onClick={() => {
               setPage((old) => old + 1);
+              window.scrollTo(0, 0);
             }}
             disabled={page === data.totalPages || data.totalPages === 0}
             className="disabled:font-extralight font-bold"

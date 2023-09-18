@@ -233,23 +233,21 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
       <div id="map" className="w-full h-96 relative overflow-hidden"></div>
       <div id="menu_wrap" className="bg-white">
         <div className="option">
-          <div>
-            <form className="flex">
-              <input
-                type="text"
-                defaultValue="제주국제공항"
-                className="w-full h-full bg-slate-400/30 font-bold p-2"
-                id="keyword"
-                size="15"
-              />
-              <button
-                type="button"
-                onClick={search}
-                className="w-1/3 bg-lightblue p-2 rounded-md text-gray-200 hover:bg-blue"
-              >
-                검색
-              </button>
-            </form>
+          <div className="flex">
+            <input
+              type="text"
+              defaultValue="제주국제공항"
+              className="w-full h-full bg-slate-400/30 font-bold p-2"
+              id="keyword"
+              size="15"
+            />
+            <button
+              onClick={search}
+              onMouseEnter={search}
+              className="w-1/3 bg-lightblue p-2 rounded-md text-gray-200 hover:bg-blue"
+            >
+              검색
+            </button>
           </div>
         </div>
         <p className="p-2 pb-0 font-extrabold">
