@@ -130,7 +130,11 @@ export default function ContentDetail() {
         <h2 className="sr-only">{title}</h2>
         {/* 사진 */}
         <article className="min-w-[400px] ">
-          <img src={photo} alt={title} className="w-full h-full object-cover" />
+          <img
+            src={photo}
+            alt={title}
+            className="w-full h-full object-cover max-h-[100vh]"
+          />
         </article>
         {/* 내용 */}
         <article className="w-full py-2 px-4 rounded-md border border-gray-500">
@@ -178,7 +182,6 @@ export default function ContentDetail() {
               return (
                 <CommentItem
                   key={item.id}
-                  // contentId={id}
                   writer={item.expand.userId.nickname}
                   comment={item.comment}
                   commentId={item.id}
