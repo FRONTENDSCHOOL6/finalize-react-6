@@ -2,7 +2,7 @@ import { number, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default function ContentItem({
-  src = './jejuImage5.jpg',
+  src = 'https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg',
   content = '',
   title = '당신의 제주를 나눠주세요',
   count = 99,
