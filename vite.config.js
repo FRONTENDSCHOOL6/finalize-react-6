@@ -10,7 +10,7 @@ import imageminWebp from 'imagemin-webp';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/finalize-react-6/',
+  base: '/',
   plugins: [
     react(),
     splitVendorChunkPlugin(),
