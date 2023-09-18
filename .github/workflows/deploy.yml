@@ -1,0 +1,19 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ['gh-pages']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set environment variables
+        run: |
+          echo "VITE_PB_URL=${{ secrets.VITE_PB_URL }}" >> .env
+          echo "VITE_PB_API=${{ secrets.VITE_PB_API }}" >> .env
+          echo "VITE_KAKAO_CLIENT_ID=${{ secrets.VITE_KAKAO_CLIENT_ID }}" >> .env
+          echo "VITE_KAKAO_LOGOUT_REDIRECT_URI=${{ secrets.VITE_KAKAO_LOGOUT_REDIRECT_URI }}" >> .env
+          echo "VITE_KAKAO_MAP_KEY=${{ secrets.VITE_KAKAO_MAP_KEY }}" >> .env
+          echo "VITE_WEATHER_API_KEY=${{ secrets.VITE_WEATHER_API_KEYT }}" >> .env
