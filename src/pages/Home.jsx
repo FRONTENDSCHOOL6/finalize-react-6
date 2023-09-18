@@ -56,7 +56,12 @@ export default function Home() {
 
       <section className="my-28 mx-10 relative">
         <TitleButton title="우리의 제주의 별" link="content/list" />
-        <MainTag data={data} onTagClick={setSelectedTag} setPage={setPage} />
+        <MainTag
+          data={data}
+          selectedTag={selectedTag}
+          setSelectedTag={setSelectedTag}
+          setPage={setPage}
+        />
         <MainContent page={page} data={filteredData} setPage={setPage} />
 
         <button
