@@ -26,6 +26,21 @@ export default function ContentDetail() {
   const writerRef = useRef(null);
 
   const [contentId, setContentId] = useState();
+  const [totalCommentInfo, setTotalCommentInfo] = useState();
+
+  //# 댓글 추가 후 반영하기
+  const [commentInfo, setCommentInfo] = useState();
+  // console.log('commentInfo:', commentInfo);
+  useEffect(() => {
+    if (commentInfo) {
+      // comment 배열에 commentInfo 객체를 추가
+      setComment((prevComments) => [...prevComments, commentInfo]);
+    }
+  }, [commentInfo]);
+
+  //# 댓글 삭제
+  const [deletedCommentIds, setDeletedCommentIds] = useState([]);
+  const isCommentDeleted = (commentId) => deletedCommentIds.includes(commentId);
 
   useEffect(() => {
     async function getContent() {
@@ -38,8 +53,11 @@ export default function ContentDetail() {
             { requestKey: 'string' }
           );
 
+        // console.log('jejuContetent', jejuContent);
+
         const { title, content, tag, customTag, expand, location, address } =
           jejuContent;
+
         setPhoto(getPbImageURL(jejuContent, 'photo'));
         setContent(content);
         setTag(tag);
@@ -49,6 +67,7 @@ export default function ContentDetail() {
         setCustomTag(customTag);
 
         setContentId(id);
+        setTotalCommentInfo(jejuContent);
 
         if (expand) setComment(expand.commentId);
         if (expand) writerRef.current = expand.userId.username;
@@ -111,7 +130,11 @@ export default function ContentDetail() {
         <h2 className="sr-only">{title}</h2>
         {/* 사진 */}
         <article className="min-w-[400px] ">
-          <img src={photo} alt={title} className="w-full h-full object-cover" />
+          <img
+            src={photo}
+            alt={title}
+            className="w-full h-full object-cover max-h-[100vh]"
+          />
         </article>
         {/* 내용 */}
         <article className="w-full py-2 px-4 rounded-md border border-gray-500">
@@ -146,18 +169,23 @@ export default function ContentDetail() {
       <section className="py-20 flex flex-col justify-center text-center items-center mx-auto min-h-full max-w-[1200px]">
         {/* 댓글 등록 */}
         <div className="w-full flex flex-row gap-4 justify-between items-center px-[15%]">
-          <AddComment contentId={id} />
+          <AddComment contentId={id} onCommentInfoChange={setCommentInfo} />
         </div>
 
         {/* 댓글 달리는 영역 */}
         {comment?.length !== 0 && (
           <div className="w-full flex flex-col pt-10 px-[15%]">
             {comment?.map((item) => {
+              if (isCommentDeleted(item.id)) {
+                return null; // 삭제된 댓글은 숨김
+              }
               return (
                 <CommentItem
                   key={item.id}
                   writer={item.expand.userId.nickname}
                   comment={item.comment}
+                  commentId={item.id}
+                  onCommentChange={setComment}
                 />
               );
             })}
