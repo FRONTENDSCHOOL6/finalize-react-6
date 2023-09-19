@@ -47,6 +47,8 @@ export default function GetKakaoMap() {
         }
 
         setMarkers(tempMarkers);
+
+        mapRef.current.setLevel(8);
       }
     });
 
@@ -66,6 +68,15 @@ export default function GetKakaoMap() {
           '<div className="p-1 text-sm">' + place.place_name + '</div>'
         );
         infowindow.open(mapRef.current, marker);
+      });
+
+      // 마커 클릭 시 중심 이동 및 줌 레벨 변경
+      window.kakao.maps.event.addListener(marker, 'click', function () {
+        // 클릭된 마커 위치로 지도 중심 이동
+        mapRef.current.setCenter(marker.getPosition());
+
+        // 원하는 줌 레벨로 설정 (예제에서는 레벨을 '7'로 설정)
+        mapRef.current.setLevel(1);
       });
 
       window.kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -92,7 +103,7 @@ export default function GetKakaoMap() {
   }
 
   return (
-    <div className="relative border-4 border-blue w-[80%] h-[70vw]">
+    <div className="relative border-4 border-blue w-[80%] h-[60vw]">
       <div id="mapContainer" className="w-full h-full relative">
         <div id="map" className="w-full h-full" />
       </div>
