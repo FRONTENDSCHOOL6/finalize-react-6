@@ -56,22 +56,13 @@ export default function Home() {
 
       <section className="my-28 mx-10 relative">
         <TitleButton title="우리의 제주의 별" link="content/list" />
-        <MainTag data={data} onTagClick={setSelectedTag} setPage={setPage} />
-        <ul className="contentContainer mt-4">
-          <MainContent page={page} data={filteredData} />
-        </ul>
-
-        {/* Pagination Controls */}
-        <div className="flex flex-row justify-center gap-3">
-          {[1, 2, 3].map((num) => (
-            <button
-              key={num}
-              onClick={() => setPage(num)}
-              disabled={page === num}
-              className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
-            ></button>
-          ))}
-        </div>
+        <MainTag
+          data={data}
+          selectedTag={selectedTag}
+          setSelectedTag={setSelectedTag}
+          setPage={setPage}
+        />
+        <MainContent page={page} data={filteredData} setPage={setPage} />
 
         <button
           className="flex mx-auto mt-10 rounded-full bg-lightsand px-6 py-3 border-2 text-blue border-blue

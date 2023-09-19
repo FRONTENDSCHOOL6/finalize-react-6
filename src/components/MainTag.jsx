@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
-export default function MainTag({ data, onTagClick, setPage }) {
+export default function MainTag({
+  data,
+  selectedTag,
+  setSelectedTag,
+  setPage,
+}) {
   const tags = data.map((item) => item.tag);
 
-  // Count tag occurrences
+  // 태그의 별 개수
   const tagCounts = tags.reduce((counts, tag) => {
     if (!counts[tag]) {
       counts[tag] = 0;
@@ -23,13 +28,13 @@ export default function MainTag({ data, onTagClick, setPage }) {
       <ul className="flex flex-row justify-center items-center gap-2 pb-3 absolute top-0 left-[calc(50%-150px)]">
         <li
           onClick={() => {
-            onTagClick(null);
             setPage(1); // 페이지를 1로 설정
+            setSelectedTag(null);
           }}
           className="cursor-pointer"
         >
           <motion.div
-            className="box"
+            className={`box ${selectedTag === null ? 'font-extrabold' : ''}`}
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >
@@ -42,12 +47,12 @@ export default function MainTag({ data, onTagClick, setPage }) {
               key={tag}
               className="cursor-pointer"
               onClick={() => {
-                onTagClick(tag);
                 setPage(1); // 페이지를 1로 설정
+                setSelectedTag(tag);
               }}
             >
               <motion.div
-                className="box"
+                className={`box ${selectedTag === tag ? 'font-extrabold' : ''}`}
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
@@ -63,6 +68,7 @@ export default function MainTag({ data, onTagClick, setPage }) {
 
 MainTag.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onTagClick: PropTypes.func,
-  setPage: PropTypes.func.isRequired,
+  selectedTag: PropTypes.string,
+  setSelectedTag: PropTypes.func,
+  setPage: PropTypes.func,
 };
