@@ -53,7 +53,7 @@ export default function ProfileCommentSection({ showMore, setShowMore }) {
           <>
             <Link to="/content">
               <ProfileComment
-                src="/jejuImage5.jpg"
+                src="https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg"
                 alt="제주 바다"
                 date="2023-09-06"
                 comment="제주를 향한 당신의 별을 우리에게 나누어주세요"

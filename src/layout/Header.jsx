@@ -84,7 +84,7 @@ export default function Header() {
           )}
         </ul>
 
-        <div className="mobile:hidden flex items-center" href="#">
+        <div className="mobile:hidden flex items-center">
           <button onClick={() => setMenuToggle(!menuToggle)}>
             {menuToggle ? (
               <svg
