@@ -145,7 +145,6 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
             name="comment"
             ref={inputRef} // 댓글 초기화
             defaultValue={text}
-            // placeholder="별과 함께 이 제주에 대한 마음을 입력해주세요."
             placeholder={
               !userId
                 ? '로그인 후 이용 가능합니다'
