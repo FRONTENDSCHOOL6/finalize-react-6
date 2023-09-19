@@ -36,7 +36,7 @@ export default defineConfig({
   },
   devServer: {
     historyApiFallback: {
-      rewrites: [{ from: /\//, to: '/404.html' }],
+      rewrites: [{ from: /\/finalize-react-6\/[^?]/, to: '/404.html' }],
     },
   },
 });
