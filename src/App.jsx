@@ -9,8 +9,6 @@ import Spinner from './components/Spinner';
 
 const queryClient = new QueryClient();
 
-console.log(import.meta.env);
-
 function App() {
   return (
     <>
