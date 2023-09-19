@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 
 export default function ImgSky({ data }) {
   // useEffect를 사용하여 data prop이 변경될 때마다 로그를 출력합니다.
-  useEffect(() => {
-    console.log('data has changed:', data);
-  }, [data]);
-  console.log('data:', data);
+  // useEffect(() => {
+  //   console.log('data has changed:', data);
+  // }, [data]);
+  // console.log('data:', data);
 
   if (!data.response) {
     return (
