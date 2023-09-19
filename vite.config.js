@@ -10,6 +10,7 @@ import imageminWebp from 'imagemin-webp';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/finalize-react-6/',
   plugins: [
     react(),
     splitVendorChunkPlugin(),
@@ -31,6 +32,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+    },
+  },
+  devServer: {
+    historyApiFallback: {
+      rewrites: [{ from: /\/finalize-react-6\/[^?]/, to: '/404.html' }],
     },
   },
 });
