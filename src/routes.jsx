@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import {
+  Navigate,
   Route,
   createBrowserRouter,
   createHashRouter,
@@ -61,6 +62,7 @@ const router = createBrowserRouter(
         />
         <Route path=":id" element={<ContentDetail />} />
       </Route>
+      <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
     </Route>
   ),
   { basename: `/finalize-react-6` }
