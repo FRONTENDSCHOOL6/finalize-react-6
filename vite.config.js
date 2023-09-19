@@ -34,4 +34,9 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  devServer: {
+    historyApiFallback: {
+      rewrites: [{ from: /\//, to: '/404.html' }],
+    },
+  },
 });
