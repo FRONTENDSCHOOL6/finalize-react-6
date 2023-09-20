@@ -33,7 +33,7 @@ export default function Home() {
 
   if (!data) {
     return (
-      <div className="grid place-content-center h-[600px]">
+      <div className="grid place-content-center h-[100vh]">
         <Spinner size={160} />
       </div>
     );

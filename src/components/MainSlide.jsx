@@ -21,10 +21,6 @@ export default function MainSlide() {
       src: 'https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg',
       alt: '제주도 맑은 바다',
     },
-    {
-      src: 'https://frontendschool6.github.io/finalize-react-6/jejuImage3.jpg',
-      alt: '제주도 감귤나무',
-    },
   ];
 
   const togglePlayPause = () => {
@@ -71,9 +67,15 @@ export default function MainSlide() {
         className="rounded-full absolute bottom-[10px] right-[10px] w-[30px] h-[30px] z-50"
       >
         {isPlaying ? (
-          <img src="./pause.png" alt="중지" />
+          <img
+            src="https://frontendschool6.github.io/finalize-react-6/pause_icon.svg"
+            alt="중지"
+          />
         ) : (
-          <img src="./play.png" alt="재생" />
+          <img
+            src="https://frontendschool6.github.io/finalize-react-6/play_icon.svg"
+            alt="재생"
+          />
         )}
       </button>
     </article>
