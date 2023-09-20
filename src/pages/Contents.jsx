@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { colourOptions } from '@/components/content/data/data';
 import Spinner from '@/components/Spinner';
+import { usePageStore } from '@/store/usePageStore';
 
 async function fetchContents(options) {
   let queryParams = '';
@@ -33,6 +34,9 @@ async function fetchContents(options) {
 export default function Contents() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(9);
+
+  const pageNum = usePageStore((state) => state.page);
+  const setPageNum = usePageStore((state) => state.handlePage);
 
   const [sort, setSort] = useState('-created');
   const [tag, setTag] = useState('');
@@ -111,6 +115,7 @@ export default function Contents() {
                 content={item.id}
                 title={item.title}
                 count={item.commentId.length}
+                customTag={item.customTag}
                 src={getPbImageURL(item, 'photo')}
               />
             );
@@ -130,6 +135,7 @@ export default function Contents() {
           </button>
           <span>
             {`${page}`}
+            {/* {`${pageNum}`} */}
             {data.totalPages !== 1 &&
               data.totalPages !== 0 &&
               ` / ${data.totalPages}`}
@@ -137,9 +143,11 @@ export default function Contents() {
           <button
             onClick={() => {
               setPage((old) => old + 1);
+              // setPageNum(pageNum);
               window.scrollTo(0, 0);
             }}
             disabled={page === data.totalPages || data.totalPages === 0}
+            // disabled={pageNum === data.totalPages || data.totalPages === 0}
             className="disabled:font-extralight font-bold"
           >
             &gt;

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import '@/styles/map.css';
 import { forwardRef } from 'react';
 import { useMapStore } from '@/store/useMapStore';
+import { endScroll } from './../../../lion-javascript/client/lib/dom/endScroll';
 
 const { kakao } = window;
 
@@ -15,7 +16,10 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
   const setName = useMapStore((state) => state.handleName);
   const setAddress = useMapStore((state) => state.handleAddress);
 
-  const search = () => {
+  const search = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
     // 마커를 담을 배열입니다
     var markers = [];
 
@@ -227,7 +231,7 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
   useEffect(() => {
     kakao.maps.load(() => {
       search();
-    })
+    });
   });
 
   return (
@@ -244,8 +248,8 @@ export const Map = forwardRef(function Map({ place, setPlace }, ref) {
               size="15"
             />
             <button
+              type="submit"
               onClick={search}
-              onMouseEnter={search}
               className="w-1/3 bg-lightblue p-2 rounded-md text-gray-200 hover:bg-blue"
             >
               검색

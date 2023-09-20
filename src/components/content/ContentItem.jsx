@@ -6,6 +6,7 @@ export default function ContentItem({
   content = '',
   title = '당신의 제주를 나눠주세요',
   count = 99,
+  customTag = null,
 }) {
   return (
     <Link to={`/content/${content}`}>
@@ -19,6 +20,11 @@ export default function ContentItem({
         </figure>
         <figcaption className="text-white flex flex-col text-end absolute bottom-0 w-full p-3 bg-black/40">
           <span className="text-xl w-3/4 ellipsis ml-auto">{title}</span>
+          {customTag && (
+            <span className="text-sm w-3/4 ellipsis ml-auto text-slate-300">
+              #{customTag}
+            </span>
+          )}
           <span>⭐({count})</span>
         </figcaption>
       </div>
@@ -31,4 +37,5 @@ ContentItem.propTypes = {
   content: string,
   title: string,
   count: number,
+  customTag: string || null,
 };

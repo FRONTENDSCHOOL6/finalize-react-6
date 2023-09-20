@@ -3,10 +3,7 @@ import { useEffect } from 'react';
 
 const { kakao } = window;
 
-export default function ShowMap({
-  address = '제주특별자치도 제주시 공항로 2',
-  location = '제주국제공항',
-}) {
+export default function ShowMap({ address, location }) {
   useEffect(() => {
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
       mapOption = {
@@ -47,7 +44,7 @@ export default function ShowMap({
 
   return (
     <>
-      <article id="map" className="h-96 mx-[15%] my-10"></article>
+      <article id="map" className="h-96 mx-[15%] mt-20"></article>
     </>
   );
 }
