@@ -23,5 +23,10 @@ export function useVerification(id = undefined) {
     return userData.verified;
   };
 
-  return useQuery({ queryFn: checkVerified, queryKey: ['check-verified', id] });
+  return useQuery({
+    queryFn: checkVerified,
+    queryKey: ['check-verified', id],
+    staleTime: 2000,
+    cacheTime: 2000,
+  });
 }

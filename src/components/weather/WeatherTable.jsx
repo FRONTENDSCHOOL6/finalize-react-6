@@ -12,7 +12,7 @@ export default function WeatherTable({ data }) {
   }
   return (
     <>
-      <table className="border-2 w-2/3 text-center text-xl">
+      <table className="border-2 w-2/3 text-center">
         <thead className="border-2">
           <tr className="bg-lightsand">
             <th className="border-2 h-[50px]"></th>
