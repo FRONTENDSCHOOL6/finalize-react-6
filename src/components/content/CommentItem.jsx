@@ -9,6 +9,7 @@ export default function CommentItem({
   comment = '댓글입니다',
   commentId,
   onCommentChange,
+  commentTime,
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -94,6 +95,8 @@ export default function CommentItem({
     );
   };
 
+  const Time = commentTime.slice(0, 10);
+
   return (
     <>
       <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4">
@@ -109,7 +112,8 @@ export default function CommentItem({
         ) : (
           <p className="grow text-start">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
-        <div onClick={handleSelect} className="shrink-0 cursor-pointer">
+
+        <div onClick={handleSelect} className="cursor-pointer">
           {!showOptions && userName === writer && <img src={more} alt="more" />}
           {showOptions && (
             <ul className="dropdown-menu flex gap-2">
@@ -125,6 +129,7 @@ export default function CommentItem({
             </ul>
           )}
         </div>
+        {Time}
       </div>
     </>
   );
@@ -135,4 +140,5 @@ CommentItem.propTypes = {
   comment: PropTypes.string.isRequired,
   commentId: PropTypes.string.isRequired,
   onCommentChange: PropTypes.func.isRequired,
+  commentTime: PropTypes.string.isRequired,
 };

@@ -186,6 +186,7 @@ export default function ContentDetail() {
                   comment={item.comment}
                   commentId={item.id}
                   onCommentChange={setComment}
+                  commentTime={item.created}
                 />
               );
             })}

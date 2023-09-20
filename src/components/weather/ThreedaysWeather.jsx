@@ -4,9 +4,9 @@ import Spinner from '../Spinner';
 export default function ThreedaysWeather({ data, category, text }) {
   if (!data.response) {
     return (
-      <div className="grid place-content-center h-[600px]">
+      <td className="grid place-content-center h-[600px]">
         <Spinner size={160} />
-      </div>
+      </td>
     );
   }
 

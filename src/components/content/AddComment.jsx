@@ -28,30 +28,16 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
   };
 
   const handleInput = debounce((e) => {
-    if (!userId) {
-      import.meta.env.MODE === 'development' && toast.dismiss();
-
-      toast('로그인 후 이용 가능합니다.', {
-        position: 'top-right',
-        icon: '🚨',
-        ariaProps: {
-          role: 'alert',
-          'aria-live': 'polite',
-        },
-      });
-      return;
-    }
-
     setText(e.target.value);
   }, 500);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!inputRef.current.value.trim()) {
+    if (!userId) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
-      toast('댓글을 입력해주세요.', {
+      toast('로그인 후 이용 가능합니다.', {
         position: 'top-right',
         icon: '🚨',
         ariaProps: {
@@ -62,10 +48,10 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
       return;
     }
 
-    if (!userId) {
+    if (!inputRef.current.value.trim()) {
       import.meta.env.MODE === 'development' && toast.dismiss();
 
-      toast('로그인 후 이용 가능합니다.', {
+      toast('댓글을 입력해주세요.', {
         position: 'top-right',
         icon: '🚨',
         ariaProps: {
@@ -152,7 +138,8 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
             }
             onChange={handleInput}
             required
-            className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue"
+            disabled={!userId ? true : false}
+            className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue disabled:bg-gray-200 disabled:placeholder:text-gray-800"
           />
         </div>
         <button
