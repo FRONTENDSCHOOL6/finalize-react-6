@@ -1,7 +1,9 @@
 import { lazy } from 'react';
 import {
+  Navigate,
   Route,
   createBrowserRouter,
+  createHashRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import ProtectRoute from '@/components/ProtectRoute';
@@ -62,9 +64,10 @@ const router = createBrowserRouter(
         />
         <Route path=":id" element={<ContentDetail />} />
       </Route>
+      <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
     </Route>
   ),
-  { basename: '/' }
+  { basename: `/finalize-react-6` }
 );
 
 export default router;

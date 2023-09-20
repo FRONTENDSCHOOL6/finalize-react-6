@@ -33,4 +33,9 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  devServer: {
+    historyApiFallback: {
+      rewrites: [{ from: /\/finalize-react-6\/[^?]/, to: '/404.html' }],
+    },
+  },
 });
