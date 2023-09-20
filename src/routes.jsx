@@ -17,6 +17,7 @@ const Join = lazy(() => import('@/pages/Join'));
 const Login = lazy(() => import('@/pages/Login'));
 const FindId = lazy(() => import('@/pages/finduser/FindId'));
 const FindPw = lazy(() => import('@/pages/finduser/FindPw'));
+const PwEmail = lazy(() => import('@/components/join/PwEmail'));
 const MyProfile = lazy(() => import('@/pages/MyProfile'));
 const TrafficInfo = lazy(() => import('@/pages/TrafficInfo'));
 const WeathertInfo = lazy(() => import('@/pages/WeatherInfo'));
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
       <Route path="join" element={<Join />} />
       <Route path="findid" element={<FindId />} />
       <Route path="findpw" element={<FindPw />} />
+      <Route path="pwemail" element={<PwEmail />} />
       <Route
         path="profile/:id"
         element={

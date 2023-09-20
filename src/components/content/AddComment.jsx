@@ -28,6 +28,20 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
   };
 
   const handleInput = debounce((e) => {
+    if (!userId) {
+      import.meta.env.MODE === 'development' && toast.dismiss();
+
+      toast('로그인 후 이용 가능합니다.', {
+        position: 'top-right',
+        icon: '🚨',
+        ariaProps: {
+          role: 'alert',
+          'aria-live': 'polite',
+        },
+      });
+      return;
+    }
+
     setText(e.target.value);
   }, 500);
 
@@ -131,7 +145,11 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
             name="comment"
             ref={inputRef} // 댓글 초기화
             defaultValue={text}
-            placeholder="별과 함께 이 제주에 대한 마음을 입력해주세요."
+            placeholder={
+              !userId
+                ? '로그인 후 이용 가능합니다'
+                : '별과 함께 이 제주에 대한 마음을 입력해주세요.'
+            }
             onChange={handleInput}
             required
             className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue"
