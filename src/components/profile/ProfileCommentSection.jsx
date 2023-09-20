@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import ProfileComment from '../ProfileComment';
+import Spinner from '@/components/Spinner';
 
 async function fetchContents(options) {
   let queryParams = '';
@@ -36,6 +37,14 @@ export default function ProfileCommentSection({ showMore, setShowMore }) {
       }),
     keepPreviousData: true,
   });
+
+  if (isLoading) {
+    return <Spinner className="mx-auto" />;
+  }
+
+  if (isError) {
+    return <div role="alert">{error.toString()}</div>;
+  }
 
   return (
     <section className="mx-10 mb-12">

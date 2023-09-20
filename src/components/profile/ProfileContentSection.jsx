@@ -4,6 +4,7 @@ import ContentItem from '../content/ContentItem';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/useAuthStore';
+import Spinner from '@/components/Spinner';
 
 async function fetchContents(options) {
   let queryParams = '';
@@ -35,6 +36,14 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
       }),
     keepPreviousData: true,
   });
+
+  if (isLoading) {
+    return <Spinner className="mx-auto" />;
+  }
+
+  if (isError) {
+    return <div role="alert">{error.toString()}</div>;
+  }
 
   return (
     <section className="mx-10 pt-10">
