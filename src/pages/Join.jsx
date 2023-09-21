@@ -150,7 +150,7 @@ export default function Join() {
             placeholder="비밀번호"
             onChange={handleInput}
           />
-          <p className="text-sand">
+          <p className="text-gray-400">
             특수문자 포함 최소 8자 이상, 16자 이하로 만들어 주세요.
           </p>
           <InputField

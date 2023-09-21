@@ -108,7 +108,7 @@ export default function GetKakaoMap() {
         <div id="map" className="w-full h-full" />
       </div>
 
-      <div className="absolute top-5 left-5 flex gap-2 z-10">
+      <div className="absolute top-5 left-5 flex gap-2 z-[9]">
         <input
           type="text"
           value={keyword}

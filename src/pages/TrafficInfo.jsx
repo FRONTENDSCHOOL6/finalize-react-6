@@ -1,4 +1,4 @@
-import GetKakaoMap from '@/components/KakaoMap/GetKakaoMap';
+import GetKakaoMap from '@/components/kakaomap/GetKakaoMap';
 import PageHead from '@/components/PageHead';
 
 export default function TrafficInfo() {
