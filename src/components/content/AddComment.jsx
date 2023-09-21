@@ -28,11 +28,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
   };
 
   const handleInput = debounce((e) => {
-    // setText(
-    //   e.target.value.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g, '$&$1$2').length
-    // );
     setText(e.target.value);
-    // setText(e.target.value);
   }, 500);
 
   const handleSubmit = async (e) => {

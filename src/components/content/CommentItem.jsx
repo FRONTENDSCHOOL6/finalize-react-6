@@ -1,8 +1,8 @@
 import pb from '@/api/pocketbase';
 import more from '@/assets/more.svg';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import PropTypes from 'prop-types';
 
 export default function CommentItem({
   writer = '작성자',
@@ -99,9 +99,11 @@ export default function CommentItem({
 
   return (
     <>
-      <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4">
+      <div className="shadow-comment w-full h-fit flex justify-between gap-2 py-3 px-4">
         <span>⭐</span>
-        <div className="text-darkblue font-semibold shrink-0">{writer}</div>
+        <div className="text-darkblue font-semibold shrink-0 w-[60px] text-left">
+          {writer}
+        </div>
         {isEditMode ? (
           <textarea
             type="text"
@@ -113,9 +115,10 @@ export default function CommentItem({
         ) : (
           <p className="grow text-justify">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
-
-        <div onClick={handleSelect} className="cursor-pointer shrink-0">
-          {Time}
+        <div onClick={handleSelect} className="cursor-pointer">
+          {!showOptions && userName === writer && (
+            <img src={more} alt="more" className="min-w-[24px]" />
+          )}
           {showOptions && (
             <ul className="dropdown-menu flex gap-2">
               <li>
@@ -129,8 +132,8 @@ export default function CommentItem({
               </li>
             </ul>
           )}
-          {!showOptions && userName === writer && <img src={more} alt="more" />}
         </div>
+        <div className="min-w-[100px] text-right">{Time}</div>
       </div>
     </>
   );
