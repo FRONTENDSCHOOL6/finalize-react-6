@@ -111,7 +111,7 @@ export default function CommentItem({
             maxLength="300"
           /> // 수정 누르면 isEditMode가 false(기본값)에서 true로 바뀜
         ) : (
-          <p className="grow text-start">{editedComment}</p> // 저장 누르면 isEditMode(false)
+          <p className="grow text-justify">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
 
         <div onClick={handleSelect} className="cursor-pointer shrink-0">

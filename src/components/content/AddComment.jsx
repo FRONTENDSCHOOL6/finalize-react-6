@@ -28,7 +28,11 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
   };
 
   const handleInput = debounce((e) => {
+    // setText(
+    //   e.target.value.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g, '$&$1$2').length
+    // );
     setText(e.target.value);
+    // setText(e.target.value);
   }, 500);
 
   const handleSubmit = async (e) => {
@@ -121,7 +125,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
   return (
     <>
       <form onSubmit={handleSubmit} className="grow w-full flex">
-        <div className="flex-grow mr-2">
+        <div className="flex-grow mr-2 relative">
           <label htmlFor="comment" className="sr-only">
             댓글
           </label>
@@ -141,6 +145,9 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
             maxLength="300"
             className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue disabled:bg-gray-200 disabled:placeholder:text-gray-800"
           ></textarea>
+          <div className="absolute top-[50px] right-[20px] text-sm text-gray-500">
+            {text.length}/300 자
+          </div>
         </div>
         <button
           type="submit"
