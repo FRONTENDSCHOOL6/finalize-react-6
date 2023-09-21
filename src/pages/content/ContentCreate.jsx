@@ -2,15 +2,14 @@ import pb from '@/api/pocketbase';
 import photo from '@/assets/image.svg';
 import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
+import { Map } from '@/components/Map';
 import { colorStyles } from '@/components/content/colorStyles';
 import { colourOptions } from '@/components/content/data/data';
-import { useRef, useState } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { Map } from '@/components/Map';
-import { useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { useAuthStore } from '@/store/useAuthStore';
 
 export default function ContentCreate() {
   const navigate = useNavigate();
