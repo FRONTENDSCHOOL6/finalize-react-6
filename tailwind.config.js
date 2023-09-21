@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.jsx"],
+  content: ['./index.html', './src/**/*.jsx'],
   theme: {
     extend: {
       important: true,
       fontFamily: {
-        suit: ["SUIT Variable"],
+        suit: ['SUIT Variable'],
       },
       colors: {
         darkblue: '#013F4E',
@@ -17,6 +17,7 @@ export default {
         KakaoYellow: '#FEE500',
       },
       screens: {
+        s: { min: '320px', max: '767px' },
         mobile: { min: '62.5em' },
       },
       boxShadow: {
