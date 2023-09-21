@@ -50,7 +50,6 @@ export default function ContentCreate() {
     const tagValue = tagRef.current.value;
     const customTagValue = customTagRef.current.value;
 
-    // if (!placeName) return alert('위치를 등록해주세요.');
     if (!tagRef) {
       toast('태그를 선택해주세요.', {
         position: 'top-center',
@@ -183,6 +182,7 @@ export default function ContentCreate() {
                 name="content"
                 placeholder="내용을 입력해주세요"
                 ref={contentRef}
+                maxLength={2000}
                 className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue"
                 required
               />
@@ -206,11 +206,7 @@ export default function ContentCreate() {
               placeholder="나만의 제주도 태그를 만들어주세요.(30자 이내, 예: #나의_사랑_제주도)"
             />
 
-            <Map
-              ref={{ placeNameRef, placeAddressRef }}
-              place={{ placeName, placeAddress }}
-              setPlace={{ setPlaceName, setPlaceAddress }}
-            />
+            <Map ref={{ placeNameRef, placeAddressRef }} />
             <div>{placeName}</div>
 
             <button

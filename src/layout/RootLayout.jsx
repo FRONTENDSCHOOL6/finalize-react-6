@@ -1,6 +1,6 @@
 import Header from './Header';
 import Footer from './Footer';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import ScrollToTop from '@/components/ScrollToTop';
 
 export default function RootLayout() {
@@ -14,6 +14,7 @@ export default function RootLayout() {
         <ScrollToTop />
       </main>
       <Footer />
+      <ScrollRestoration />
     </>
   );
 }

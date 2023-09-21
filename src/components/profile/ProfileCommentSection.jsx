@@ -1,7 +1,7 @@
 import { getPbImageURL } from '@/utils';
 import TitleButton from '../TitleButton';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import ProfileComment from '../ProfileComment';
@@ -20,10 +20,20 @@ async function fetchContents(options) {
 
 export default function ProfileCommentSection({ showMore, setShowMore }) {
   const { user } = useAuthStore();
-  const [collection, setCollection] = useState('comment');
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(9);
-  const [sort, setSort] = useState('-created');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [collection] = useState('comment');
+  // const [page, setPage] = useState(1);
+  const [perPage] = useState(5);
+  const [sort] = useState('-created');
+  const [page, setPage] = useState(() => {
+    const page = searchParams.get('page');
+    return page ? Number(page) : 1;
+  });
+  useEffect(() => {
+    const page = searchParams.get('page');
+    if (!page) setSearchParams({ page: 1 });
+    if (page >= 2) setShowMore(true);
+  }, [searchParams, setSearchParams, setShowMore]);
 
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ['comment', sort, user, page, perPage, collection],
@@ -102,11 +112,15 @@ export default function ProfileCommentSection({ showMore, setShowMore }) {
           <button
             onClick={() => {
               setPage((old) => Math.max(old - 1, 0));
-              window.scrollTo(0, 0);
+              setSearchParams((searchParams) => {
+                const page = searchParams.get('page');
+                return { page: Number(page) - 1 };
+              });
             }}
             disabled={page === 1}
             className="disabled:font-extralight font-bold"
           >
+            <span className="sr-only">이전 페이지 이동</span>
             &lt;
           </button>
           <span>
@@ -118,11 +132,15 @@ export default function ProfileCommentSection({ showMore, setShowMore }) {
           <button
             onClick={() => {
               setPage((old) => old + 1);
-              window.scrollTo(0, 0);
+              setSearchParams((searchParams) => {
+                const page = searchParams.get('page');
+                return { page: Number(page) + 1 };
+              });
             }}
             disabled={page === data.totalPages || data.totalPages === 0}
             className="disabled:font-extralight font-bold"
           >
+            <span className="sr-only">이후 페이지 이동</span>
             &gt;
           </button>
         </section>
