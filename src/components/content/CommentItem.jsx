@@ -101,20 +101,21 @@ export default function CommentItem({
     <>
       <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4">
         <span>⭐</span>
-        <div className="text-darkblue font-semibold  ">{writer}</div>
+        <div className="text-darkblue font-semibold shrink-0">{writer}</div>
         {isEditMode ? (
-          <input
+          <textarea
             type="text"
             value={editedComment}
             className="grow text-start bg-lightsand"
             onChange={(e) => setEditedComment(e.target.value)}
+            maxLength="300"
           /> // 수정 누르면 isEditMode가 false(기본값)에서 true로 바뀜
         ) : (
           <p className="grow text-start">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
 
-        <div onClick={handleSelect} className="cursor-pointer">
-          {!showOptions && userName === writer && <img src={more} alt="more" />}
+        <div onClick={handleSelect} className="cursor-pointer shrink-0">
+          {Time}
           {showOptions && (
             <ul className="dropdown-menu flex gap-2">
               <li>
@@ -128,8 +129,8 @@ export default function CommentItem({
               </li>
             </ul>
           )}
+          {!showOptions && userName === writer && <img src={more} alt="more" />}
         </div>
-        {Time}
       </div>
     </>
   );
