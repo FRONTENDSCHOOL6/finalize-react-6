@@ -116,18 +116,17 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
         console.error(error);
       }
     }
-  }, [commentUserId, contentId, onCommentInfoChange, text]);
+  }, [commentUserId, contentId, onCommentInfoChange]);
 
   return (
     <>
       <form onSubmit={handleSubmit} className="grow w-full flex">
-        <div className="flex-grow mr-2">
+        <div className="flex-grow mr-2 relative">
           <label htmlFor="comment" className="sr-only">
             댓글
           </label>
-          <input
-            type="text"
-            id="comment"
+          <textarea
+            id="text"
             name="comment"
             ref={inputRef} // 댓글 초기화
             defaultValue={text}
@@ -139,8 +138,12 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
             onChange={handleInput}
             required
             disabled={!userId ? true : false}
+            maxLength="300"
             className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue disabled:bg-gray-200 disabled:placeholder:text-gray-800"
-          />
+          ></textarea>
+          <div className="absolute top-[50px] right-[20px] text-sm text-gray-500">
+            {text.length}/300 자
+          </div>
         </div>
         <button
           type="submit"

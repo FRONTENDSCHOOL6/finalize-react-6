@@ -1,8 +1,8 @@
 import pb from '@/api/pocketbase';
 import more from '@/assets/more.svg';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import PropTypes from 'prop-types';
 
 export default function CommentItem({
   writer = '작성자',
@@ -99,22 +99,26 @@ export default function CommentItem({
 
   return (
     <>
-      <div className="shadow-comment w-full h-fit flex justify-between gap-4 py-3 px-4">
+      <div className="shadow-comment w-full h-fit flex justify-between gap-2 py-3 px-4">
         <span>⭐</span>
-        <div className="text-darkblue font-semibold  ">{writer}</div>
+        <div className="text-darkblue font-semibold shrink-0 w-[60px] text-left">
+          {writer}
+        </div>
         {isEditMode ? (
-          <input
+          <textarea
             type="text"
             value={editedComment}
             className="grow text-start bg-lightsand"
             onChange={(e) => setEditedComment(e.target.value)}
+            maxLength="300"
           /> // 수정 누르면 isEditMode가 false(기본값)에서 true로 바뀜
         ) : (
-          <p className="grow text-start">{editedComment}</p> // 저장 누르면 isEditMode(false)
+          <p className="grow text-justify">{editedComment}</p> // 저장 누르면 isEditMode(false)
         )}
-
         <div onClick={handleSelect} className="cursor-pointer">
-          {!showOptions && userName === writer && <img src={more} alt="more" />}
+          {!showOptions && userName === writer && (
+            <img src={more} alt="more" className="min-w-[24px]" />
+          )}
           {showOptions && (
             <ul className="dropdown-menu flex gap-2">
               <li>
@@ -129,7 +133,7 @@ export default function CommentItem({
             </ul>
           )}
         </div>
-        {Time}
+        <div className="min-w-[100px] text-right">{Time}</div>
       </div>
     </>
   );
