@@ -2,14 +2,13 @@ import right from '@/assets/right.svg';
 import rightWhite from '@/assets/rightWhite.svg';
 import ContentItem from '@/components/content/ContentItem';
 import ContentTitle from '@/components/content/ContentTitle';
-import PageHead from '@/components/PageHead';
-import { useQuery } from '@tanstack/react-query';
-import { getPbImageURL } from '@/utils';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { colourOptions } from '@/components/content/data/data';
 import Spinner from '@/components/Spinner';
-import { usePageStore } from '@/store/usePageStore';
+import PageHead from '@/components/PageHead';
+import { getPbImageURL } from '@/utils';
+import { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { colourOptions } from '@/components/content/data/data';
 
 async function fetchContents(options) {
   let queryParams = '';
@@ -32,11 +31,19 @@ async function fetchContents(options) {
 }
 
 export default function Contents() {
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(9);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const pageNum = usePageStore((state) => state.page);
-  const setPageNum = usePageStore((state) => state.handlePage);
+  const [page, setPage] = useState(() => {
+    const page = searchParams.get('page');
+    return page ? Number(page) : 1;
+  });
+
+  useEffect(() => {
+    const page = searchParams.get('page');
+    if (!page) setSearchParams({ page: 1 });
+  }, [searchParams, setSearchParams]);
+
+  const [perPage] = useState(9);
 
   const [sort, setSort] = useState('-created');
   const [tag, setTag] = useState('');
@@ -126,7 +133,10 @@ export default function Contents() {
           <button
             onClick={() => {
               setPage((old) => Math.max(old - 1, 0));
-              window.scrollTo(0, 0);
+              setSearchParams((searchParams) => {
+                const page = searchParams.get('page');
+                return { page: Number(page) - 1 };
+              });
             }}
             disabled={page === 1}
             className="disabled:font-extralight font-bold"
@@ -135,7 +145,6 @@ export default function Contents() {
           </button>
           <span>
             {`${page}`}
-            {/* {`${pageNum}`} */}
             {data.totalPages !== 1 &&
               data.totalPages !== 0 &&
               ` / ${data.totalPages}`}
@@ -143,11 +152,12 @@ export default function Contents() {
           <button
             onClick={() => {
               setPage((old) => old + 1);
-              // setPageNum(pageNum);
-              window.scrollTo(0, 0);
+              setSearchParams((searchParams) => {
+                const page = searchParams.get('page');
+                return { page: Number(page) + 1 };
+              });
             }}
             disabled={page === data.totalPages || data.totalPages === 0}
-            // disabled={pageNum === data.totalPages || data.totalPages === 0}
             className="disabled:font-extralight font-bold"
           >
             &gt;

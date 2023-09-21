@@ -3,10 +3,10 @@ import {
   Navigate,
   Route,
   createBrowserRouter,
-  createHashRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import ProtectRoute from '@/components/ProtectRoute';
+import ProfileCommentSection from './components/profile/ProfileCommentSection';
 const RootLayout = lazy(() => import('@/layout/RootLayout'));
 const Home = lazy(() => import('@/pages/Home'));
 const Contents = lazy(() => import('@/pages/Contents'));
@@ -33,14 +33,17 @@ const router = createBrowserRouter(
       <Route path="findid" element={<FindId />} />
       <Route path="findpw" element={<FindPw />} />
       <Route path="pwemail" element={<PwEmail />} />
-      <Route
-        path="profile/:id"
-        element={
-          <ProtectRoute>
-            <MyProfile />
-          </ProtectRoute>
-        }
-      />
+      <Route path="profile/:id">
+        <Route
+          index
+          element={
+            <ProtectRoute>
+              <MyProfile />
+            </ProtectRoute>
+          }
+        />
+        <Route path="comment" element={<ProfileCommentSection />} />
+      </Route>
       <Route path="traffic" element={<TrafficInfo />} />
       <Route path="weather" element={<WeathertInfo />} />
       <Route path="content">

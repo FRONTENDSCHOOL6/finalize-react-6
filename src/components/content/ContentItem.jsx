@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function ContentItem({
   src = 'https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg',
-  content = '',
+  content = 'create',
   title = '당신의 제주를 나눠주세요',
   count = 99,
   customTag = null,
