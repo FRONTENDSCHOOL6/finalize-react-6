@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import '@/styles/map.css';
 import { forwardRef } from 'react';
 import { useMapStore } from '@/store/useMapStore';
-import { endScroll } from './../../../lion-javascript/client/lib/dom/endScroll';
 
 const { kakao } = window;
 
