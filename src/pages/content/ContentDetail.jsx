@@ -157,10 +157,10 @@ export default function ContentDetail() {
     <>
       <PageHead title="Jeju All in One - 나만의 제주" />
 
-      <section className="shadow-content mt-5 mb-20 px-20 py-20 gap-5 flex flex-col items-center mx-[15%] min-h-full rounded-md">
+      <section className="shadow-content mt-5 mb-20 px-20 py-20 gap-5 flex flex-col items-center mx-[15%] min-h-full rounded-md s:mx-[5%] s:p-5">
         <h2 className="sr-only">{contentInfo.title}</h2>
         {/* 사진 */}
-        <article className="min-w-[400px] ">
+        <article>
           <img
             src={photo}
             alt={contentInfo.title}
@@ -210,13 +210,13 @@ export default function ContentDetail() {
         }`}
       >
         {/* 댓글 등록 */}
-        <div className="w-full flex flex-row gap-4 justify-between items-center px-[15%]">
+        <div className="w-full flex flex-row gap-4 justify-between items-center px-[15%] s:px-[5%]">
           <AddComment contentId={id} onCommentInfoChange={setCommentInfo} />
         </div>
 
         {/* 댓글 달리는 영역 */}
         {comment?.length !== 0 && (
-          <div className="w-full flex flex-col pt-10 px-[15%]">
+          <div className="w-full flex flex-col pt-10 px-[15%] s:px-[5%]">
             {comment?.map((item) => {
               if (isCommentDeleted(item.id)) {
                 return null; // 삭제된 댓글은 숨김
