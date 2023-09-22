@@ -61,6 +61,7 @@ export default function ContentEdit() {
         setInitialImage({ image: photoUrl, label: photoUrl });
 
         contentData.tag = tagRef.current.value = tag;
+        console.log('tag', tag)
         setSelectedTag(colourOptions.findIndex((e) => e.value == tag));
         contentData.location = placeNameRef.current.value = location;
         contentData.address = placeAddressRef.current.value = address;
@@ -231,7 +232,7 @@ export default function ContentEdit() {
               className="z-10"
               options={colourOptions}
               styles={colorStyles}
-              ref={tagRef}
+              ref={tagRef || selectedTag}
               key={colourOptions[selectedTag]}
               defaultValue={colourOptions[selectedTag]}
               onChange={handleTypeSelect}
