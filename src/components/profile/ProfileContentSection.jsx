@@ -1,23 +1,14 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getPbImageURL } from '@/utils';
+import { fetchProfileContents } from '@/utils/fetchContents';
+import Spinner from '@/components/Spinner';
 import TitleButton from '../TitleButton';
 import ContentItem from '../content/ContentItem';
-import { useEffect, useState } from 'react';
+import { bool, func } from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/useAuthStore';
-import Spinner from '@/components/Spinner';
-import { useSearchParams } from 'react-router-dom';
-import { bool, func } from 'prop-types';
-
-async function fetchContents(options) {
-  let queryParams = '';
-  queryParams = `?sort=${options.sort}&filter=${options.filter}&page=${options.page}&perPage=${options.perPage}`;
-  const response = await fetch(
-    `${import.meta.env.VITE_PB_API}/collections/${
-      options.collection
-    }/records${queryParams}`
-  );
-  return await response.json();
-}
+import PaginationButton from '../PaginationButton';
 
 export default function ProfileContentSection({ showMore, setShowMore }) {
   const { user } = useAuthStore();
@@ -39,7 +30,7 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ['contents', sort, user, page, perPage, collection],
     queryFn: () =>
-      fetchContents({
+      fetchProfileContents({
         sort,
         filter: `userId='${user.id}'`,
         page,
@@ -78,6 +69,7 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
                 content={item.id}
                 title={item.title}
                 count={item.commentId.length}
+                customTag={item.customTag}
                 src={getPbImageURL(item, 'photo')}
               />
             );
@@ -90,48 +82,19 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
                 content={item.id}
                 title={item.title}
                 count={item.commentId.length}
+                customTag={item.customTag}
                 src={getPbImageURL(item, 'photo')}
               />
             );
           })}
       </ul>
       {(showMore || page >= 2) && (
-        <section className="flex justify-center gap-5 my-10">
-          <button
-            onClick={() => {
-              setPage((old) => Math.max(old - 1, 0));
-              setSearchParams((searchParams) => {
-                const page = searchParams.get('page');
-                return { page: Number(page) - 1 };
-              });
-            }}
-            disabled={page === 1}
-            className="disabled:font-extralight font-bold"
-          >
-            <span className="sr-only">이전 페이지</span>
-            &lt;
-          </button>
-          <span>
-            {`${page}`}
-            {data.totalPages !== 1 &&
-              data.totalPages !== 0 &&
-              ` / ${data.totalPages}`}
-          </span>
-          <button
-            onClick={() => {
-              setPage((old) => old + 1);
-              setSearchParams((searchParams) => {
-                const page = searchParams.get('page');
-                return { page: Number(page) + 1 };
-              });
-            }}
-            disabled={page === data.totalPages || data.totalPages === 0}
-            className="disabled:font-extralight font-bold"
-          >
-            <span className="sr-only">이후 페이지</span>
-            &gt;
-          </button>
-        </section>
+        <PaginationButton
+          totalPages={data.totalPages}
+          page={page}
+          setPage={setPage}
+          setSearchParams={setSearchParams}
+        />
       )}
     </section>
   );
