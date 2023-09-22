@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/useAuthStore';
 import Spinner from '@/components/Spinner';
 import { useSearchParams } from 'react-router-dom';
+import { bool, func } from 'prop-types';
 
 async function fetchContents(options) {
   let queryParams = '';
@@ -33,7 +34,7 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
     const page = searchParams.get('page');
     if (!page) setSearchParams({ page: 1 });
     if (page >= 2) setShowMore(true);
-  }, [searchParams, setSearchParams, setShowMore]);
+  }, [searchParams, setSearchParams, setShowMore, showMore]);
 
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ['contents', sort, user, page, perPage, collection],
@@ -107,7 +108,7 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
             disabled={page === 1}
             className="disabled:font-extralight font-bold"
           >
-            <span className="sr-only">이전 페이지 이동</span>
+            <span className="sr-only">이전 페이지</span>
             &lt;
           </button>
           <span>
@@ -127,7 +128,7 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
             disabled={page === data.totalPages || data.totalPages === 0}
             className="disabled:font-extralight font-bold"
           >
-            <span className="sr-only">이후 페이지 이동</span>
+            <span className="sr-only">이후 페이지</span>
             &gt;
           </button>
         </section>
@@ -135,3 +136,8 @@ export default function ProfileContentSection({ showMore, setShowMore }) {
     </section>
   );
 }
+
+ProfileContentSection.propTypes = {
+  showMore: bool,
+  setShowMore: func,
+};
