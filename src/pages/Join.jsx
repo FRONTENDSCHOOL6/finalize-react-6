@@ -60,6 +60,16 @@ export default function Join() {
         return;
       }
 
+      if (nickname.length < 2 || nickname.length > 8) {
+        toast.error('닉네임은 2자 이상, 10자 이하로 입력해주세요.');
+        return;
+      }
+
+      if (nickname.includes(' ')) {
+        toast.error('닉네임에는 공백이 포함될 수 없습니다.');
+        return;
+      }
+
       if (!idReg(username)) {
         toast.error('아이디 형식이 잘못되었습니다.');
         return;
@@ -164,7 +174,7 @@ export default function Join() {
             id="nickname"
             type="text"
             name="nickname"
-            placeholder="닉네임"
+            placeholder="닉네임(2~8자)"
             value={formState.nickname}
             onChange={handleInput}
           />
