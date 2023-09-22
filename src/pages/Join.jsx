@@ -122,7 +122,7 @@ export default function Join() {
         return;
       }
 
-      if (nickname.length < 2 || nickname.length > 8) {
+      if (nickname.length < 2 || nickname.length > 10) {
         toast.error('닉네임은 2자 이상, 10자 이하로 입력해주세요.');
         return;
       }
@@ -188,7 +188,7 @@ export default function Join() {
               name="username"
               placeholder="아이디"
               value={formState.username}
-              onChange={() => handleInput()}
+              onChange={handleInput}
             />
             <Button
               onClick={handleIdDuplication}
@@ -204,7 +204,7 @@ export default function Join() {
               id="nickname"
               type="text"
               name="nickname"
-              placeholder="닉네임 (공백없이 2~8자)"
+              placeholder="닉네임 (공백없이 2~10자)"
               value={formState.nickname}
               onChange={handleInput}
             />
