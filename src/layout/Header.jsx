@@ -1,13 +1,16 @@
 import Navigation from '@/components/header/Navigation';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const { pathname } = useLocation();
   const [mainHeader, setMainHeader] = useState('');
   const [menuToggle, setMenuToggle] = useState(false);
+  const toggleMenuRef = useRef(null);
+  const location = useLocation();
+  const [curPath] = useState(location.pathname);
 
   const { user, logout } = useAuthStore();
 
@@ -18,6 +21,23 @@ export default function Header() {
         : setMainHeader('bg-white/90'),
     [pathname]
   );
+
+  useLayoutEffect(() => {
+    if (curPath != location.pathname) {
+      setMenuToggle(false);
+    }
+  }, [curPath, location.pathname]);
+
+  useEffect(() => {
+    const handleOutsideClose = (e) => {
+      if (menuToggle && !(toggleMenuRef.current.contains(e.target))) {
+        setMenuToggle(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClose);
+
+    return () => document.removeEventListener('click', handleOutsideClose);
+  }, [menuToggle]);
 
   const isActive = ({ isActive }) => {
     return {
@@ -84,7 +104,7 @@ export default function Header() {
           )}
         </ul>
 
-        <div className="mobile:hidden flex items-center">
+        <div ref={toggleMenuRef} className="mobile:hidden flex items-center">
           <button onClick={() => setMenuToggle(!menuToggle)}>
             {menuToggle ? (
               <svg
