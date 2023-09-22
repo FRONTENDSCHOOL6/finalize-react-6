@@ -95,7 +95,13 @@ export default function ContentEdit() {
     const titleValue = titleRef.current.value;
     const contentValue = contentRef.current.value;
     const photoValue = photoRef.current.files;
-    const tagValue = tagRef.current.value;
+    let tagValue;
+    if (tagRef.current.value === undefined) {
+      tagValue = colourOptions[selectedTag];
+    } else {
+      tagValue = tagRef.current.value;
+    }
+
     const customTagValue = customTagRef.current.value;
 
     if (!tagRef) {
@@ -126,7 +132,9 @@ export default function ContentEdit() {
     formData.append('content', contentValue);
     formData.append('location', placeNameRef.current);
     formData.append('address', placeAddressRef.current);
-    console.log(tagValue)
+
+    console.log('selectedTag', selectedTag);
+    console.log('tagValue', tagValue);
     formData.append('tag', tagValue);
 
     formData.append('customTag', customTagValue);
