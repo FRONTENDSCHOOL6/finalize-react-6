@@ -34,6 +34,7 @@ export default function ContentEdit() {
   const [placeName, setPlaceName] = useState();
   const [placeAddress, setPlaceAddress] = useState();
   const [selectedTag, setSelectedTag] = useState();
+  const [isChangeTag, setIsChangeTag] = useState(false)
 
   const formRef = useRef(null);
   const titleRef = useRef(null);
@@ -96,8 +97,10 @@ export default function ContentEdit() {
     const contentValue = contentRef.current.value;
     const photoValue = photoRef.current.files;
     let tagValue;
-    if (tagRef.current.value === undefined) {
-      tagValue = colourOptions[selectedTag];
+    console.log('tagRef.current.value', tagRef.current.value)
+    console.log('contentData.tag', contentData.tag)
+    if (!isChangeTag) {
+      tagValue = contentData.tag;
     } else {
       tagValue = tagRef.current.value;
     }
@@ -159,9 +162,8 @@ export default function ContentEdit() {
   };
 
   const handleTypeSelect = (e) => {
+    setIsChangeTag(true)
     tagRef.current.value = e.value;
-
-    return true;
   };
 
   return (
