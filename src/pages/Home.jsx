@@ -2,6 +2,7 @@ import pb from '@/api/pocketbase';
 import MainContent from '@/components/MainContent';
 import MainSlide from '@/components/MainSlide';
 import MainTag from '@/components/MainTag';
+import PageHead from '@/components/PageHead';
 import Spinner from '@/components/Spinner';
 import TitleButton from '@/components/TitleButton';
 import { useQuery } from '@tanstack/react-query';
@@ -44,10 +45,7 @@ export default function Home() {
 
   return (
     <>
-      <Helmet>
-        <title>Jeju - All in One</title>
-      </Helmet>
-
+      <PageHead title="Jeju All in One - 나만의 제주" />
       <section>
         <h2 className="sr-only">제주도 소개 슬라이드</h2>
         <MainSlide />

@@ -45,8 +45,8 @@ export default function MainContent({ page, setPage, data }) {
         onClick={() => setPage(i + 1)}
         disabled={page === i + 1}
         // className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
-        className={`bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center ${
-          page === i + 1 ? 'bg-[#00718F]' : ''
+        className={`px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center ${
+          page === i + 1 ? 'bg-blue' : 'bg-lightsand'
         } hover:border-blue`}
       ></button>
     </div>
