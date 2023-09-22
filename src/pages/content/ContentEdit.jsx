@@ -61,7 +61,7 @@ export default function ContentEdit() {
         setInitialImage({ image: photoUrl, label: photoUrl });
 
         contentData.tag = tagRef.current.value = tag;
-        console.log('tag', tag)
+        console.log('tag', tag);
         setSelectedTag(colourOptions.findIndex((e) => e.value == tag));
         contentData.location = placeNameRef.current.value = location;
         contentData.address = placeAddressRef.current.value = address;
@@ -93,7 +93,7 @@ export default function ContentEdit() {
     const titleValue = titleRef.current.value;
     const contentValue = contentRef.current.value;
     const photoValue = photoRef.current.files;
-    const tagValue = tagRef.current.value;
+    // const tagValue = tagRef.current.value;
     const customTagValue = customTagRef.current.value;
 
     if (!tagRef) {
@@ -124,7 +124,7 @@ export default function ContentEdit() {
     formData.append('content', contentValue);
     formData.append('location', placeNameRef.current);
     formData.append('address', placeAddressRef.current);
-    formData.append('tag', tagValue);
+    formData.append('tag', tagRef.current.value);
     formData.append('customTag', customTagValue);
 
     if (photoValue.length > 0) {
@@ -232,7 +232,7 @@ export default function ContentEdit() {
               className="z-10"
               options={colourOptions}
               styles={colorStyles}
-              ref={tagRef || selectedTag}
+              ref={tagRef}
               key={colourOptions[selectedTag]}
               defaultValue={colourOptions[selectedTag]}
               onChange={handleTypeSelect}
@@ -247,11 +247,7 @@ export default function ContentEdit() {
               placeholder="나만의 제주도 태그를 만들어주세요.(예: #나의_사랑_제주도)"
             />
 
-            <Map
-              ref={{ placeNameRef, placeAddressRef }}
-              place={{ placeName, placeAddress }}
-              setPlace={{ setPlaceName, setPlaceAddress }}
-            />
+            <Map ref={{ placeNameRef, placeAddressRef }} />
             <div>{placeName}</div>
 
             <button
