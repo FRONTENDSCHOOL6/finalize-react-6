@@ -59,7 +59,7 @@ export default function Login() {
       }
     } catch (error) {
       setIsLogin('fail');
-      console.log('로그인 실패\n', error);
+      console.error('로그인 실패\n', error);
     }
   };
 

@@ -13,10 +13,8 @@ import toast from 'react-hot-toast';
 export default function FindId() {
   const [formEmail, setFormEmail] = useState('');
   const [userId, setUserId] = useState();
-  // console.log('userId', userId);
   const [userName, setUserName] = useState();
   const [isUser, setIsUser] = useState(false);
-  // console.log('isUser', isUser);
 
   const handleInput = debounce((e) => {
     setFormEmail(e.target.value);
@@ -62,10 +60,8 @@ export default function FindId() {
 
   return (
     <>
-      {/* 헤드 이름 */}
       <PageHead title="Jeju All in One - 아이디 찾기" />
 
-      {/* 마크업 */}
       <LoginPageContent>
         <SubLogo />
         {isVerification === undefined && !isUser ? (
