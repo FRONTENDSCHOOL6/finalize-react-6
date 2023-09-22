@@ -10,6 +10,7 @@ import Termscheck from '@/components/join/Termscheck';
 import { toast } from 'react-hot-toast';
 import { ClientResponseError } from 'pocketbase';
 import { emailReg, idReg, pwReg } from '@/utils/validation';
+import Button from '@/components/Button';
 
 export default function Join() {
   const navigate = useNavigate();
@@ -57,6 +58,16 @@ export default function Join() {
 
       if (!password) {
         toast.error('비밀번호는 필수 입력 값입니다.');
+        return;
+      }
+
+      if (nickname.length < 2 || nickname.length > 8) {
+        toast.error('닉네임은 2자 이상, 10자 이하로 입력해주세요.');
+        return;
+      }
+
+      if (nickname.includes(' ')) {
+        toast.error('닉네임에는 공백이 포함될 수 없습니다.');
         return;
       }
 
@@ -135,14 +146,19 @@ export default function Join() {
 
         {/* 회원가입 폼 */}
         <form onSubmit={handleRegister} className="flex flex-col gap-3 mb-5">
-          <InputField
-            id="id"
-            type="text"
-            name="username"
-            placeholder="아이디"
-            value={formState.username}
-            onChange={handleInput}
-          />
+          <div className="flex gap-2">
+            <InputField
+              id="id"
+              type="text"
+              name="username"
+              placeholder="아이디"
+              value={formState.username}
+              onChange={handleInput}
+            />
+            <Button type="button" textSize="text-xs" wight="w-[60px]">
+              중복 확인
+            </Button>
+          </div>
           <InputField
             id="password"
             type="password"
@@ -150,7 +166,7 @@ export default function Join() {
             placeholder="비밀번호"
             onChange={handleInput}
           />
-          <p className="text-gray-400">
+          <p className="text-sand">
             특수문자 포함 최소 8자 이상, 16자 이하로 만들어 주세요.
           </p>
           <InputField
@@ -164,7 +180,7 @@ export default function Join() {
             id="nickname"
             type="text"
             name="nickname"
-            placeholder="닉네임"
+            placeholder="닉네임 (공백없이 2~8자)"
             value={formState.nickname}
             onChange={handleInput}
           />
@@ -181,7 +197,7 @@ export default function Join() {
         </form>
 
         {/* 로그인 페이지 이동 */}
-        <p className="mt-3">
+        <p className="mt-3 mr-10">
           이미 회원이신가요?&nbsp;
           <LinkItem link="/login" className="font-extrabold text-blue">
             로그인 하기
