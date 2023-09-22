@@ -54,7 +54,7 @@ export default function Termscheck({ setIsAgreed }) {
           onChange={handleAllChange}
           checked={isAllAccepted}
         />
-        <div className="flex justify-between items-center px-5">
+        <div className="flex justify-between items-center pl-5 pr-20">
           <CheckField
             id="checkUse"
             name="checkUse"
@@ -67,7 +67,7 @@ export default function Termscheck({ setIsAgreed }) {
             <TermsOfServiceUse />
           </Modal>
         </div>
-        <div className="flex justify-between items-center px-5">
+        <div className="flex justify-between items-center pl-5 pr-20">
           <CheckField
             id="checkPrivacy"
             name="checkPrivacy"
@@ -81,7 +81,7 @@ export default function Termscheck({ setIsAgreed }) {
         </div>
       </div>
       <Button
-        disabled={!isUseAccepted || !isPrivacyAccepted}
+        // disabled={!isUseAccepted || !isPrivacyAccepted}
         bgColor={!isAllAccepted ? 'bg-sand' : 'bg-blue'}
       >
         가입하기
