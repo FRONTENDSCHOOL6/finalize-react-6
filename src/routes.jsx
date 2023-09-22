@@ -6,8 +6,8 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 import ProtectRoute from '@/components/ProtectRoute';
-import ProfileCommentSection from './components/profile/ProfileCommentSection';
-import ReplaceRoute from './components/ReplaceRoute';
+import ProfileCommentSection from '@/components/profile/ProfileCommentSection';
+import ReplaceRoute from '@/components/ReplaceRoute';
 const RootLayout = lazy(() => import('@/layout/RootLayout'));
 const Home = lazy(() => import('@/pages/Home'));
 const Contents = lazy(() => import('@/pages/Contents'));

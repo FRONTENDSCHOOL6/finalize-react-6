@@ -126,8 +126,13 @@ export default function ContentEdit() {
     formData.append('content', contentValue);
     formData.append('location', placeNameRef.current);
     formData.append('address', placeAddressRef.current);
-    console.log(tagValue)
-    formData.append('tag', tagValue);
+    console.log('selectedTag', selectedTag)
+    console.log('tagValue',tagValue);
+    if (tagValue === undefined) {
+      formData.append('tag', selectedTag);
+    } else {
+      formData.append('tag', tagValue);
+    }
 
     formData.append('customTag', customTagValue);
 
