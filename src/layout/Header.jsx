@@ -1,7 +1,7 @@
 import Navigation from '@/components/header/Navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import classNames from 'classnames';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 export default function Header() {
@@ -22,7 +22,7 @@ export default function Header() {
     [pathname]
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (curPath != location.pathname) {
       setMenuToggle(false);
     }
