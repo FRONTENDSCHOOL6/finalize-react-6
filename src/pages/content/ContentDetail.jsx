@@ -43,7 +43,7 @@ export default function ContentDetail() {
   }, [commentInfo]);
 
   //# 댓글 삭제
-  const [deletedCommentIds, setDeletedCommentIds] = useState([]);
+  const [deletedCommentIds] = useState([]);
   const isCommentDeleted = (commentId) => deletedCommentIds.includes(commentId);
 
   useEffect(() => {
@@ -193,8 +193,8 @@ export default function ContentDetail() {
               </button>
             </Link>
             <button
-              className="border-2 border-blue bg-blue text-white py-2 px-4 rounded-lg 
-              hover:bg-transparent hover:text-red-400 hover:border-2 hover:border-red-500 hover:font-semibold"
+              className="bg-transparent text-red-500 border-2 border-red-500 py-2 px-4 rounded-lg 
+                font-semibold hover:border-2 hover:border-red-500 hover:bg-red-400 hover:text-white "
               onClick={handleDelete}
             >
               삭제

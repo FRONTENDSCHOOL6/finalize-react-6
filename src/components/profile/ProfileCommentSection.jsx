@@ -1,15 +1,16 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPbImageURL } from '@/utils';
-import TitleButton from '../TitleButton';
-import { Link, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useQuery } from '@tanstack/react-query';
-import ProfileComment from '../ProfileComment';
 import Spinner from '@/components/Spinner';
+import TitleButton from '../TitleButton';
+import ProfileComment from '../ProfileComment';
+import { bool, func } from 'prop-types';
 
 async function fetchContents(options) {
   let queryParams = '';
-  queryParams = `?sort=${options.sort}&filter=${options.filter}&expand=contentId&page=${options.page}&perPage=${options.perPage}`;
+  queryParams = `?sort=${options.sort}&filter=${options.filter}&expand=contentId`;
   const response = await fetch(
     `${import.meta.env.VITE_PB_API}/collections/${
       options.collection
@@ -20,131 +21,133 @@ async function fetchContents(options) {
 
 export default function ProfileCommentSection({ showMore, setShowMore }) {
   const { user } = useAuthStore();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [collection] = useState('comment');
-  // const [page, setPage] = useState(1);
-  const [perPage] = useState(5);
   const [sort] = useState('-created');
-  const [page, setPage] = useState(() => {
-    const page = searchParams.get('page');
-    return page ? Number(page) : 1;
-  });
-  useEffect(() => {
-    const page = searchParams.get('page');
-    if (!page) setSearchParams({ page: 1 });
-    if (page >= 2) setShowMore(true);
-  }, [searchParams, setSearchParams, setShowMore]);
 
-  const { isLoading, data, isError, error } = useQuery({
-    queryKey: ['comment', sort, user, page, perPage, collection],
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ['comment', sort, user, collection],
     queryFn: () =>
       fetchContents({
         sort,
         filter: `userId='${user.id}'`,
-        page,
-        perPage,
         collection,
       }),
-    keepPreviousData: true,
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
   });
 
-  if (isLoading) {
-    return <Spinner className="mx-auto" />;
-  }
-
-  if (isError) {
-    return <div role="alert">{error.toString()}</div>;
-  }
-
-  return (
-    <section className="mx-10 mb-12">
-      <TitleButton
-        title="나의 제주의 별"
-        link="#"
-        count={data?.items?.length}
-        section="댓글"
-        onClick={() => setShowMore(!showMore)}
-        showMore={showMore}
-      />
-      <hr />
-      <ul className="w-11/12 mx-auto my-10">
-        {data?.items?.length === 0 && (
-          <>
-            <Link to="/content">
-              <ProfileComment
-                src="https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg"
-                alt="제주 바다"
-                date="2023-09-06"
-                comment="제주를 향한 당신의 별을 우리에게 나누어주세요"
-              />
-            </Link>
-          </>
-        )}
-        {!showMore &&
-          data?.items?.slice(0, 5).map((item) => {
-            return (
-              <Link to={`/content/${item.contentId}`} key={item.id}>
+  return status === 'loading' ? (
+    <Spinner className="mx-auto" />
+  ) : status === 'error' ? (
+    <div role="alert">{error.toString()}</div>
+  ) : (
+    <>
+      <section className="mx-10 mb-12">
+        <TitleButton
+          title="나의 제주의 별"
+          link="#"
+          count={data.pages[0].items.length}
+          section="댓글"
+          onClick={() => setShowMore(!showMore)}
+          showMore={showMore}
+        />
+        <hr />
+        <ul className="w-11/12 mx-auto my-10">
+          {showMore && data.pages[0].items.length === 0 && (
+            <>
+              <Link to="/content">
                 <ProfileComment
-                  src={getPbImageURL(item.expand.contentId, 'photo')}
-                  alt={item.title}
-                  date={item.created.split(' ')[0]}
-                  comment={item.comment}
+                  src="https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg"
+                  alt="제주 바다"
+                  date="2023-09-06"
+                  comment="제주를 향한 당신의 별을 우리에게 나누어주세요"
                 />
               </Link>
-            );
-          })}
-        {showMore &&
-          data?.items?.map((item) => {
-            return (
-              <Link to={`/content/${item.contentId}`} key={item.id}>
-                <ProfileComment
-                  src={getPbImageURL(item.expand.contentId, 'photo')}
-                  alt={item.title}
-                  date={item.created.split(' ')[0]}
-                  comment={item.comment}
-                />
-              </Link>
-            );
-          })}
-      </ul>
-      {showMore && (
-        <section className="flex justify-center gap-5 my-10">
-          <button
-            onClick={() => {
-              setPage((old) => Math.max(old - 1, 0));
-              setSearchParams((searchParams) => {
-                const page = searchParams.get('page');
-                return { page: Number(page) - 1 };
-              });
-            }}
-            disabled={page === 1}
-            className="disabled:font-extralight font-bold"
-          >
-            <span className="sr-only">이전 페이지 이동</span>
-            &lt;
-          </button>
-          <span>
-            {`${page}`}
-            {data.totalPages !== 1 &&
-              data.totalPages !== 0 &&
-              ` / ${data.totalPages}`}
-          </span>
-          <button
-            onClick={() => {
-              setPage((old) => old + 1);
-              setSearchParams((searchParams) => {
-                const page = searchParams.get('page');
-                return { page: Number(page) + 1 };
-              });
-            }}
-            disabled={page === data.totalPages || data.totalPages === 0}
-            className="disabled:font-extralight font-bold"
-          >
-            <span className="sr-only">이후 페이지 이동</span>
-            &gt;
-          </button>
-        </section>
-      )}
-    </section>
+            </>
+          )}
+          {!showMore &&
+            data?.pages?.map((group, i) => {
+              return (
+                <React.Fragment key={i}>
+                  {group?.items?.slice(0, 5).map((project) => {
+                    return (
+                      <Link
+                        to={`/content/${project.contentId}`}
+                        key={project.id}
+                      >
+                        <ProfileComment
+                          src={getPbImageURL(project.expand.contentId, 'photo')}
+                          alt={project.title}
+                          date={project.created.split(' ')[0]}
+                          comment={project.comment}
+                        />
+                      </Link>
+                    );
+                  })}
+                </React.Fragment>
+              );
+            })}
+          {showMore &&
+            data?.pages?.map((group, i) => {
+              return (
+                <React.Fragment key={i}>
+                  {group?.items?.map((project) => {
+                    console.log(data.pages[0].items.length);
+                    return (
+                      <Link
+                        to={`/content/${project.contentId}`}
+                        key={project.id}
+                      >
+                        <ProfileComment
+                          src={getPbImageURL(project.expand.contentId, 'photo')}
+                          alt={project.title}
+                          date={project.created.split(' ')[0]}
+                          comment={project.comment}
+                        />
+                      </Link>
+                    );
+                  })}
+                </React.Fragment>
+              );
+            })}
+          {showMore && (
+            <>
+              <div>
+                <button
+                  className="w-full py-2 font-semibold"
+                  onClick={() => fetchNextPage()}
+                  disabled={!hasNextPage || isFetchingNextPage}
+                >
+                  {isFetchingNextPage
+                    ? '로딩 중입니다.'
+                    : hasNextPage
+                    ? 'Load More'
+                    : `- 댓글이 더 이상 없습니다. 우리의 제주에 당신의 별을 더욱 나눠주세요 -`}
+                </button>
+              </div>
+              <div>
+                {isFetching && !isFetchingNextPage ? (
+                  <p className="w-full text-center font-semibold">
+                    - 추가된 댓글을 확인하고 있습니다 -
+                  </p>
+                ) : null}
+              </div>
+            </>
+          )}
+        </ul>
+      </section>
+    </>
   );
 }
+
+ProfileCommentSection.propTypes = {
+  showMore: bool,
+  setShowMore: func,
+};
