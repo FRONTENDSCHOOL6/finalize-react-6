@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-// 아직 로딩 스피너 미구현
 function ProtectRoute({ children }) {
   const { pathname, search, hash } = useLocation();
   const {token} = useAuthStore((state) => state.user);
