@@ -126,7 +126,13 @@ export default function ContentDetail() {
               <button
                 onClick={async () => {
                   try {
-                    await pb.collection('content').delete(id);
+                    const response = await pb.collection('content').delete(id);
+                    console.log(response)
+                    if (response) {
+                      await pb
+                        .collection('user')
+                        .update(user.id, { 'content-': response.id });
+                    }
                     toast.remove(t.id);
                     navigate('/content/list');
                   } catch (error) {
@@ -186,14 +192,14 @@ export default function ContentDetail() {
           <div className="flex gap-2 ml-auto">
             <Link to={`/content/edit/${id}`}>
               <button
-                className="border-2 border-blue text-darkblue py-2 px-4 rounded-lg font-semibold 
+                className="border-2 border-blue text-darkblue py-2 px-4 rounded-lg font-semibold
               hover:text-white hover:bg-blue "
               >
                 수정
               </button>
             </Link>
             <button
-              className="bg-transparent text-red-500 border-2 border-red-500 py-2 px-4 rounded-lg 
+              className="bg-transparent text-red-500 border-2 border-red-500 py-2 px-4 rounded-lg
                 font-semibold hover:border-2 hover:border-red-500 hover:bg-red-400 hover:text-white "
               onClick={handleDelete}
             >

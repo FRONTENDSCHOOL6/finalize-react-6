@@ -97,8 +97,8 @@ export default function ContentEdit() {
     const contentValue = contentRef.current.value;
     const photoValue = photoRef.current.files;
     let tagValue;
-    console.log('tagRef.current.value', tagRef.current.value)
-    console.log('contentData.tag', contentData.tag)
+    // console.log('tagRef.current.value', tagRef.current.value)
+    // console.log('contentData.tag', contentData.tag)
     if (!isChangeTag) {
       tagValue = contentData.tag;
     } else {
@@ -136,8 +136,8 @@ export default function ContentEdit() {
     formData.append('location', placeNameRef.current);
     formData.append('address', placeAddressRef.current);
 
-    console.log('selectedTag', selectedTag);
-    console.log('tagValue', tagValue);
+    // console.log('selectedTag', selectedTag);
+    // console.log('tagValue', tagValue);
     formData.append('tag', tagValue);
 
     formData.append('customTag', customTagValue);
