@@ -126,11 +126,9 @@ export default function ContentEdit() {
     formData.append('content', contentValue);
     formData.append('location', placeNameRef.current);
     formData.append('address', placeAddressRef.current);
-    if (!handleTypeSelect) {
-      formData.append('tag', setSelectedTag)
-    }else {
-      formData.append('tag', tagValue);
-    }
+    console.log(tagValue)
+    formData.append('tag', tagValue);
+
     formData.append('customTag', customTagValue);
 
     if (photoValue.length > 0) {
