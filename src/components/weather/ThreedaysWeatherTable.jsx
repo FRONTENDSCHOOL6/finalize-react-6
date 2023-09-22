@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import ThreedaysWeather from './ThreedaysWeather';
 import { useQuery } from '@tanstack/react-query';
-import Spinner from '../Spinner';
 
 async function fetchWeatherData(coordinates) {
   const baseUrl =
@@ -49,84 +48,90 @@ export default function ThreedaysWeatherTable({ coordinates }) {
     staleTime: 60 * 60 * 1000, // 60분(1시간)을 밀리초로 변환
   });
 
-  if (isLoading) {
-    return <Spinner className="mx-auto" />;
+  if (data) {
+    return (
+      <>
+        <table className="border-2 w-2/3 text-center">
+          <caption className="sr-only">3일치 날씨 정보</caption>
+          <thead className="border-2">
+            <tr className="bg-lightsand">
+              <th className="border-2 h-[50px]" scope="row"></th>
+              {data?.response?.body?.items?.item
+                .filter((item) => {
+                  if (item.fcstDate && item.category === 'TMX') {
+                    return true;
+                  }
+                  return false;
+                })
+                .map((item) => {
+                  const month = parseInt(item.fcstDate.slice(4, 6), 10);
+                  const day = parseInt(item.fcstDate.slice(6), 10);
+                  return (
+                    <th
+                      key={`${item.fcstDate}-${item.fcstTime}-${item.category}`}
+                      className="border-2"
+                      scope="row"
+                    >
+                      {`${month}/${day}`}
+                    </th>
+                  );
+                })}
+            </tr>
+          </thead>
+          <tbody className="border-2">
+            <tr>
+              <th className="border-2 h-[50px]" scope="col">
+                최<span className="text-red-600">고</span> 기온
+              </th>
+              {data && (
+                <ThreedaysWeather data={data} category={'TMX'} text={'°C'} />
+              )}
+            </tr>
+            <tr>
+              <th className="border-2 h-[50px]" scope="col">
+                최<span className="text-sky-600">저</span> 기온
+              </th>
+              <ThreedaysWeather data={data} category={'TMN'} text={'°C'} />
+            </tr>
+            <tr className="bg-lightsand">
+              <th className="border-2 h-[50px]" scope="col">
+                하늘 상태
+              </th>
+              <ThreedaysWeather data={data} category={'SKY'} />
+            </tr>
+            <tr>
+              <th className="border-2 h-[50px]" scope="col">
+                습도
+              </th>
+              <ThreedaysWeather data={data} category={'REH'} text={'%'} />
+            </tr>
+            <tr className=" bg-lightsand">
+              <th className="border-2 h-[50px]" scope="col">
+                강수 형태
+              </th>
+              <ThreedaysWeather data={data} category={'PTY'} />
+            </tr>
+            <tr>
+              <th className="border-2 h-[50px]" scope="col">
+                강수 확률
+              </th>
+              <ThreedaysWeather data={data} category={'POP'} text={'%'} />
+            </tr>
+            <tr className="bg-lightsand">
+              <th className="border-2 h-[50px]" scope="col">
+                풍속
+              </th>
+              <ThreedaysWeather data={data} category={'WSD'} text={'m/s'} />
+            </tr>
+          </tbody>
+        </table>
+        <span className="w-2/3 text-right mt-[-30px]">
+          풍속: 4미만(약함), 4이상 9미만(약간 강함), 9이상 14미만(강함),
+          14이상(매우강함)
+        </span>
+      </>
+    );
   }
-
-  if (isError) {
-    return <div role="alert">{error.toString()}</div>;
-  }
-
-  return (
-    <>
-      <table className="border-2 w-2/3 text-center">
-        <thead className="border-2">
-          <tr className="bg-lightsand">
-            <th className="border-2 h-[50px]"></th>
-            {data?.response?.body?.items?.item
-              .filter((item) => {
-                if (item.fcstDate && item.category === 'TMX') {
-                  return true;
-                }
-                return false;
-              })
-              .map((item) => {
-                const month = parseInt(item.fcstDate.slice(4, 6), 10);
-                const day = parseInt(item.fcstDate.slice(6), 10);
-                return (
-                  <th
-                    key={`${item.fcstDate}-${item.fcstTime}-${item.category}`}
-                    className="border-2"
-                  >
-                    {`${month}/${day}`}
-                  </th>
-                );
-              })}
-          </tr>
-        </thead>
-        <tbody className="border-2">
-          <tr>
-            <th className="border-2 h-[50px]">
-              최<span className="text-red-600">고</span> 기온
-            </th>
-            {data && (
-              <ThreedaysWeather data={data} category={'TMX'} text={'°C'} />
-            )}
-          </tr>
-          <tr>
-            <th className="border-2 h-[50px]">
-              최<span className="text-sky-600">저</span> 기온
-            </th>
-            <ThreedaysWeather data={data} category={'TMN'} text={'°C'} />
-          </tr>
-          <tr className="bg-lightsand">
-            <th className="border-2 h-[50px]">하늘 상태</th>
-            <ThreedaysWeather data={data} category={'SKY'} />
-          </tr>
-          <tr>
-            <th className="border-2 h-[50px]">습도</th>
-            <ThreedaysWeather data={data} category={'REH'} text={'%'} />
-          </tr>
-          <tr className=" bg-lightsand">
-            <th className="border-2 h-[50px]">강수 형태</th>
-            <ThreedaysWeather data={data} category={'PTY'} />
-          </tr>
-          <tr>
-            <th className="border-2 h-[50px]">강수 확률</th>
-            <ThreedaysWeather data={data} category={'POP'} text={'%'} />
-          </tr>
-          <tr className="bg-lightsand">
-            <th className="border-2 h-[50px]">풍속</th>
-            <ThreedaysWeather data={data} category={'WSD'} text={'m/s'} />
-          </tr>
-        </tbody>
-      </table>
-      <span className="w-2/3 text-right mt-[-30px]">
-        풍속: 4미만(약함), 4이상 9미만(약간 강함), 9이상 14미만(강함),
-        14이상(매우강함)
-      </span>
-    </>
-  );
 }
 
 ThreedaysWeatherTable.propTypes = {

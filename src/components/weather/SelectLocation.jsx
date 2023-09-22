@@ -35,8 +35,16 @@ export default function SelectLocation({
   return (
     <div className="flex flex-row gap-x-10">
       <p className="text-xl text-center">지역을 선택해주세요</p>
-      <select name="city" className="mx-3" onChange={handleCityChange}>
-        <option>- 시 -</option>
+      <label htmlFor="city" className="sr-only">
+        시 선택
+      </label>
+      <select
+        id="city"
+        name="city"
+        className="mx-3"
+        onChange={handleCityChange}
+      >
+        <option value="">- 시 -</option>
         {Object.keys(data).map((cityName) => (
           <option
             key={cityName}
@@ -47,8 +55,15 @@ export default function SelectLocation({
           </option>
         ))}
       </select>
-      <select name="sublocation" onChange={handleSublocationChange}>
-        <option>- 동/읍 -</option>
+      <label htmlFor="sublocation" className="sr-only">
+        동/읍 선택
+      </label>
+      <select
+        id="sublocation"
+        name="sublocation"
+        onChange={handleSublocationChange}
+      >
+        <option value="">- 동/읍 -</option>
         {(data[city] || []).map((loc) => (
           <option key={loc.name} value={loc.name}>
             {loc.name}
