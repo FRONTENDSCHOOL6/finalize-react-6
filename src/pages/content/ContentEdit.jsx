@@ -4,6 +4,7 @@ import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
 import { colorStyles } from '@/components/content/colorStyles';
 import { colourOptions } from '@/components/content/data/data';
+import { useAuthStore } from '@/store/useAuthStore';
 import { getPbImageURL } from '@/utils';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -26,6 +27,7 @@ const contentData = {
 export default function ContentEdit() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useAuthStore();
 
   const [initialImage, setInitialImage] = useState(null);
   const [fileImages, setFileImages] = useState([]);
@@ -61,8 +63,8 @@ export default function ContentEdit() {
         setInitialImage({ image: photoUrl, label: photoUrl });
 
         contentData.tag = tagRef.current.value = tag;
-        console.log('tag', tag);
         setSelectedTag(colourOptions.findIndex((e) => e.value == tag));
+
         contentData.location = placeNameRef.current.value = location;
         contentData.address = placeAddressRef.current.value = address;
       } catch (error) {
@@ -93,7 +95,7 @@ export default function ContentEdit() {
     const titleValue = titleRef.current.value;
     const contentValue = contentRef.current.value;
     const photoValue = photoRef.current.files;
-    // const tagValue = tagRef.current.value;
+    const tagValue = tagRef.current.value;
     const customTagValue = customTagRef.current.value;
 
     if (!tagRef) {
@@ -124,7 +126,11 @@ export default function ContentEdit() {
     formData.append('content', contentValue);
     formData.append('location', placeNameRef.current);
     formData.append('address', placeAddressRef.current);
-    formData.append('tag', tagRef.current.value);
+    if (!handleTypeSelect) {
+      formData.append('tag', setSelectedTag)
+    }else {
+      formData.append('tag', tagValue);
+    }
     formData.append('customTag', customTagValue);
 
     if (photoValue.length > 0) {
@@ -148,11 +154,13 @@ export default function ContentEdit() {
 
   const handleTypeSelect = (e) => {
     tagRef.current.value = e.value;
+
+    return true;
   };
 
   return (
     <>
-      <PageHead title="Jeju All in One - 나만의 제주" />
+      <PageHead title="Jeju All in One - 나만의 제주 수정 페이지" />
 
       <ContentTitle title="제주, 나의 ⭐" />
 
