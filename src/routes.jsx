@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import ProtectRoute from '@/components/ProtectRoute';
 import ProfileCommentSection from './components/profile/ProfileCommentSection';
+import ReplaceRoute from './components/ReplaceRoute';
 const RootLayout = lazy(() => import('@/layout/RootLayout'));
 const Home = lazy(() => import('@/pages/Home'));
 const Contents = lazy(() => import('@/pages/Contents'));
@@ -27,9 +28,23 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path="/">
-        <Route path="login" element={<Login />} />
+        <Route
+          path="login"
+          element={
+            <ReplaceRoute>
+              <Login />
+            </ReplaceRoute>
+          }
+        />
       </Route>
-      <Route path="join" element={<Join />} />
+      <Route
+        path="join"
+        element={
+          <ReplaceRoute>
+            <Join />
+          </ReplaceRoute>
+        }
+      />
       <Route path="findid" element={<FindId />} />
       <Route path="findpw" element={<FindPw />} />
       <Route path="pwemail" element={<PwEmail />} />
