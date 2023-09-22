@@ -25,6 +25,67 @@ export default function Join() {
 
   const [isAgreed, setIsAgreed] = useState(false);
 
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const handleIdDuplication = async () => {
+    const id = formState.username;
+
+    if (id === '') toast.error('입력된 값이 없습니다.');
+    else {
+      try {
+        const records = await pb.collection('user').getList(1, 1, {
+          filter: `username = '${id}'`,
+        });
+        if (records) {
+          toast.error('아이디가 중복됩니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handleEmailDuplication = async () => {
+    const email = formState.email;
+    if (email === '') toast.error('입력된 값이 없습니다.');
+    else {
+      try {
+        const records = await pb.collection('user').getList(1, 1, {
+          filter: `email = '${email}'`,
+        });
+        if (records) {
+          toast.error('이메일이 중복됩니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handleNicknameDuplication = async () => {
+    const nickname = formState.nickname;
+
+    if (nickname === '') toast.error('입력된 값이 없습니다.');
+    else {
+      try {
+        const records = await pb.collection('user').getList(1, 1, {
+          filter: `nickname = '${nickname}'`,
+        });
+        if (records) {
+          toast.error('닉네임이 중복됩니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -105,42 +166,16 @@ export default function Join() {
         toast.error('회원가입에 실패했습니다.');
       }
     } catch (error) {
-      if (error.response.code === 400) {
-        const { username, email, nickname } = error.response.data;
-
-        if (username && username.message.includes('already')) {
-          toast.error('아이디가 중복됩니다.');
-        }
-
-        if (email && email.message.includes('already')) {
-          toast.error('이메일이 중복됩니다.');
-        }
-
-        if (nickname && nickname.message.includes('unique')) {
-          toast.error('닉네임이 중복됩니다.');
-        }
-      } else {
-        if (!(error instanceof ClientResponseError)) {
-          console.error('회원가입 실패:', error);
-          toast.error('회원가입에 실패했습니다.');
-        }
+      if (!(error instanceof ClientResponseError)) {
+        console.error('회원가입 실패:', error);
+        toast.error('회원가입에 실패했습니다.');
       }
     }
   };
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
-
   return (
     <>
-      {/* 헤드 이름 */}
       <PageHead title="Jeju All in One - 회원가입" />
-      {/* 마크업 */}
       <LoginPageContent>
         <Logo />
 
@@ -153,9 +188,50 @@ export default function Join() {
               name="username"
               placeholder="아이디"
               value={formState.username}
+              onChange={() => handleInput()}
+            />
+            <Button
+              onClick={handleIdDuplication}
+              type="button"
+              textSize="text-xs"
+              wight="w-[60px]"
+            >
+              중복 확인
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <InputField
+              id="nickname"
+              type="text"
+              name="nickname"
+              placeholder="닉네임 (공백없이 2~8자)"
+              value={formState.nickname}
               onChange={handleInput}
             />
-            <Button type="button" textSize="text-xs" wight="w-[60px]">
+            <Button
+              onClick={handleNicknameDuplication}
+              type="button"
+              textSize="text-xs"
+              wight="w-[60px]"
+            >
+              중복 확인
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <InputField
+              id="email"
+              type="text"
+              name="email"
+              placeholder="이메일"
+              value={formState.email}
+              onChange={handleInput}
+            />
+            <Button
+              onClick={handleEmailDuplication}
+              type="button"
+              textSize="text-xs"
+              wight="w-[60px]"
+            >
               중복 확인
             </Button>
           </div>
@@ -174,22 +250,6 @@ export default function Join() {
             type="password"
             name="passwordConfirm"
             placeholder="비밀번호 확인"
-            onChange={handleInput}
-          />
-          <InputField
-            id="nickname"
-            type="text"
-            name="nickname"
-            placeholder="닉네임 (공백없이 2~8자)"
-            value={formState.nickname}
-            onChange={handleInput}
-          />
-          <InputField
-            id="email"
-            type="text"
-            name="email"
-            placeholder="이메일"
-            value={formState.email}
             onChange={handleInput}
           />
           {/* 약관 동의 */}
