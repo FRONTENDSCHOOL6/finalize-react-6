@@ -1,49 +1,61 @@
 import PropTypes from 'prop-types';
 import ThreedaysWeather from './ThreedaysWeather';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import Spinner from '../Spinner';
+
+async function fetchWeatherData(coordinates) {
+  const baseUrl =
+    'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst';
+  const serviceKey = import.meta.env.VITE_WEATHER_API_KEY;
+
+  // 날짜
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  let baseDate = `${year}${month}${day}`;
+
+  // 새벽 2시 이전인 경우 전날 23시로 baseTime 설정
+  const hour = today.getHours();
+  if (hour < 2) {
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const prevDayYear = yesterday.getFullYear();
+    const prevDayMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
+    const prevDayDate = String(yesterday.getDate()).padStart(2, '0');
+    baseDate = `${prevDayYear}${prevDayMonth}${prevDayDate}`;
+  }
+
+  const { x, y } = coordinates;
+  const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=1500&dataType=JSON&base_date=${baseDate}&base_time=0200&nx=${x}&ny=${y}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
 
 export default function ThreedaysWeatherTable({ coordinates }) {
-  const [data, setData] = useState({});
-  useEffect(() => {
-    const baseUrl =
-      'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst';
-    const serviceKey = import.meta.env.VITE_WEATHER_API_KEY;
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['threeDaysWeatherData', coordinates], // queryKey: 쿼리를 고유하게 식별. 이 배열은 쿼리의 이름과, coordinates 객체의 값에 따라 각각의 쿼리를 구분함
+    queryFn: () => fetchWeatherData(coordinates),
+    enabled: !!coordinates, // coordinates가 변경될 때만 데이터 가져옴 (enabled는 true 또는 false이지, 변수의 값을 가질 수 없음)
+    staleTime: 60 * 60 * 1000, // 60분(1시간)을 밀리초로 변환
+  });
 
-    // 날짜
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    let baseDate = `${year}${month}${day}`;
-    const hour = today.getHours();
-    if (hour < 2) {
-      // 새벽 2시 이전인 경우 전날 23시로 baseTime 설정
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
-      const prevDayYear = yesterday.getFullYear();
-      const prevDayMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
-      const prevDayDate = String(yesterday.getDate()).padStart(2, '0');
+  if (isLoading) {
+    return <Spinner className="mx-auto" />;
+  }
 
-      baseDate = `${prevDayYear}${prevDayMonth}${prevDayDate}`;
-    }
-
-    async function fetchWeatherData() {
-      const { x, y } = coordinates;
-      const url = `${baseUrl}?serviceKey=${serviceKey}&pageNo=1&numOfRows=1500&dataType=JSON&base_date=${baseDate}&base_time=0200&nx=${x}&ny=${y}`;
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-    fetchWeatherData();
-  }, [coordinates]);
+  if (isError) {
+    return <div role="alert">{error.toString()}</div>;
+  }
 
   return (
     <>

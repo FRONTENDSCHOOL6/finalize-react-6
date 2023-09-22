@@ -40,8 +40,9 @@ export default function ImgSky({ data }) {
   }
 
   // 강수 형태
+  // const rain = 2;
   const rain = data?.response?.body?.items?.item[6]?.fcstValue;
-  console.log('rain:', rain);
+  // console.log('rain:', rain);
   let rainSrc = '';
   let rainAlt = '';
   let rainText = '';
