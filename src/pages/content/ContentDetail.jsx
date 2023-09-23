@@ -227,9 +227,6 @@ export default function ContentDetail() {
                   commentId={item.id}
                   onCommentChange={setComment}
                   commentTime={item.created}
-                  // userInfo={item.expand.userId}
-                  // contentInfo={contentInfo}
-                  // id={id}
                 />
               );
             })}
