@@ -76,7 +76,7 @@ export default function Contents() {
           </Link>
         </section>
 
-        <div className="w-11/12 text-right mb-5">
+        <section className="w-11/12 text-right mb-5">
           <button onClick={() => setTag('')} type="button" className="mr-2">
             모아보기
           </button>
@@ -93,7 +93,7 @@ export default function Contents() {
               </option>
             ))}
           </select>
-        </div>
+        </section>
         <section className="contentContainer p-1 bg-gray-100 w-11/12">
           {data.items.length === 0 && <ContentItem />}
           {data?.items?.map((item) => {

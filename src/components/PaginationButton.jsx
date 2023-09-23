@@ -45,8 +45,8 @@ export default function PaginationButton({
 }
 
 PaginationButton.propTypes = {
-  page: number,
-  totalPages: number,
-  setPage: func,
-  setSearchParams: func,
+  page: number.isRequired,
+  totalPages: number.isRequired,
+  setPage: func.isRequired,
+  setSearchParams: func.isRequired,
 };
