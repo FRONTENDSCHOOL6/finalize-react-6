@@ -2,41 +2,40 @@ import pb from '@/api/pocketbase';
 import MainContent from '@/components/MainContent';
 import MainSlide from '@/components/MainSlide';
 import MainTag from '@/components/MainTag';
+import PageHead from '@/components/PageHead';
 import Spinner from '@/components/Spinner';
 import TitleButton from '@/components/TitleButton';
-import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+
+async function getContentList() {
+  try {
+    const contentList = await pb.collection('content').getFullList({
+      expand: 'comment',
+    });
+    return contentList; // 쿼리 함수에서 데이터를 반환
+  } catch (error) {
+    throw error;
+  }
+}
 
 export default function Home() {
   const [page, setPage] = useState(1);
-  const [data, setData] = useState(null);
-  const [status, setStatus] = useState('pending');
   const [selectedTag, setSelectedTag] = useState(null);
 
-  useEffect(() => {
-    async function getContentList() {
-      try {
-        setStatus('loading');
-        const contentList = await pb.collection('content').getFullList({
-          expand: 'comment',
-        });
-        setData(contentList);
-        setStatus('success');
-      } catch (error) {
-        setStatus('error');
-      }
-    }
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['mainContents'],
+    queryFn: getContentList,
+    staleTime: 60 * 60 * 1000,
+  });
 
-    getContentList();
-  }, [page]);
+  if (isLoading) {
+    return <Spinner className="mx-auto" />;
+  }
 
-  if (!data) {
-    return (
-      <div className="grid place-content-center h-[100vh]">
-        <Spinner size={160} />
-      </div>
-    );
+  if (isError) {
+    return <div role="alert">{error.toString()}</div>;
   }
 
   const filteredData = selectedTag
@@ -45,10 +44,7 @@ export default function Home() {
 
   return (
     <>
-      <Helmet>
-        <title>Jeju - All in One</title>
-      </Helmet>
-
+      <PageHead title="Jeju All in One - 나만의 제주" />
       <section>
         <h2 className="sr-only">제주도 소개 슬라이드</h2>
         <MainSlide />

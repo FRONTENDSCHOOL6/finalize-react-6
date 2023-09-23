@@ -44,10 +44,10 @@ export default function MainContent({ page, setPage, data }) {
       <button
         onClick={() => setPage(i + 1)}
         disabled={page === i + 1}
-        className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
-      >
-        {/* {i + 1} */}
-      </button>
+        className={`px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center ${
+          page === i + 1 ? 'bg-blue' : 'bg-lightsand'
+        } hover:border-blue`}
+      ></button>
     </div>
   ));
 
@@ -62,18 +62,20 @@ export default function MainContent({ page, setPage, data }) {
             <Link to={`/content/${item.id}`}>
               <figure className="imageContainer brightness-[0.85] overflow-hidden">
                 <img
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover w-full h-full"
                   src={getPbImageURL(item, 'photo')}
                   alt={item.tag}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover w-full h-full"
                 />
-
-                <figcaption className="absolute bottom-0 py-4 px-4 overflow-hidden text-ellipsis whitespace-nowrap w-full bg-white opacity-75 flex justify-content-between">
-                  <div className="ellipsis w-4/5">{item.title}</div>
-                  <span className="text-right w-1/5">
-                    ⭐️ {item.commentId.length}
-                  </span>
-                </figcaption>
               </figure>
+              <figcaption className="text-white flex flex-col text-end absolute bottom-0 w-full p-3 bg-black/40">
+                <span className="text-xl w-3/4 ellipsis ml-auto">
+                  {item.title}
+                </span>
+                <span className="text-sm w-3/4 ellipsis ml-auto text-slate-300">
+                  #{item.title}
+                </span>
+                <span>⭐({item.commentId.length})</span>
+              </figcaption>
             </Link>
           </li>
         ))}
