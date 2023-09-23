@@ -7,7 +7,6 @@ import Spinner from '@/components/Spinner';
 import TitleButton from '@/components/TitleButton';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 async function getContentList() {

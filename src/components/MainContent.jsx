@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Spinner from './Spinner';
 
 export default function MainContent({ page, setPage, data }) {
-  console.log(data);
   if (!data) {
     return (
       <div className="grid place-content-center h-[600px]">
@@ -45,7 +44,6 @@ export default function MainContent({ page, setPage, data }) {
       <button
         onClick={() => setPage(i + 1)}
         disabled={page === i + 1}
-        // className="bg-lightsand px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center hover:border-blue"
         className={`px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center ${
           page === i + 1 ? 'bg-blue' : 'bg-lightsand'
         } hover:border-blue`}
@@ -76,7 +74,6 @@ export default function MainContent({ page, setPage, data }) {
                 <span className="text-sm w-3/4 ellipsis ml-auto text-slate-300">
                   #{item.title}
                 </span>
-                {/* // )} */}
                 <span>⭐({item.commentId.length})</span>
               </figcaption>
             </Link>
