@@ -16,7 +16,7 @@ async function getContentList() {
     });
     return contentList; // 쿼리 함수에서 데이터를 반환
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 }
 
