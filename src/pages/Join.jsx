@@ -42,8 +42,10 @@ export default function Join() {
         const records = await pb.collection('user').getList(1, 1, {
           filter: `username = '${id}'`,
         });
-        if (records) {
+        if (records.items.length > 0) {
           toast.error('아이디가 중복됩니다.');
+        } else {
+          toast.success('사용 가능한 아이디입니다.');
         }
       } catch (error) {
         console.error(error);
@@ -59,8 +61,10 @@ export default function Join() {
         const records = await pb.collection('user').getList(1, 1, {
           filter: `email = '${email}'`,
         });
-        if (records) {
+        if (records.items.length > 0) {
           toast.error('이메일이 중복됩니다.');
+        } else {
+          toast.success('사용 가능한 이메일입니다.');
         }
       } catch (error) {
         console.error(error);
@@ -77,8 +81,10 @@ export default function Join() {
         const records = await pb.collection('user').getList(1, 1, {
           filter: `nickname = '${nickname}'`,
         });
-        if (records) {
+        if (records.items.length > 0) {
           toast.error('닉네임이 중복됩니다.');
+        } else {
+          toast.success('사용 가능한 닉네임입니다.');
         }
       } catch (error) {
         console.error(error);
