@@ -189,7 +189,7 @@ export default function ContentCreate() {
                 placeholder="내용을 입력해주세요"
                 ref={contentRef}
                 maxLength={2000}
-                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue s:h-48"
                 required
               />
             </div>
