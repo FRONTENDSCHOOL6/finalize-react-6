@@ -1,15 +1,15 @@
 import pb from '@/api/pocketbase';
 import PageHead from '@/components/PageHead';
 import ShowMap from '@/components/ShowMap';
+import Spinner from '@/components/Spinner';
 import CommentItem from '@/components/content/CommentItem';
-import { useAuthStore } from '@/store/useAuthStore';
 import AddComment from '@/components/content/AddComment';
+import toast from 'react-hot-toast';
+import { useAuthStore } from '@/store/useAuthStore';
 import { getPbImageURL } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useImmer } from 'use-immer';
-import Spinner from '@/components/Spinner';
 
 export default function ContentDetail() {
   const contentInfoInit = {
@@ -125,7 +125,6 @@ export default function ContentDetail() {
                 onClick={async () => {
                   try {
                     const response = await pb.collection('content').delete(id);
-                    console.log(response)
                     if (response) {
                       await pb
                         .collection('user')
@@ -173,18 +172,21 @@ export default function ContentDetail() {
         </article>
         {/* 내용 */}
         <article className="w-full py-2 px-4 rounded-md border border-gray-500">
-          <p className="pb-1 font-bold flex justify-between">
+          <p className="pb-3 font-bold flex justify-between s:flex-col">
             {contentInfo.title}
-            <span className="font-light text-slate-800">
-              #{contentInfo.tag}{' '}
+            <span className="font-light text-slate-800 text-right">
+              #{contentInfo.tag}
+              <br />
               {contentInfo.customTag && `#${contentInfo.customTag}`}
             </span>
           </p>
-          <div className="pb-2 flex justify-between">
+          <div className="pb-4 flex justify-between s:flex-col s:items-end">
             <p>{contentInfo.nickname}</p>
             <p>{contentInfo.created}</p>
           </div>
-          {contentInfo.content}
+          <p className="w-full h-full resize-none whitespace-break-spaces">
+            {contentInfo.content}
+          </p>
         </article>
         {writerRef.current !== null && writerRef.current === user?.userId && (
           <div className="flex gap-2 ml-auto">
