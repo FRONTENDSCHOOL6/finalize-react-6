@@ -15,7 +15,6 @@ export default function KakaoLogin() {
         .authWithOAuth2({ provider: 'kakao' });
 
       const { id, username, email, accessToken: token } = user.meta;
-      console.log(user.meta);
 
       const updateUser = {
         username: id,

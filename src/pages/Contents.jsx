@@ -9,26 +9,8 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { colourOptions } from '@/components/content/data/data';
-
-async function fetchContents(options) {
-  let queryParams = '';
-
-  if (options.filter === `(tag='')`) {
-    queryParams = `?sort=${options.sort}&page=${options.page}&perPage=${options.perPage}`;
-  } else {
-    queryParams = `?${Object.entries(options)
-      .map(
-        ([key, value]) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-      )
-      .join('&')}`;
-  }
-
-  const response = await fetch(
-    `${import.meta.env.VITE_PB_API}/collections/content/records${queryParams}`
-  );
-  return await response.json();
-}
+import { fetchContents } from '@/utils/fetchContents';
+import PaginationButton from '@/components/PaginationButton';
 
 export default function Contents() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,14 +20,8 @@ export default function Contents() {
     return page ? Number(page) : 1;
   });
 
-  useEffect(() => {
-    const page = searchParams.get('page');
-    if (!page) setSearchParams({ page: 1 });
-  }, [searchParams, setSearchParams]);
-
+  const [sort] = useState('-created');
   const [perPage] = useState(9);
-
-  const [sort, setSort] = useState('-created');
   const [tag, setTag] = useState('');
 
   const { isLoading, data, isError, error } = useQuery({
@@ -54,6 +30,11 @@ export default function Contents() {
       fetchContents({ sort, filter: `(tag='${tag}')`, page, perPage }),
     keepPreviousData: true,
   });
+
+  useEffect(() => {
+    const page = searchParams.get('page');
+    if (!page) setSearchParams({ page: 1 });
+  }, [searchParams, setSearchParams]);
 
   const handleTagSelect = (e) => {
     setTag(e.target.value);
@@ -95,7 +76,7 @@ export default function Contents() {
           </Link>
         </section>
 
-        <div className="w-11/12 text-right mb-5">
+        <section className="w-11/12 text-right mb-5">
           <button onClick={() => setTag('')} type="button" className="mr-2">
             모아보기
           </button>
@@ -112,7 +93,7 @@ export default function Contents() {
               </option>
             ))}
           </select>
-        </div>
+        </section>
         <section className="contentContainer p-1 bg-gray-100 w-11/12">
           {data.items.length === 0 && <ContentItem />}
           {data?.items?.map((item) => {
@@ -129,40 +110,12 @@ export default function Contents() {
           })}
         </section>
 
-        <section className="flex justify-center gap-5 my-10">
-          <button
-            onClick={() => {
-              setPage((old) => Math.max(old - 1, 0));
-              setSearchParams((searchParams) => {
-                const page = searchParams.get('page');
-                return { page: Number(page) - 1 };
-              });
-            }}
-            disabled={page === 1}
-            className="disabled:font-extralight font-bold"
-          >
-            &lt;
-          </button>
-          <span>
-            {`${page}`}
-            {data.totalPages !== 1 &&
-              data.totalPages !== 0 &&
-              ` / ${data.totalPages}`}
-          </span>
-          <button
-            onClick={() => {
-              setPage((old) => old + 1);
-              setSearchParams((searchParams) => {
-                const page = searchParams.get('page');
-                return { page: Number(page) + 1 };
-              });
-            }}
-            disabled={page === data.totalPages || data.totalPages === 0}
-            className="disabled:font-extralight font-bold"
-          >
-            &gt;
-          </button>
-        </section>
+        <PaginationButton
+          totalPages={data.totalPages}
+          page={page}
+          setPage={setPage}
+          setSearchParams={setSearchParams}
+        />
       </div>
     </>
   );

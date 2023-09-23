@@ -1,3 +1,4 @@
+import { node } from 'prop-types';
 export default function LoginPageContent({ children }) {
   return (
     <div className="flex flex-col items-center justify-center">
@@ -5,3 +6,7 @@ export default function LoginPageContent({ children }) {
     </div>
   );
 }
+
+LoginPageContent.propTypes = {
+  children: node,
+};

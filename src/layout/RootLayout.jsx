@@ -1,6 +1,7 @@
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
+import PageHead from '@/components/PageHead';
 import ScrollToTop from '@/components/ScrollToTop';
 
 export default function RootLayout() {
@@ -8,8 +9,9 @@ export default function RootLayout() {
 
   return (
     <>
+      <PageHead title="Jeju All in One - 나만의 제주" />
       <Header />
-      <main className={pathname !== '/' ? 'py-28 ' : ''}>
+      <main className={pathname !== '/' ? 'py-28' : ''}>
         <Outlet />
         <ScrollToTop />
       </main>

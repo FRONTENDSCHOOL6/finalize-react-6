@@ -10,6 +10,7 @@ import Termscheck from '@/components/join/Termscheck';
 import { toast } from 'react-hot-toast';
 import { ClientResponseError } from 'pocketbase';
 import { emailReg, idReg, pwReg } from '@/utils/validation';
+import Button from '@/components/Button';
 
 export default function Join() {
   const navigate = useNavigate();
@@ -23,6 +24,73 @@ export default function Join() {
   });
 
   const [isAgreed, setIsAgreed] = useState(false);
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const handleIdDuplication = async () => {
+    const id = formState.username;
+
+    if (id === '') toast.error('입력된 값이 없습니다.');
+    else {
+      try {
+        const records = await pb.collection('user').getList(1, 1, {
+          filter: `username = '${id}'`,
+        });
+        if (records.items.length > 0) {
+          toast.error('아이디가 중복됩니다.');
+        } else {
+          toast.success('사용 가능한 아이디입니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handleEmailDuplication = async () => {
+    const email = formState.email;
+    if (email === '') toast.error('입력된 값이 없습니다.');
+    else {
+      try {
+        const records = await pb.collection('user').getList(1, 1, {
+          filter: `email = '${email}'`,
+        });
+        if (records.items.length > 0) {
+          toast.error('이메일이 중복됩니다.');
+        } else {
+          toast.success('사용 가능한 이메일입니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handleNicknameDuplication = async () => {
+    const nickname = formState.nickname;
+
+    if (nickname === '') toast.error('입력된 값이 없습니다.');
+    else {
+      try {
+        const records = await pb.collection('user').getList(1, 1, {
+          filter: `nickname = '${nickname}'`,
+        });
+        if (records.items.length > 0) {
+          toast.error('닉네임이 중복됩니다.');
+        } else {
+          toast.success('사용 가능한 닉네임입니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -60,6 +128,16 @@ export default function Join() {
         return;
       }
 
+      if (nickname.length < 2 || nickname.length > 10) {
+        toast.error('닉네임은 2자 이상, 10자 이하로 입력해주세요.');
+        return;
+      }
+
+      if (nickname.includes(' ')) {
+        toast.error('닉네임에는 공백이 포함될 수 없습니다.');
+        return;
+      }
+
       if (!idReg(username)) {
         toast.error('아이디 형식이 잘못되었습니다.');
         return;
@@ -94,55 +172,75 @@ export default function Join() {
         toast.error('회원가입에 실패했습니다.');
       }
     } catch (error) {
-      if (error.response.code === 400) {
-        const { username, email, nickname } = error.response.data;
-
-        if (username && username.message.includes('already')) {
-          toast.error('아이디가 중복됩니다.');
-        }
-
-        if (email && email.message.includes('already')) {
-          toast.error('이메일이 중복됩니다.');
-        }
-
-        if (nickname && nickname.message.includes('unique')) {
-          toast.error('닉네임이 중복됩니다.');
-        }
-      } else {
-        if (!(error instanceof ClientResponseError)) {
-          console.error('회원가입 실패:', error);
-          toast.error('회원가입에 실패했습니다.');
-        }
+      if (!(error instanceof ClientResponseError)) {
+        console.error('회원가입 실패:', error);
+        toast.error('회원가입에 실패했습니다.');
       }
     }
   };
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
-
   return (
     <>
-      {/* 헤드 이름 */}
       <PageHead title="Jeju All in One - 회원가입" />
-      {/* 마크업 */}
       <LoginPageContent>
         <Logo />
 
         {/* 회원가입 폼 */}
         <form onSubmit={handleRegister} className="flex flex-col gap-3 mb-5">
-          <InputField
-            id="id"
-            type="text"
-            name="username"
-            placeholder="아이디"
-            value={formState.username}
-            onChange={handleInput}
-          />
+          <div className="flex gap-2">
+            <InputField
+              id="id"
+              type="text"
+              name="username"
+              placeholder="아이디"
+              value={formState.username}
+              onChange={handleInput}
+            />
+            <Button
+              onClick={handleIdDuplication}
+              type="button"
+              textSize="text-xs"
+              wight="w-[60px]"
+            >
+              중복 확인
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <InputField
+              id="nickname"
+              type="text"
+              name="nickname"
+              placeholder="닉네임 (공백없이 2~10자)"
+              value={formState.nickname}
+              onChange={handleInput}
+            />
+            <Button
+              onClick={handleNicknameDuplication}
+              type="button"
+              textSize="text-xs"
+              wight="w-[60px]"
+            >
+              중복 확인
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <InputField
+              id="email"
+              type="text"
+              name="email"
+              placeholder="이메일"
+              value={formState.email}
+              onChange={handleInput}
+            />
+            <Button
+              onClick={handleEmailDuplication}
+              type="button"
+              textSize="text-xs"
+              wight="w-[60px]"
+            >
+              중복 확인
+            </Button>
+          </div>
           <InputField
             id="password"
             type="password"
@@ -150,7 +248,7 @@ export default function Join() {
             placeholder="비밀번호"
             onChange={handleInput}
           />
-          <p className="text-gray-400">
+          <p className="text-sand">
             특수문자 포함 최소 8자 이상, 16자 이하로 만들어 주세요.
           </p>
           <InputField
@@ -160,28 +258,12 @@ export default function Join() {
             placeholder="비밀번호 확인"
             onChange={handleInput}
           />
-          <InputField
-            id="nickname"
-            type="text"
-            name="nickname"
-            placeholder="닉네임"
-            value={formState.nickname}
-            onChange={handleInput}
-          />
-          <InputField
-            id="email"
-            type="text"
-            name="email"
-            placeholder="이메일"
-            value={formState.email}
-            onChange={handleInput}
-          />
           {/* 약관 동의 */}
           <Termscheck setIsAgreed={setIsAgreed} />
         </form>
 
         {/* 로그인 페이지 이동 */}
-        <p className="mt-3">
+        <p className="mt-3 mr-10">
           이미 회원이신가요?&nbsp;
           <LinkItem link="/login" className="font-extrabold text-blue">
             로그인 하기

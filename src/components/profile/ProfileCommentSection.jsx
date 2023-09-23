@@ -7,17 +7,7 @@ import Spinner from '@/components/Spinner';
 import TitleButton from '../TitleButton';
 import ProfileComment from '../ProfileComment';
 import { bool, func } from 'prop-types';
-
-async function fetchContents(options) {
-  let queryParams = '';
-  queryParams = `?sort=${options.sort}&filter=${options.filter}&expand=contentId`;
-  const response = await fetch(
-    `${import.meta.env.VITE_PB_API}/collections/${
-      options.collection
-    }/records${queryParams}`
-  );
-  return await response.json();
-}
+import { fetchComments } from '@/utils/fetchContents';
 
 export default function ProfileCommentSection({ showMore, setShowMore }) {
   const { user } = useAuthStore();
@@ -35,7 +25,7 @@ export default function ProfileCommentSection({ showMore, setShowMore }) {
   } = useInfiniteQuery({
     queryKey: ['comment', sort, user, collection],
     queryFn: () =>
-      fetchContents({
+      fetchComments({
         sort,
         filter: `userId='${user.id}'`,
         collection,
@@ -99,7 +89,6 @@ export default function ProfileCommentSection({ showMore, setShowMore }) {
               return (
                 <React.Fragment key={i}>
                   {group?.items?.map((project) => {
-                    console.log(data.pages[0].items.length);
                     return (
                       <Link
                         to={`/content/${project.contentId}`}
