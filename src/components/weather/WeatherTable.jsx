@@ -13,9 +13,10 @@ export default function WeatherTable({ data }) {
   return (
     <>
       <table className="border-2 w-2/3 text-center">
+        <caption className="sr-only">오늘의 날씨 정보</caption>
         <thead className="border-2">
           <tr className="bg-lightsand">
-            <th className="border-2 h-[50px]"></th>
+            <th className="border-2 h-[50px]" scope="row"></th>
             {data?.response?.body?.items?.item
               .filter((item) => {
                 const hour = parseInt(item.fcstTime.slice(0, 2), 10); // 4자리로 표시되는 시간은 앞의 2자리만 정수로 추출
@@ -29,6 +30,7 @@ export default function WeatherTable({ data }) {
                   <th
                     key={`${item.fcstDate}-${item.fcstTime}`}
                     className="border-2"
+                    scope="row"
                   >
                     {time}
                   </th>
@@ -38,27 +40,39 @@ export default function WeatherTable({ data }) {
         </thead>
         <tbody className="border-2">
           <tr>
-            <th className="border-2 h-[50px]">기온</th>
+            <th className="border-2 h-[50px]" scope="col">
+              기온
+            </th>
             <OnedayWeather data={data} category={'TMP'} text={'°C'} />
           </tr>
           <tr className="bg-lightsand">
-            <th className="border-2 h-[50px]">하늘 상태</th>
+            <th className="border-2 h-[50px]" scope="col">
+              하늘 상태
+            </th>
             <OnedayWeather data={data} category={'SKY'} />
           </tr>
           <tr>
-            <th className="border-2 h-[50px]">습도</th>
+            <th className="border-2 h-[50px]" scope="col">
+              습도
+            </th>
             <OnedayWeather data={data} category={'REH'} text={'%'} />
           </tr>
           <tr className="bg-lightsand">
-            <th className="border-2 h-[50px]">강수 형태</th>
+            <th className="border-2 h-[50px]" scope="col">
+              강수 형태
+            </th>
             <OnedayWeather data={data} category={'PTY'} />
           </tr>
           <tr>
-            <th className="border-2 h-[50px]">강수 확률</th>
+            <th className="border-2 h-[50px]" scope="col">
+              강수 확률
+            </th>
             <OnedayWeather data={data} category={'POP'} text={'%'} />
           </tr>
           <tr className="bg-lightsand">
-            <th className="border-2 h-[50px]">풍속</th>
+            <th className="border-2 h-[50px]" scope="col">
+              풍속
+            </th>
             <OnedayWeather data={data} category={'WSD'} text={'m/s'} />
           </tr>
         </tbody>

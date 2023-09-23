@@ -120,7 +120,10 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="grow w-full flex">
+      <form
+        onSubmit={handleSubmit}
+        className="grow w-full flex justify-center items-center"
+      >
         <div className="flex-grow mr-2 relative">
           <label htmlFor="comment" className="sr-only">
             댓글

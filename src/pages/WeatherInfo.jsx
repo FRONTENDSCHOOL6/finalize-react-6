@@ -81,39 +81,40 @@ export default function WeatherInfo() {
   if (isError) {
     return <div role="alert">{error.toString()}</div>;
   }
-
-  return (
-    <>
-      <PageHead title={'Jeju All in One - 제주 날씨'} />
-      <div className="py-2 mt-5 mb-10">
-        <h2 className="text-blue font-semibold text-4xl text-center">
-          제주 날씨
-        </h2>
-        <div className="flex flex-col justify-center items-center gap-10">
-          <div>
-            {!city && !sublocation && (
-              <p className="mt-10 font-medium text-xl">제주시 용담동</p>
-            )}
-            {/* city와 sublocation 값이 일치하는 데이터가 있는 경우에만 렌더링 */}
-            {sublocation &&
-            jejuData[city]?.find((loc) => loc.name === sublocation) ? (
-              <p className="mt-10 font-medium text-xl">
-                {city} {sublocation}
-              </p>
-            ) : (
-              ''
-            )}
+  if (data) {
+    return (
+      <>
+        <PageHead title={'Jeju All in One - 제주 날씨'} />
+        <div className="py-2 mt-5 mb-10">
+          <h2 className="text-blue font-semibold text-4xl text-center">
+            제주 날씨
+          </h2>
+          <div className="flex flex-col justify-center items-center gap-10">
+            <div>
+              {!city && !sublocation && (
+                <p className="mt-10 font-medium text-xl">제주시 용담동</p>
+              )}
+              {/* city와 sublocation 값이 일치하는 데이터가 있는 경우에만 렌더링 */}
+              {sublocation &&
+              jejuData[city]?.find((loc) => loc.name === sublocation) ? (
+                <p className="mt-10 font-medium text-xl">
+                  {city} {sublocation}
+                </p>
+              ) : (
+                ''
+              )}
+            </div>
+            <hr className="w-full" />
+            <SelectLocation
+              onCityChange={setCity}
+              onSublocationChange={setSublocation}
+              onCoordinatesChange={setCoordinates}
+            />
+            <GetWeather data={data} />
+            <ThreedaysWeatherTable coordinates={coordinates} />
           </div>
-          <hr className="w-full" />
-          <SelectLocation
-            onCityChange={setCity}
-            onSublocationChange={setSublocation}
-            onCoordinatesChange={setCoordinates}
-          />
-          <GetWeather data={data} />
-          <ThreedaysWeatherTable coordinates={coordinates} />
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }

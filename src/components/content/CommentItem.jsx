@@ -10,6 +10,9 @@ export default function CommentItem({
   commentId,
   onCommentChange,
   commentTime,
+  // userInfo,
+  // contentInfo,
+  // id,
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -66,6 +69,16 @@ export default function CommentItem({
               <button
                 onClick={async () => {
                   try {
+                    // //# user.comment에 레코드 ID 삭제
+                    // await pb.collection('user').update(id, {
+                    //   'comment-': commentId,
+                    // });
+                    // //# content.commendId에 레코드 ID 삭제
+                    // await pb.collection('content').update(id, {
+                    //   'commentId-': commentId,
+                    // });
+
+                    //# 댓글 삭제
                     await pb.collection('comment').delete(commentId);
                     toast.remove(t.id);
                     onCommentChange((prevComments) =>
@@ -101,7 +114,7 @@ export default function CommentItem({
     <>
       <div className="shadow-comment w-full h-fit flex justify-between gap-2 py-3 px-4">
         <span>⭐</span>
-        <div className="text-darkblue font-semibold shrink-0 w-[60px] text-left">
+        <div className="text-darkblue font-semibold shrink-0 w-[80px] text-left">
           {writer}
         </div>
         {isEditMode ? (
