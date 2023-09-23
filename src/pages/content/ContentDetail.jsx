@@ -180,7 +180,7 @@ export default function ContentDetail() {
               {contentInfo.customTag && `#${contentInfo.customTag}`}
             </span>
           </p>
-          <div className="pb-4 flex justify-between s:flex-col s:items-end">
+          <div className="pb-4 flex justify-between">
             <p>{contentInfo.nickname}</p>
             <p>{contentInfo.created}</p>
           </div>
@@ -235,9 +235,6 @@ export default function ContentDetail() {
                   commentId={item.id}
                   onCommentChange={setComment}
                   commentTime={item.created}
-                  // userInfo={item.expand.userId}
-                  // contentInfo={contentInfo}
-                  // id={id}
                 />
               );
             })}
