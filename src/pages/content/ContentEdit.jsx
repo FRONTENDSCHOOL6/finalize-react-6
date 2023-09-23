@@ -1,17 +1,14 @@
 import pb from '@/api/pocketbase';
-import { Map } from '@/components/Map';
 import PageHead from '@/components/PageHead';
 import ContentTitle from '@/components/content/ContentTitle';
+import Select from 'react-select';
 import { colorStyles } from '@/components/content/colorStyles';
 import { colourOptions } from '@/components/content/data/data';
-import { useAuthStore } from '@/store/useAuthStore';
+import { Map } from '@/components/Map';
 import { getPbImageURL } from '@/utils';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
-import Select from 'react-select';
-
-pb.autoCancellation(false);
 
 const contentData = {
   title: '',
@@ -27,14 +24,11 @@ const contentData = {
 export default function ContentEdit() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user } = useAuthStore();
 
   const [initialImage, setInitialImage] = useState(null);
   const [fileImages, setFileImages] = useState([]);
-  const [placeName, setPlaceName] = useState();
-  const [placeAddress, setPlaceAddress] = useState();
   const [selectedTag, setSelectedTag] = useState();
-  const [isChangeTag, setIsChangeTag] = useState(false)
+  const [isChangeTag, setIsChangeTag] = useState(false);
 
   const formRef = useRef(null);
   const titleRef = useRef(null);
@@ -66,8 +60,8 @@ export default function ContentEdit() {
         contentData.tag = tagRef.current.value = tag;
         setSelectedTag(colourOptions.findIndex((e) => e.value == tag));
 
-        contentData.location = placeNameRef.current.value = location;
-        contentData.address = placeAddressRef.current.value = address;
+        placeNameRef.current = location;
+        placeAddressRef.current = address;
       } catch (error) {
         if (!(error in DOMException)) {
           console.error();
@@ -76,10 +70,6 @@ export default function ContentEdit() {
     }
     getContent();
   }, [id]);
-
-  useEffect(() => {
-    setPlaceName(placeNameRef.current);
-  }, [placeAddressRef, placeNameRef]);
 
   const handleFileChange = (e) => {
     const { files } = e.target;
@@ -97,8 +87,7 @@ export default function ContentEdit() {
     const contentValue = contentRef.current.value;
     const photoValue = photoRef.current.files;
     let tagValue;
-    // console.log('tagRef.current.value', tagRef.current.value)
-    // console.log('contentData.tag', contentData.tag)
+
     if (!isChangeTag) {
       tagValue = contentData.tag;
     } else {
@@ -135,9 +124,6 @@ export default function ContentEdit() {
     formData.append('content', contentValue);
     formData.append('location', placeNameRef.current);
     formData.append('address', placeAddressRef.current);
-
-    // console.log('selectedTag', selectedTag);
-    // console.log('tagValue', tagValue);
     formData.append('tag', tagValue);
 
     formData.append('customTag', customTagValue);
@@ -149,6 +135,14 @@ export default function ContentEdit() {
     try {
       await pb.collection('content').update(id, formData);
       navigate('/content/list');
+      toast('수정되었습니다.', {
+        position: 'top-center',
+        icon: '⭐',
+        ariaProps: {
+          role: 'status',
+          'aria-live': 'polite',
+        },
+      });
     } catch (error) {
       console.error(error);
     }
@@ -162,7 +156,7 @@ export default function ContentEdit() {
   };
 
   const handleTypeSelect = (e) => {
-    setIsChangeTag(true)
+    setIsChangeTag(true);
     tagRef.current.value = e.value;
   };
 
@@ -178,7 +172,7 @@ export default function ContentEdit() {
         onSubmit={handleUpdate}
         className="flex flex-col gap-2 items-center"
       >
-        <div className="flex w-4/5 gap-6 mx-auto px-10 mt-10 mb-32 min-w-[1000px]">
+        <div className="flex w-4/5 gap-6 mx-auto px-10 mt-10 mb-32 min-w-[1000px] s:flex-col s:mx-10 s:min-w-full">
           {/* upload file */}
           <div className="relative w-full flex-grow">
             <label htmlFor="photo" className="sr-only">
@@ -193,7 +187,7 @@ export default function ContentEdit() {
               onChange={handleFileChange}
               className="absolute w-full h-full opacity-0 cursor-pointer"
             />
-            <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100">
+            <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100 s:min-h-[350px] s:max-h-[1000px]">
               {!fileImages.length && initialImage ? (
                 <img
                   key={initialImage.label}
@@ -239,7 +233,7 @@ export default function ContentEdit() {
                 name="content"
                 placeholder="내용을 입력해주세요"
                 ref={contentRef}
-                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue s:h-48"
                 required
               />
             </div>
@@ -264,7 +258,6 @@ export default function ContentEdit() {
             />
 
             <Map ref={{ placeNameRef, placeAddressRef }} />
-            <div>{placeName}</div>
 
             <button
               type="submit"
