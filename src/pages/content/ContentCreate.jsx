@@ -6,7 +6,7 @@ import { Map } from '@/components/Map';
 import { colorStyles } from '@/components/content/colorStyles';
 import { colourOptions } from '@/components/content/data/data';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import toast from 'react-hot-toast';
@@ -16,8 +16,6 @@ export default function ContentCreate() {
   const { user } = useAuthStore();
 
   const [fileImages, setFileImages] = useState(null);
-  const [placeName, setPlaceName] = useState();
-  const [placeAddress, setPlaceAddress] = useState();
 
   const formRef = useRef(null);
   const titleRef = useRef(null);
@@ -27,10 +25,6 @@ export default function ContentCreate() {
   const photoRef = useRef(null);
   const placeNameRef = useRef(null);
   const placeAddressRef = useRef(null);
-
-  useEffect(() => {
-    setPlaceName(placeNameRef.current);
-  }, [placeAddressRef, placeNameRef]);
 
   const handleFileUpload = (e) => {
     const { files } = e.target;
@@ -50,7 +44,7 @@ export default function ContentCreate() {
     const tagValue = tagRef.current.value;
     const customTagValue = customTagRef.current.value;
 
-    if (!tagRef) {
+    if (!tagValue) {
       toast('태그를 선택해주세요.', {
         position: 'top-center',
         icon: '🚨',
@@ -59,6 +53,7 @@ export default function ContentCreate() {
           'aria-live': 'polite',
         },
       });
+      return;
     }
 
     if (!photoValue[0]) {
@@ -70,6 +65,7 @@ export default function ContentCreate() {
           'aria-live': 'polite',
         },
       });
+      return;
     }
 
     const formData = new FormData();
@@ -93,8 +89,17 @@ export default function ContentCreate() {
           .update(user.id, { 'content+': contentData.id });
       }
       navigate('/content/list');
+      toast('등록되었습니다.', {
+        position: 'top-center',
+        icon: '⭐',
+        ariaProps: {
+          role: 'status',
+          'aria-live': 'polite',
+        },
+      });
     } catch (error) {
       console.error(error);
+      alert('오류가 발생해 콘텐츠 등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -121,7 +126,7 @@ export default function ContentCreate() {
         onSubmit={handleCreate}
         className="flex flex-col gap-2 items-center"
       >
-        <div className="flex w-4/5 gap-6 mx-auto px-10 mt-10 mb-32 min-w-[1000px]">
+        <div className="flex w-4/5 gap-6 mx-auto px-10 mt-10 mb-32 min-w-[1000px] s:flex-col s:mx-10 s:min-w-full">
           {/* upload file */}
           <div className="relative w-full flex-grow">
             <label htmlFor="photo" className="sr-only">
@@ -136,7 +141,7 @@ export default function ContentCreate() {
               onChange={handleFileUpload}
               className="absolute w-full h-full opacity-0 cursor-pointer"
             />
-            <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100">
+            <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100 s:min-h-[350px] s:max-h-[1000px]">
               {!fileImages && (
                 <img
                   src={photo}
@@ -166,8 +171,9 @@ export default function ContentCreate() {
                 type="text"
                 id="title"
                 name="title"
-                placeholder="제목을 입력해주세요"
+                placeholder="제목을 입력해주세요(40자 이내)"
                 ref={titleRef}
+                maxLength={40}
                 className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
                 required
               />
@@ -207,7 +213,6 @@ export default function ContentCreate() {
             />
 
             <Map ref={{ placeNameRef, placeAddressRef }} />
-            <div>{placeName}</div>
 
             <button
               type="submit"
