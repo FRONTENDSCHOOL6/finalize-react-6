@@ -51,7 +51,7 @@ export default function Contents() {
 
   return (
     <>
-      <PageHead title="Jeju All in One - 나만의 제주" />
+      <PageHead title="Jeju All in One - 우리의 제주" />
 
       <div className="flex flex-col justify-center items-center">
         <section className="text-center">

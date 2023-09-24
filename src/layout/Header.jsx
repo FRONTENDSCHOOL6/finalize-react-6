@@ -30,7 +30,7 @@ export default function Header() {
 
   useEffect(() => {
     const handleOutsideClose = (e) => {
-      if (menuToggle && !(toggleMenuRef.current.contains(e.target))) {
+      if (menuToggle && !toggleMenuRef.current.contains(e.target)) {
         setMenuToggle(false);
       }
     };
@@ -65,7 +65,7 @@ export default function Header() {
             style={isActive}
             className="hover:font-bold"
           >
-            <Navigation menu="🍊 우리 제주" />
+            <Navigation menu="🍊 우리의 제주" />
           </NavLink>
           <NavLink
             to="content/create"
@@ -156,7 +156,7 @@ export default function Header() {
             style={isActive}
             className="hover:font-bold"
           >
-            <Navigation menu="🍊 우리 제주" />
+            <Navigation menu="🍊 우리의 제주" />
           </NavLink>
           <NavLink
             to="content/create"
