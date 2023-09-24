@@ -29,7 +29,7 @@ export default function Join() {
     const { name, value } = e.target;
     setFormState({
       ...formState,
-      [name]: value,
+      [name]: value.replace(/(\s+)/g, ''),
     });
   };
 
@@ -186,8 +186,11 @@ export default function Join() {
         <Logo />
 
         {/* 회원가입 폼 */}
-        <form onSubmit={handleRegister} className="flex flex-col gap-3 mb-5">
-          <div className="flex gap-2">
+        <form
+          onSubmit={handleRegister}
+          className="flex flex-col gap-3 mb-5 items-center mx-5"
+        >
+          <div className="w-full flex gap-2 justify-center max-w-[400px]">
             <InputField
               id="id"
               type="text"
@@ -200,30 +203,39 @@ export default function Join() {
               onClick={handleIdDuplication}
               type="button"
               textSize="text-xs"
-              wight="w-[60px]"
+              width="w-[80px]"
+              txtColor="darkblue"
+              bgColor="bg-transparent"
+              border="border-2 border-blue"
+              hover="hover:text-white hover:bg-blue"
             >
               중복 확인
             </Button>
           </div>
-          <div className="flex gap-2">
+          <div className="w-full flex gap-2 justify-center max-w-[400px]">
             <InputField
               id="nickname"
               type="text"
               name="nickname"
-              placeholder="닉네임 (공백없이 2~10자)"
+              placeholder="닉네임 (공백 없이 2~10자)"
               value={formState.nickname}
               onChange={handleInput}
+              maxLength={10}
             />
             <Button
               onClick={handleNicknameDuplication}
               type="button"
               textSize="text-xs"
-              wight="w-[60px]"
+              width="w-[80px]"
+              txtColor="darkblue"
+              bgColor="bg-transparent"
+              border="border-2 border-blue"
+              hover="hover:text-white hover:bg-blue"
             >
               중복 확인
             </Button>
           </div>
-          <div className="flex gap-2">
+          <div className="w-full flex gap-2 justify-center max-w-[400px]">
             <InputField
               id="email"
               type="text"
@@ -231,12 +243,17 @@ export default function Join() {
               placeholder="이메일"
               value={formState.email}
               onChange={handleInput}
+              maxLength={50}
             />
             <Button
               onClick={handleEmailDuplication}
               type="button"
               textSize="text-xs"
-              wight="w-[60px]"
+              width="w-[80px]"
+              txtColor="darkblue"
+              bgColor="bg-transparent"
+              border="border-2 border-blue"
+              hover="hover:text-white hover:bg-blue"
             >
               중복 확인
             </Button>
@@ -248,7 +265,7 @@ export default function Join() {
             placeholder="비밀번호"
             onChange={handleInput}
           />
-          <p className="text-sand">
+          <p className="text-gray-400">
             특수문자 포함 최소 8자 이상, 16자 이하로 만들어 주세요.
           </p>
           <InputField
@@ -263,7 +280,7 @@ export default function Join() {
         </form>
 
         {/* 로그인 페이지 이동 */}
-        <p className="mt-3 mr-10">
+        <p className="mt-3 mr-10 text-center">
           이미 회원이신가요?&nbsp;
           <LinkItem link="/login" className="font-extrabold text-blue">
             로그인 하기

@@ -78,7 +78,10 @@ export default function Login() {
       {/* 마크업 */}
       <LoginPageContent>
         <Logo />
-        <form className="flex flex-col gap-3" onSubmit={handleLogin}>
+        <form
+          className="flex flex-col items-center gap-3 mx-5"
+          onSubmit={handleLogin}
+        >
           <InputField
             name="userId"
             type="text"
@@ -105,12 +108,12 @@ export default function Login() {
           </Button>
           <KakaoLogin />
         </form>
-        <div className="m-8">
+        <div className="m-8 text-center">
           <LinkItem link="/findid">아이디 찾기</LinkItem>
           &nbsp;|&nbsp;
           <LinkItem link="/findpw">비밀번호 찾기</LinkItem>
         </div>
-        <p>
+        <p className="text-center">
           아직 회원이 아니신가요?&nbsp;
           <LinkItem link="/join" className="font-extrabold text-blue">
             회원가입 하기
