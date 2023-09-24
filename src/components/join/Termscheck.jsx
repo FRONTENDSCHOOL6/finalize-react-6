@@ -45,16 +45,16 @@ export default function Termscheck({ setIsAgreed }) {
 
   return (
     <>
-      <div className="flex flex-col gap-2 my-3">
+      <div className="flex flex-col gap-2 my-3 w-full max-w-[400px]">
         <CheckField
           id="checkAll"
           name="checkAll"
           placeholder="전체 약관 동의"
-          className="w-[400px] px-5 py-4 bg-gray-200 rounded-md"
+          className="w-full max-w-[400px] px-5 py-4 bg-gray-200 rounded-md"
           onChange={handleAllChange}
           checked={isAllAccepted}
         />
-        <div className="flex justify-between items-center pl-5 pr-20">
+        <div className="flex justify-between items-center pl-5">
           <CheckField
             id="checkUse"
             name="checkUse"
@@ -67,7 +67,7 @@ export default function Termscheck({ setIsAgreed }) {
             <TermsOfServiceUse />
           </Modal>
         </div>
-        <div className="flex justify-between items-center pl-5 pr-20">
+        <div className="flex justify-between items-center pl-5">
           <CheckField
             id="checkPrivacy"
             name="checkPrivacy"

@@ -25,7 +25,10 @@ export default function MainTag({
 
   return (
     <>
-      <ul className="flex flex-row justify-center items-center gap-2 pb-3 absolute top-0 left-[calc(50%-150px)] s:relative s:left-0">
+      <ul
+        className="flex flex-row justify-center items-center gap-2 pb-3 absolute top-0 left-[calc(50%-150px)] 
+          s:relative s:left-0 s:flex-col"
+      >
         <li
           onClick={() => {
             setPage(1); // 페이지를 1로 설정

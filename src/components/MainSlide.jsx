@@ -64,7 +64,7 @@ export default function MainSlide() {
 
       <button
         onClick={togglePlayPause}
-        className="rounded-full absolute bottom-[10px] right-[10px] w-[30px] h-[30px] z-50"
+        className="rounded-full absolute bottom-[10px] right-[10px] w-[30px] h-[30px] z-[5]"
       >
         {isPlaying ? (
           <img

@@ -17,7 +17,6 @@ export default function ContentCreate() {
 
   const [fileImages, setFileImages] = useState(null);
 
-  const formRef = useRef(null);
   const titleRef = useRef(null);
   const contentRef = useRef(null);
   const customTagRef = useRef(null);
@@ -122,7 +121,6 @@ export default function ContentCreate() {
 
       <form
         encType="multipart/form-data"
-        ref={formRef}
         onSubmit={handleCreate}
         className="flex flex-col gap-2 items-center"
       >

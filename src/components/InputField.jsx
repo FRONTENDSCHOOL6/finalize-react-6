@@ -1,10 +1,11 @@
-import { oneOf, string } from 'prop-types';
+import { number, oneOf, string } from 'prop-types';
 import { useId } from 'react';
 
 export default function InputField({
   name = null,
   type = 'text',
   placeholder,
+  maxLength = 16,
   ...restProps
 }) {
   const id = useId();
@@ -19,7 +20,8 @@ export default function InputField({
         id={id}
         name={name}
         placeholder={placeholder}
-        className="w-[400px] px-5 py-3 border border-sand rounded-lg"
+        maxLength={maxLength}
+        className="max-w-[400px] w-full px-5 py-3 border border-sand rounded-lg"
         {...restProps}
       />
     </>
@@ -46,6 +48,7 @@ InputField.propTypes = {
   type: oneOf(['text', 'password', 'email']),
   name: string.isRequired,
   placeholder: string.isRequired,
+  maxLength: number,
 };
 
 CheckField.propTypes = {
