@@ -1,19 +1,21 @@
 import { string, node, func, object } from 'prop-types';
 
 export default function Button({
-  wight = 'w-[400px]',
+  width = 'w-full',
   textSize = 'text-base',
   type,
   children,
   txtColor = 'white',
   bgColor = 'bg-blue',
+  border,
+  hover,
   onClick,
   ...restProps
 }) {
   return (
     <button
       type={type}
-      className={`${wight} ${textSize} h-[50px] font-semibold text-${txtColor} ${bgColor} rounded-md`}
+      className={`${width} max-w-[400px] ${textSize} h-[50px] font-semibold text-${txtColor} ${bgColor} rounded-md ${border} ${hover}`}
       onClick={onClick}
       {...restProps}
     >
@@ -23,11 +25,13 @@ export default function Button({
 }
 
 Button.propTypes = {
-  wight: string,
+  width: string,
   textSize: string,
   type: string,
   children: node.isRequired,
   txtColor: string,
   bgColor: string,
   onClick: func,
+  border: string,
+  hover: string,
 };
