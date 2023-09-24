@@ -280,7 +280,7 @@ export default function Join() {
         </form>
 
         {/* 로그인 페이지 이동 */}
-        <p className="mt-3 mr-10 text-center">
+        <p className="mt-3 text-center">
           이미 회원이신가요?&nbsp;
           <LinkItem link="/login" className="font-extrabold text-blue">
             로그인 하기
