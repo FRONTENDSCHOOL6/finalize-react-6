@@ -42,33 +42,41 @@ export default function FindPw() {
       {/* 마크업 */}
       <LoginPageContent>
         <SubLogo />
-        <h2 className="text-xl text-darkblue font-bold mb-3">비밀번호 찾기</h2>
-        <p>
-          회원가입 시 등록하신 이메일 주소로 비밀번호 재설정 링크를 보내드려요.
-        </p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3 m-8">
-          <InputField
-            id="id"
-            name="id"
-            placeholder="아이디"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-          />
-          <InputField
-            id="email"
-            name="email"
-            placeholder="이메일"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Button type="submit">비밀번호 찾기</Button>
-        </form>
-        <p>
-          <LinkItem link="/login" className="font-extrabold text-blue">
-            로그인
-          </LinkItem>
-          으로 돌아가기
-        </p>
+        <div className="flex flex-col mx-auto">
+          <h2 className="text-xl text-darkblue text-center font-bold mb-3">
+            비밀번호 찾기
+          </h2>
+          <p className="text-center mx-5">
+            회원가입 시 등록하신 이메일 주소로 비밀번호 재설정 링크를
+            보내드려요.
+          </p>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-3 my-8 mx-5 items-center"
+          >
+            <InputField
+              id="id"
+              name="id"
+              placeholder="아이디"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+            />
+            <InputField
+              id="email"
+              name="email"
+              placeholder="이메일"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button type="submit">비밀번호 찾기</Button>
+          </form>
+          <p className="mx-auto">
+            <LinkItem link="/login" className="font-extrabold text-blue">
+              로그인
+            </LinkItem>
+            으로 돌아가기
+          </p>
+        </div>
       </LoginPageContent>
     </>
   );
