@@ -65,12 +65,14 @@ export default function FindId() {
       <LoginPageContent>
         <SubLogo />
         {isVerification === undefined && !isUser ? (
-          <>
-            <h2 className="text-xl text-darkblue font-bold mb-3">
+          <div className="flex flex-col mx-auto">
+            <h2 className="text-xl text-darkblue text-center font-bold mb-3">
               아이디 찾기
             </h2>
-            <p>회원가입 시 등록한 이메일 주소가 유효한 지 검증이 필요합니다.</p>
-            <div className="flex flex-col gap-3 m-8">
+            <p className="text-center mx-5">
+              회원가입 시 등록한 이메일 주소가 유효한 지 검증이 필요합니다.
+            </p>
+            <div className="flex flex-col gap-3 my-8 mx-5">
               <label htmlFor="email" className="sr-only">
                 이메일 검증
               </label>
@@ -88,7 +90,7 @@ export default function FindId() {
                 이메일 검증
               </Button>
             </div>
-          </>
+          </div>
         ) : // 이메일이 전송됐고, 에러가 생긴다면(유저가 아니거나, 검증이 안됐거나)
         isVerification === false ? (
           <div className="flex flex-col gap-3 m-8 justify-center items-center">
@@ -105,7 +107,7 @@ export default function FindId() {
             </p>
           </div>
         )}
-        <p>
+        <p className="mx-auto">
           <LinkItem link="/login" className="font-extrabold text-blue">
             로그인
           </LinkItem>
