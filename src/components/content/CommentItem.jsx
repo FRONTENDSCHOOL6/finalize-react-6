@@ -10,9 +10,6 @@ export default function CommentItem({
   commentId,
   onCommentChange,
   commentTime,
-  // userInfo,
-  // contentInfo,
-  // id,
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -37,6 +34,7 @@ export default function CommentItem({
     };
 
     try {
+      //# 댓글 수정
       await pb.collection('comment').update(commentId, updateData);
     } catch (error) {
       throw new Error(error.message);
@@ -52,7 +50,7 @@ export default function CommentItem({
   };
 
   const handleDelete = async (commentId) => {
-    setShowOptions(false); // Close the dropdown after action
+    setShowOptions(false);
 
     toast.custom(
       (t) => (
@@ -69,15 +67,6 @@ export default function CommentItem({
               <button
                 onClick={async () => {
                   try {
-                    // //# user.comment에 레코드 ID 삭제
-                    // await pb.collection('user').update(id, {
-                    //   'comment-': commentId,
-                    // });
-                    // //# content.commendId에 레코드 ID 삭제
-                    // await pb.collection('content').update(id, {
-                    //   'commentId-': commentId,
-                    // });
-
                     //# 댓글 삭제
                     await pb.collection('comment').delete(commentId);
                     toast.remove(t.id);
@@ -112,10 +101,12 @@ export default function CommentItem({
 
   return (
     <>
-      <div className="shadow-comment w-full h-fit flex justify-between gap-2 py-3 px-4">
-        <span>⭐</span>
-        <div className="text-darkblue font-semibold shrink-0 w-[80px] text-left">
-          {writer}
+      <div className="shadow-comment w-full h-fit flex flex-row justify-between gap-2 py-3 px-4  s:flex s:flex-col">
+        <div className="flex flex-row gap-2">
+          <span>⭐</span>
+          <div className="text-darkblue font-semibold shrink-0 w-[80px] text-left s:w-auto">
+            {writer}
+          </div>
         </div>
         {isEditMode ? (
           <textarea
@@ -126,27 +117,30 @@ export default function CommentItem({
             maxLength="300"
           /> // 수정 누르면 isEditMode가 false(기본값)에서 true로 바뀜
         ) : (
-          <p className="grow text-justify">{editedComment}</p> // 저장 누르면 isEditMode(false)
+          <p className="grow text-justify">{editedComment}</p>
+          // 저장 누르면 isEditMode(false)
         )}
-        <div onClick={handleSelect} className="cursor-pointer">
-          {!showOptions && userName === writer && (
-            <img src={more} alt="more" className="min-w-[24px]" />
-          )}
-          {showOptions && (
-            <ul className="dropdown-menu flex gap-2">
-              <li>
-                <button onClick={() => handleSave(commentId)}>수정</button>
-              </li>
-              <li>
-                <button onClick={() => handleDelete(commentId)}>삭제</button>
-              </li>
-              <li>
-                <button onClick={() => handleCancel(commentId)}>취소</button>
-              </li>
-            </ul>
-          )}
+        <div className="flex flex-row justify-between">
+          <div onClick={handleSelect} className="cursor-pointer">
+            {!showOptions && userName === writer && (
+              <img src={more} alt="more" className="min-w-[24px]" />
+            )}
+            {showOptions && (
+              <ul className="dropdown-menu flex gap-2">
+                <li>
+                  <button onClick={() => handleSave(commentId)}>수정</button>
+                </li>
+                <li>
+                  <button onClick={() => handleDelete(commentId)}>삭제</button>
+                </li>
+                <li>
+                  <button onClick={() => handleCancel(commentId)}>취소</button>
+                </li>
+              </ul>
+            )}
+          </div>
+          <div className="min-w-[100px] text-right">{Time}</div>
         </div>
-        <div className="min-w-[100px] text-right">{Time}</div>
       </div>
     </>
   );
