@@ -54,20 +54,11 @@ export default function KakaoLogin() {
   return (
     <>
       <button
-        className="w-[400px] h-[50px] font-semibold text-black bg-KakaoYellow rounded-md"
+        className="w-full max-w-[400px] h-[50px] font-semibold text-black bg-KakaoYellow rounded-md"
         type="button"
         onClick={handleLogin}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14.111cm"
-          height="1.764cm"
-        >
-          <path
-            fillRule="evenodd"
-            fill="rgb(254, 229, 0)"
-            d="M5.1000,0.009 L393.1000,0.009 C397.314,0.009 400.000,2.695 400.000,6.009 L400.000,44.009 C400.000,47.322 397.314,50.009 393.1000,50.009 L5.1000,50.009 C2.686,50.009 0.000,47.322 0.000,44.009 L0.000,6.009 C0.000,2.695 2.686,0.009 5.1000,0.009 Z"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="1.764cm">
           <path
             fillRule="evenodd"
             opacity="0.902"
@@ -79,7 +70,7 @@ export default function KakaoLogin() {
             fontFamily="AppleGothic"
             fill="rgb(0, 0, 0)"
             fontSize="15px"
-            x="159px"
+            x="38%"
             y="31.8px"
           >
             <tspan
