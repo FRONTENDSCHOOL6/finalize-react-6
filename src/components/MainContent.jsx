@@ -16,7 +16,7 @@ export default function MainContent({ page, setPage, data }) {
   const commentList = data?.filter((item) => item.commentId.length > 0) || [];
 
   // 댓글 수에 따라 내림차순, 그리고 최신 순으로 9개 정렬
-  const sortedList = commentList.sort((a, b) => {
+  const sortedList = [...commentList].sort((a, b) => {
     if (b.commentId.length !== a.commentId.length) {
       return b.commentId.length - a.commentId.length;
     } else {
@@ -37,18 +37,14 @@ export default function MainContent({ page, setPage, data }) {
 
   // 페이지 버튼을 생성
   const pageButtons = Array.from({ length: totalPages }, (_, i) => (
-    <div
-      className="flex flex-row justify-center gap-3"
+    <button
       key={`pageButton-${i + 1}`}
-    >
-      <button
-        onClick={() => setPage(i + 1)}
-        disabled={page === i + 1}
-        className={`px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center ${
-          page === i + 1 ? 'bg-blue' : 'bg-lightsand'
-        } hover:border-blue`}
-      ></button>
-    </div>
+      onClick={() => setPage(i + 1)}
+      disabled={page === i + 1}
+      className={`px-2 rounded-full border-2 my-8 w-5 h-5 flex items-center justify-center ${
+        page === i + 1 ? 'bg-blue' : 'bg-lightsand'
+      } hover:border-blue`}
+    ></button>
   ));
 
   return (
@@ -81,7 +77,6 @@ export default function MainContent({ page, setPage, data }) {
         ))}
       </ul>
 
-      {/* Pagination Controls */}
       <div className="flex flex-row justify-center gap-3">{pageButtons}</div>
     </>
   );
