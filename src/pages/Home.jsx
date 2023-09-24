@@ -44,7 +44,7 @@ export default function Home() {
 
   return (
     <>
-      <PageHead title="Jeju All in One - 나만의 제주" />
+      <PageHead title="Jeju All in One" />
       <section>
         <h2 className="sr-only">제주도 소개 슬라이드</h2>
         <MainSlide />

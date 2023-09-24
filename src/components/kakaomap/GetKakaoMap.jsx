@@ -112,13 +112,13 @@ export default function GetKakaoMap() {
         <input
           type="text"
           value={keyword}
-          className="w-[25vw] px-5 py-3 border-[3px] border-white rounded-lg"
+          className="w-[25vw] px-5 py-3 border-[3px] border-white rounded-lg min-w-[100px]"
           placeholder="장소 검색"
           onChange={(e) => setKeyword(e.target.value)}
           onKeyPress={handleKeyPress}
         />
         <button
-          className="w-[5vw] bg-blue text-white border-0 rounded-lg"
+          className="w-[5vw] bg-blue text-white border-0 rounded-lg min-w-[50px]"
           onClick={searchPlaces}
         >
           검색
