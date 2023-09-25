@@ -50,7 +50,7 @@ export default function ProfileCommentSection({ showMore, setShowMore }) {
         />
         <hr />
         <ul className="w-11/12 mx-auto my-10">
-          {showMore && data.pages[0].items.length === 0 && (
+          {!showMore && data.pages[0].items.length === 0 && (
             <>
               <Link to="/content">
                 <ProfileComment
