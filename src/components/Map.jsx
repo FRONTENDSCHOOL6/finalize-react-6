@@ -133,7 +133,7 @@ export const Map = forwardRef(function Map({ place }, ref) {
         }
 
         // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
-        listEl.appendChild(fragment);
+        listEl?.appendChild(fragment);
         menuEl.scrollTop = 0;
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
@@ -220,8 +220,8 @@ export const Map = forwardRef(function Map({ place }, ref) {
 
       // 검색결과 목록의 자식 Element를 제거하는 함수입니다
       function removeAllChildNods(el) {
-        while (el.hasChildNodes()) {
-          el.removeChild(el.lastChild);
+        while (el?.hasChildNodes()) {
+          el?.removeChild(el.lastChild);
         }
       }
     },
