@@ -53,10 +53,9 @@ export default function Header() {
           <NavLink to="/" className="flex items-center">
             <img
               src="https://frontendschool6.github.io/finalize-react-6/logo.png"
-              alt="로고"
+              alt="Jeju All in One - Home"
               className="w-24"
             />
-            <span className="sr-only">Jeju - All in One</span>
           </NavLink>
         </h1>
         <ul className="hidden mobile:flex mobile:items-center px-4 mx-auto font-semibold font-heading space-x-12 text-gray-600">
@@ -105,7 +104,14 @@ export default function Header() {
         </ul>
 
         <div ref={toggleMenuRef} className="mobile:hidden flex items-center">
-          <button onClick={() => setMenuToggle(!menuToggle)}>
+          <button
+            onClick={() => {
+              setMenuToggle(!menuToggle);
+              mainHeader === 'bg-white/50'
+                ? setMainHeader('bg-white/90')
+                : setMainHeader('bg-white/50');
+            }}
+          >
             {menuToggle ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -113,6 +119,7 @@ export default function Header() {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-label="메뉴 닫기"
               >
                 <path
                   strokeLinecap="round"
@@ -128,6 +135,7 @@ export default function Header() {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-label="메뉴 열기"
               >
                 <path
                   strokeLinecap="round"
@@ -142,14 +150,14 @@ export default function Header() {
       </nav>
       <div className={classNames('mobile:hidden', { hidden: !menuToggle })}>
         <ul
-          className={`${mainHeader} mobile:flex justify-center bg-slate-100 font-semibold font-heading list-none text-gray-600`}
+          className={`${mainHeader} mobile:flex justify-center bg-slate-100 font-semibold font-heading list-none text-gray-600 mobile:bg-white/90`}
         >
           <li
             className={`text-center text-lg py-3 text-darkblue font-bold ${
               user.token ? 'block' : 'hidden'
             }`}
           >
-            {user.username}님 어서오세요!
+            {user.username} 님 환영합니다!
           </li>
           <NavLink
             to="content/list"
