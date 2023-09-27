@@ -7,13 +7,15 @@ import PageHead from '@/components/PageHead';
 import { getPbImageURL } from '@/utils';
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { colourOptions } from '@/components/content/data/data';
 import { fetchContents } from '@/utils/fetchContents';
 import PaginationButton from '@/components/PaginationButton';
 
 export default function Contents() {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const queryClient = useQueryClient();
 
   const [page, setPage] = useState(() => {
     const page = searchParams.get('page');
@@ -32,9 +34,36 @@ export default function Contents() {
   });
 
   useEffect(() => {
-    const page = searchParams.get('page');
+    let page = searchParams.get('page');
     if (!page) setSearchParams({ page: 1 });
-  }, [searchParams, setSearchParams]);
+
+    if (+page < data?.totalPages) {
+      page++;
+    } else {
+      page = data?.totalPages;
+    }
+    console.log(page, data?.totalPages);
+
+    async () => {
+      await queryClient.prefetchQuery({
+        queryKey: ['contents', sort, tag, page, perPage],
+        queryFn: fetchContents({
+          sort,
+          filter: `(tag='${tag}')`,
+          page,
+          perPage,
+        }),
+      });
+    };
+  }, [
+    searchParams,
+    setSearchParams,
+    sort,
+    tag,
+    perPage,
+    queryClient,
+    data?.totalPages,
+  ]);
 
   const handleTagSelect = (e) => {
     setTag(e.target.value);
@@ -77,7 +106,15 @@ export default function Contents() {
         </section>
 
         <section className="w-11/12 text-right mb-5">
-          <button onClick={() => setTag('')} type="button" className="mr-2">
+          <button
+            onClick={() => {
+              setTag('');
+              setPage(1);
+              setSearchParams({ page: 1 });
+            }}
+            type="button"
+            className="mr-2"
+          >
             모아보기
           </button>
           <select
