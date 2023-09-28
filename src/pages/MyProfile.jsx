@@ -60,8 +60,7 @@ export default function MyProfile() {
               {nickname}
               <button onClick={handleEditmode}>
                 <img
-                  src="/pen_edit.svg"
-                  // src={`${import.meta.env.VITE_DOMAIN}/pen_edit.svg`}
+                  src={`${import.meta.env.VITE_DOMAIN}/pen_edit.svg`}
                   alt="닉네임 수정"
                   className="w-6"
                 />
