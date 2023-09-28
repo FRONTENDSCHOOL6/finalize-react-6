@@ -42,7 +42,6 @@ export default function Contents() {
     } else {
       page = data?.totalPages;
     }
-    console.log(page, data?.totalPages);
 
     async () => {
       await queryClient.prefetchQuery({
