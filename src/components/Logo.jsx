@@ -2,7 +2,7 @@ export default function Logo() {
   return (
     <div className="flex flex-col items-center justify-center m-8">
       <img
-        src="https://frontendschool6.github.io/finalize-react-6/logo.png"
+        src={`${import.meta.env.VITE_DOMAIN}/logo.png`}
         alt="logo"
         className="w-36"
       />
@@ -19,7 +19,7 @@ export const SubLogo = () => {
   return (
     <div className="flex gap-3 items-center justify-center m-8">
       <img
-        src="https://frontendschool6.github.io/finalize-react-6/logo.png"
+        src={`${import.meta.env.VITE_DOMAIN}/logo.png`}
         alt="logo"
         className="w-32"
       />

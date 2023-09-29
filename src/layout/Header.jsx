@@ -52,7 +52,7 @@ export default function Header() {
         <h1>
           <NavLink to="/" className="flex items-center">
             <img
-              src="https://frontendschool6.github.io/finalize-react-6/logo.png"
+              src={`${import.meta.env.VITE_DOMAIN}/logo.png`}
               alt="Jeju All in One - Home"
               className="w-24"
             />
