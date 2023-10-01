@@ -6,7 +6,7 @@ export default function Logo() {
         alt="logo"
         className="w-36"
       />
-      <h1 className="text-darkblue font-bold text-xl">
+      <h1 className="text-darkblue font-bold text-xl dark:text-slate-200">
         당신의 제주를
         <br />
         우리의 제주로
@@ -23,7 +23,7 @@ export const SubLogo = () => {
         alt="logo"
         className="w-32"
       />
-      <p className="text-darkblue font-bold text-lg">
+      <p className="text-darkblue font-bold text-lg dark:text-slate-200">
         당신의 제주를
         <br />
         우리의 제주로

@@ -47,7 +47,9 @@ export default function Header() {
   };
 
   return (
-    <header className={`${mainHeader} fixed z-10 h-20 w-full mx-auto`}>
+    <header
+      className={`${mainHeader} fixed z-10 h-20 w-full mx-auto dark:bg-black/30`}
+    >
       <nav className="flex items-center h-20 justify-between space-x-4 px-8">
         <h1>
           <NavLink to="/" className="flex items-center">
@@ -83,7 +85,7 @@ export default function Header() {
         <ul className="hidden mobile:flex items-center space-x-4 font-semibold text-blue">
           {user && user.token ? (
             <>
-              <span className="font-bold text-gray-600">
+              <span className="font-bold text-gray-600 dark:text-slate-100">
                 {user.username} 님
               </span>
               <NavLink to={`profile/${user.id}`} style={isActive}>
@@ -105,11 +107,10 @@ export default function Header() {
 
         <div ref={toggleMenuRef} className="mobile:hidden flex items-center">
           <button
+            className="dark:text-white"
             onClick={() => {
               setMenuToggle(!menuToggle);
-              mainHeader === 'bg-white/50'
-                ? setMainHeader('bg-white/90')
-                : setMainHeader('bg-white/50');
+              mainHeader === 'bg-white/50' ? setMainHeader('bg-white/90') : '';
             }}
           >
             {menuToggle ? (
@@ -150,10 +151,10 @@ export default function Header() {
       </nav>
       <div className={classNames('mobile:hidden', { hidden: !menuToggle })}>
         <ul
-          className={`${mainHeader} mobile:flex justify-center bg-slate-100 font-semibold font-heading list-none text-gray-600 mobile:bg-white/90`}
+          className={`${mainHeader} mobile:flex justify-center bg-slate-100 font-semibold font-heading list-none text-gray-600 s:bg-white/90 dark:s:bg-black/90`}
         >
           <li
-            className={`text-center text-lg py-3 text-darkblue font-bold ${
+            className={`text-center text-lg py-3 text-darkblue font-bold dark:text-slate-300 ${
               user.token ? 'block' : 'hidden'
             }`}
           >

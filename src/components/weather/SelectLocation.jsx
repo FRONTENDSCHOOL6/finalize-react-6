@@ -41,7 +41,7 @@ export default function SelectLocation({
       <select
         id="city"
         name="city"
-        className="mx-3"
+        className="mx-3 dark:bg-transparent"
         onChange={handleCityChange}
       >
         <option value="">- 시 -</option>
@@ -61,6 +61,7 @@ export default function SelectLocation({
       <select
         id="sublocation"
         name="sublocation"
+        className="dark:bg-transparent"
         onChange={handleSublocationChange}
       >
         <option value="">- 동/읍 -</option>

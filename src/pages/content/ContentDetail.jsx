@@ -160,7 +160,7 @@ export default function ContentDetail() {
     <>
       <PageHead title="Jeju All in One - 나만의 제주" />
 
-      <section className="shadow-content mt-5 mb-20 px-20 py-20 gap-5 flex flex-col items-center mx-[15%] min-h-full rounded-md s:mx-[5%] s:p-5">
+      <section className="shadow-content mt-5 mb-20 px-20 py-20 gap-5 flex flex-col items-center mx-[15%] min-h-full rounded-md s:mx-[5%] s:p-5 dark:shadow-slate-400">
         <h2 className="sr-only">{contentInfo.title}</h2>
         {/* 사진 */}
         <article>
@@ -174,7 +174,7 @@ export default function ContentDetail() {
         <article className="w-full py-2 px-4 rounded-md border border-gray-500">
           <p className="pb-3 font-bold flex justify-between s:flex-col">
             {contentInfo.title}
-            <span className="font-light text-slate-800 text-right">
+            <span className="font-light text-slate-800 text-right dark:text-slate-300">
               #{contentInfo.tag}
               <br />
               {contentInfo.customTag && `#${contentInfo.customTag}`}

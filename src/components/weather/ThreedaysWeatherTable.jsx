@@ -54,7 +54,7 @@ export default function ThreedaysWeatherTable({ coordinates }) {
         <table className="border-2 w-2/3 text-center">
           <caption className="sr-only">3일치 날씨 정보</caption>
           <thead className="border-2">
-            <tr className="bg-lightsand">
+            <tr className="bg-lightsand dark:bg-slate-800">
               <th className="border-2 h-[50px]" scope="row"></th>
               {data?.response?.body?.items?.item
                 .filter((item) => {
@@ -93,7 +93,7 @@ export default function ThreedaysWeatherTable({ coordinates }) {
               </th>
               <ThreedaysWeather data={data} category={'TMN'} text={'°C'} />
             </tr>
-            <tr className="bg-lightsand">
+            <tr className="bg-lightsand dark:bg-slate-800">
               <th className="border-2 h-[50px]" scope="col">
                 하늘 상태
               </th>
@@ -105,7 +105,7 @@ export default function ThreedaysWeatherTable({ coordinates }) {
               </th>
               <ThreedaysWeather data={data} category={'REH'} text={'%'} />
             </tr>
-            <tr className=" bg-lightsand">
+            <tr className=" bg-lightsand dark:bg-slate-800">
               <th className="border-2 h-[50px]" scope="col">
                 강수 형태
               </th>
@@ -117,7 +117,7 @@ export default function ThreedaysWeatherTable({ coordinates }) {
               </th>
               <ThreedaysWeather data={data} category={'POP'} text={'%'} />
             </tr>
-            <tr className="bg-lightsand">
+            <tr className="bg-lightsand dark:bg-slate-800">
               <th className="border-2 h-[50px]" scope="col">
                 풍속
               </th>

@@ -50,7 +50,7 @@ export default function Termscheck({ setIsAgreed }) {
           id="checkAll"
           name="checkAll"
           placeholder="전체 약관 동의"
-          className="w-full max-w-[400px] px-5 py-4 bg-gray-200 rounded-md"
+          className="w-full max-w-[400px] px-5 py-4 bg-gray-200 rounded-md dark:bg-slate-800"
           onChange={handleAllChange}
           checked={isAllAccepted}
         />
@@ -81,8 +81,7 @@ export default function Termscheck({ setIsAgreed }) {
         </div>
       </div>
       <Button
-        // disabled={!isUseAccepted || !isPrivacyAccepted}
-        bgColor={!isAllAccepted ? 'bg-sand' : 'bg-blue'}
+        bgColor={!isAllAccepted ? 'bg-sand dark:text-slate-700' : 'bg-blue'}
       >
         가입하기
       </Button>
