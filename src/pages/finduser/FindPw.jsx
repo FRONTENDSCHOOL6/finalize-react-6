@@ -43,7 +43,7 @@ export default function FindPw() {
       <LoginPageContent>
         <SubLogo />
         <div className="flex flex-col mx-auto">
-          <h2 className="text-xl text-darkblue text-center font-bold mb-3">
+          <h2 className="text-xl text-darkblue text-center font-bold mb-3 dark:text-slate-100">
             비밀번호 찾기
           </h2>
           <p className="text-center mx-5">

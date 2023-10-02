@@ -123,9 +123,13 @@ export default function Contents() {
             className="dark:bg-transparent"
             value={tag}
           >
-            <option>- 태그 -</option>
+            <option className="dark:bg-slate-500">- 태그 -</option>
             {colourOptions.map((item) => (
-              <option value={item.value} key={item.value}>
+              <option
+                value={item.value}
+                key={item.value}
+                className="dark:bg-slate-500"
+              >
                 {item.value}
               </option>
             ))}
