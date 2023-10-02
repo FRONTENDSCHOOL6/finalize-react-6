@@ -15,7 +15,7 @@ export default function Button({
   return (
     <button
       type={type}
-      className={`${width} max-w-[400px] ${textSize} h-[50px] font-semibold text-${txtColor} ${bgColor} rounded-md ${border} ${hover}`}
+      className={`${width} max-w-[400px] ${textSize} h-[50px] font-semibold text-${txtColor} ${bgColor} rounded-md ${border} ${hover} dark:text-slate-200`}
       onClick={onClick}
       {...restProps}
     >

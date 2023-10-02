@@ -11,7 +11,11 @@ export default function RootLayout() {
     <>
       <PageHead title="Jeju All in One - 나만의 제주" />
       <Header />
-      <main className={pathname !== '/' ? 'py-28' : ''}>
+      <main
+        className={`dark:bg-slate-700 dark:text-slate-200 ${
+          pathname !== '/' ? 'py-28' : ''
+        }`}
+      >
         <Outlet />
         <ScrollToTop />
       </main>

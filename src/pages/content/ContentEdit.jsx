@@ -219,7 +219,7 @@ export default function ContentEdit() {
                 name="title"
                 placeholder="제목을 입력해주세요"
                 ref={titleRef}
-                className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue dark:bg-transparent"
                 required
               />
             </div>
@@ -233,7 +233,7 @@ export default function ContentEdit() {
                 name="content"
                 placeholder="내용을 입력해주세요"
                 ref={contentRef}
-                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue s:h-48"
+                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue s:h-48 dark:bg-transparent"
                 required
               />
             </div>

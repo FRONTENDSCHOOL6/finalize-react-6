@@ -50,7 +50,7 @@ export default function Home() {
         <MainSlide />
       </section>
 
-      <section className="my-28 mx-10 relative">
+      <section className="mt-28 pb-28 mx-10 relative">
         <TitleButton title="우리의 제주의 별" link="content/list" />
         <MainTag
           data={data}

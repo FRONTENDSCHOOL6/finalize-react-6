@@ -21,7 +21,7 @@ export default function InputField({
         name={name}
         placeholder={placeholder}
         maxLength={maxLength}
-        className="max-w-[400px] w-full px-5 py-3 border border-sand rounded-lg"
+        className="max-w-[400px] w-full px-5 py-3 border border-sand rounded-lg dark:bg-transparent"
         {...restProps}
       />
     </>

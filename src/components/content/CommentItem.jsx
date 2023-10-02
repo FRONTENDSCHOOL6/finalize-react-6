@@ -14,7 +14,7 @@ export default function CommentItem({
   const [showOptions, setShowOptions] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedComment, setEditedComment] = useState(comment);
-  const [originalComment, setOriginalComment] = useState(comment);
+  const [originalComment] = useState(comment);
 
   const [userName] = useState(() => {
     const user = localStorage.getItem('user');
@@ -104,7 +104,7 @@ export default function CommentItem({
       <div className="shadow-comment w-full h-fit flex flex-row justify-between gap-2 py-3 px-4  s:flex s:flex-col">
         <div className="flex flex-row gap-2">
           <span>⭐</span>
-          <div className="text-darkblue font-semibold shrink-0 w-[80px] text-left s:w-auto">
+          <div className="text-darkblue font-semibold shrink-0 w-[80px] text-left s:w-auto dark:text-slate-200">
             {writer}
           </div>
         </div>
