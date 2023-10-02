@@ -3,6 +3,7 @@ export default {
   content: ['./index.html', './src/**/*.jsx'],
   theme: {
     extend: {
+      darkMode: 'class',
       important: true,
       fontFamily: {
         suit: ['SUIT Variable'],

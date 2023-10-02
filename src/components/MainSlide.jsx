@@ -10,15 +10,15 @@ export default function MainSlide() {
 
   const slides = [
     {
-      src: 'https://frontendschool6.github.io/finalize-react-6/mainSlide1.jpg',
+      src: `${import.meta.env.VITE_DOMAIN}/mainSlide1.jpg`,
       alt: '제주도 바다',
     },
     {
-      src: 'https://frontendschool6.github.io/finalize-react-6/jejuImage1.jpg',
+      src: `${import.meta.env.VITE_DOMAIN}/jejuImage1.jpg`,
       alt: '제주도 메밀꽃',
     },
     {
-      src: 'https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg',
+      src: `${import.meta.env.VITE_DOMAIN}/jejuImage5.jpg`,
       alt: '제주도 맑은 바다',
     },
   ];
@@ -68,12 +68,12 @@ export default function MainSlide() {
       >
         {isPlaying ? (
           <img
-            src="https://frontendschool6.github.io/finalize-react-6/pause_icon.svg"
+            src={`${import.meta.env.VITE_DOMAIN}/pause_icon.svg`}
             alt="중지"
           />
         ) : (
           <img
-            src="https://frontendschool6.github.io/finalize-react-6/play_icon.svg"
+            src={`${import.meta.env.VITE_DOMAIN}/play_icon.svg`}
             alt="재생"
           />
         )}

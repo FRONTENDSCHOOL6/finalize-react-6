@@ -139,7 +139,7 @@ export default function ContentCreate() {
               onChange={handleFileUpload}
               className="absolute w-full h-full opacity-0 cursor-pointer"
             />
-            <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100 s:min-h-[350px] s:max-h-[1000px]">
+            <div className="flex gap-2 overflow-x-auto p-2 w-full min-w-[350px] h-full bg-slate-100 s:min-h-[350px] s:max-h-[1000px] dark:bg-slate-500">
               {!fileImages && (
                 <img
                   src={photo}
@@ -172,7 +172,7 @@ export default function ContentCreate() {
                 placeholder="제목을 입력해주세요(40자 이내)"
                 ref={titleRef}
                 maxLength={40}
-                className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
+                className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue dark:bg-transparent"
                 required
               />
             </div>
@@ -187,13 +187,13 @@ export default function ContentCreate() {
                 placeholder="내용을 입력해주세요"
                 ref={contentRef}
                 maxLength={2000}
-                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue s:h-48"
+                className="w-full py-3 px-4 min-h-[100px] border rounded-md border-gray focus:outline-none focus:border-lightblue s:h-48 dark:bg-transparent"
                 required
               />
             </div>
 
             <Select
-              className="z-10"
+              className="z-10 dark:bg-transparent"
               options={colourOptions}
               styles={colorStyles}
               ref={tagRef}
@@ -206,7 +206,7 @@ export default function ContentCreate() {
               ref={customTagRef}
               onChange={handleNoSpace}
               maxLength={30}
-              className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue"
+              className="w-full py-3 px-4 border rounded-md border-gray-300 focus:outline-none focus:border-lightblue dark:bg-transparent"
               placeholder="나만의 제주도 태그를 만들어주세요.(30자 이내, 예: #나의_사랑_제주도)"
             />
 

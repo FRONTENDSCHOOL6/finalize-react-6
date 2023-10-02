@@ -120,6 +120,7 @@ export default function Contents() {
             name="태그"
             id="tagSelect"
             onChange={handleTagSelect}
+            className="dark:bg-transparent"
             value={tag}
           >
             <option>- 태그 -</option>
@@ -130,7 +131,7 @@ export default function Contents() {
             ))}
           </select>
         </section>
-        <section className="contentContainer p-1 bg-gray-100 w-11/12">
+        <section className="contentContainer p-1 bg-gray-100 w-11/12 dark:bg-slate-400">
           {data.items.length === 0 && <ContentItem />}
           {data?.items?.map((item) => {
             return (

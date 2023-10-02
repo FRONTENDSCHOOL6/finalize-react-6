@@ -142,7 +142,7 @@ export default function AddComment({ contentId, onCommentInfoChange }) {
             required
             disabled={!userId ? true : false}
             maxLength="300"
-            className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue disabled:bg-gray-200 disabled:placeholder:text-gray-800"
+            className="w-full py-3 px-4 border-2 rounded-md border-lightblue focus:outline-none focus:border-blue disabled:bg-gray-200 disabled:placeholder:text-gray-800 dark:bg-transparent"
           ></textarea>
           <div className="absolute top-[50px] right-[20px] text-sm text-gray-500">
             {text.length}/300 자

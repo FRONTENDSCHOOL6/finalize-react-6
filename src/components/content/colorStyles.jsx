@@ -18,7 +18,7 @@ const dot = (color = 'transparent') => ({
 export const colorStyles = {
   control: (styles) => ({
     ...styles,
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255,255,255,0.6)',
     border: '1px solid rgb(209, 213, 219)',
     borderRadius: '6px',
   }),

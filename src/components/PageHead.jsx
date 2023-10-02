@@ -17,12 +17,9 @@ export default function PageHead({ title, description, keywords }) {
       <meta property="og:description" content={description} />
       <meta
         property="og:image"
-        content="https://frontendschool6.github.io/finalize-react-6/jejuImage5.jpg"
+        content={`${import.meta.env.VITE_DOMAIN}/jejuImage5.jpg`}
       />
-      <meta
-        property="og:url"
-        content="https://frontendschool6.github.io/finalize-react-6/"
-      />
+      <meta property="og:url" content={`${import.meta.env.VITE_DOMAIN}/`} />
     </Helmet>
   );
 }

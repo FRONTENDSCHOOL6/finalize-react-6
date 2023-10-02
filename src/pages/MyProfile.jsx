@@ -75,7 +75,7 @@ export default function MyProfile() {
                 ref={nicknameRef}
                 defaultValue={nickname}
                 maxLength={10}
-                className="w-44 border-2 border-slate-500 rounded pl-2 mr-2"
+                className="w-44 border-2 border-slate-500 rounded pl-2 mr-2 dark:bg-transparent"
               />
               <button onClick={handleNickname} className="mr-2">
                 수정

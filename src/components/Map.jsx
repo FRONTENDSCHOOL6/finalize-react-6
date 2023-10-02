@@ -147,7 +147,7 @@ export const Map = forwardRef(function Map({ place }, ref) {
             '<span class="markerbg marker_' +
             (index + 1) +
             '"></span>' +
-            '<div class="info">' +
+            '<div class="info dark:text-slate-900 dark:font-semibold">' +
             '   <h5>' +
             places.place_name +
             '</h5>';
@@ -210,7 +210,7 @@ export const Map = forwardRef(function Map({ place }, ref) {
       // 인포윈도우에 장소명을 표시합니다
       function displayInfowindow(marker, title) {
         var content =
-          '<div style="padding:5px;z-index:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+          '<div style="padding:5px;z-index:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:black">' +
           title +
           '</div>';
 
@@ -243,7 +243,7 @@ export const Map = forwardRef(function Map({ place }, ref) {
             <input
               type="text"
               defaultValue="제주국제공항"
-              className="w-full h-full bg-slate-400/30 font-bold p-2"
+              className="w-full h-full bg-slate-400/30 font-bold p-2 dark:text-slate-800"
               id="keyword"
               size="15"
             />
@@ -256,10 +256,10 @@ export const Map = forwardRef(function Map({ place }, ref) {
             </button>
           </div>
         </div>
-        <p className="p-2 pb-0 font-extrabold">
+        <p className="p-2 pb-0 font-extrabold dark:text-slate-800">
           장소 : {ref.placeNameRef.current}
         </p>
-        <p className="p-2 font-extrabold">
+        <p className="p-2 font-extrabold dark:text-slate-800">
           주소 : {ref.placeAddressRef.current}
         </p>
         <hr />
