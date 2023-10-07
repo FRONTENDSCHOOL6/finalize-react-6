@@ -31,19 +31,32 @@ export default function MyProfile() {
     setNicknameEdit(true);
   };
 
-  const handleNickname = () => {
+  const handleNickname = async () => {
     try {
+      nicknameRef.current.value = nicknameRef?.current?.value.replace(
+        /(\s+)/g,
+        ''
+      );
       if (nickname === nicknameRef?.current?.value) {
         toast.error('닉네임을 수정해주세요.');
         return;
-      } else {
-        pb.collection('user').update(user.id, {
-          nickname: nicknameRef.current.value,
-        });
-        setNickname(nicknameRef.current.value);
-        toast.success('닉네임이 수정되었습니다.');
-        setNicknameEdit(false);
       }
+
+      const records = await pb.collection('user').getList(1, 1, {
+        filter: `nickname = '${nicknameRef?.current?.value}'`,
+      });
+      // console.log(records.items);
+      if (records.items.length > 0) {
+        toast.error('중복으로 사용할 수 없는 닉네임입니다.');
+        return;
+      }
+
+      pb.collection('user').update(user.id, {
+        nickname: nicknameRef.current.value,
+      });
+      setNickname(nicknameRef.current.value);
+      toast.success('닉네임이 수정되었습니다.');
+      setNicknameEdit(false);
     } catch (error) {
       console.error(error);
     }
