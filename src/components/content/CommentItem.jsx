@@ -112,7 +112,7 @@ export default function CommentItem({
           <textarea
             type="text"
             value={editedComment}
-            className="grow text-start bg-lightsand"
+            className="grow text-start bg-lightsand dark:bg-slate-800 dark:border-black dark:border-2 dark:p-2"
             onChange={(e) => setEditedComment(e.target.value)}
             maxLength="300"
           /> // 수정 누르면 isEditMode가 false(기본값)에서 true로 바뀜
